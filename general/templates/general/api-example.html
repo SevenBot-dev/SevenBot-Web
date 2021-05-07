@@ -1,0 +1,87 @@
+{% extends 'general/base.html' %}
+{% block title %}APIサンプル{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="/static/css/api.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/solarized-light.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+{% endblock %}
+{% block main %}
+<div class="--fade">
+    <h1 class="page-title">APIサンプル</h1>
+    <p class="content-p">
+        SevenBot Web APIの例です。
+    </p>
+</div>
+<div class="--fade --slideup">
+    <h1>AFK API</h1>
+    <div class="--fade --slideup">
+        <h2>AFKを取得</span>
+        </h2>
+
+        <pre>
+            <code class="centerp python">import requests
+
+userid = int(input("取得したいユーザーのIDを入力してください："))
+print("通信中…")
+response = requests.get(
+    "https://api.sevenbot.jp/afk",
+    params={
+        "userid": userid
+    }
+)
+
+if response.json()["message"] is False:
+    print(f"{userid}はAFKではありません。")
+else:
+    print(f"{userid}はAFKです。\n理由：\n{response.json()['reason'] or 'なし'}")
+            </code>
+        </pre>
+    </div>
+    <div class="--fade --slideup">
+        <h2>AFKを設定</h2>
+
+        <pre>
+            <code class="centerp python">import requests
+
+USER_ID = 00000000000000000
+TOKEN = "ThisIsT0ken"
+reason = input("理由を入力して下さい：")
+if reason:
+    json = {"reason": reason}
+else:
+    json = {}
+print("通信中…", end="")
+requests.put(
+    "https://api.sevenbot.jp/afk", 
+    headers={
+        "authorization": f"{USER_ID} {TOKEN}"
+    }, json=json
+)
+print("完了")
+            </code>
+        </pre>
+    </div>
+    <div class="--fade --slideup">
+        <h2>AFKを解除</h2>
+
+        <pre>
+            <code class="centerp python">import requests
+
+USER_ID = 00000000000000000
+TOKEN = "ThisIsT0ken"
+print("通信中…", end="")
+requests.delete(
+    "https://api.sevenbot.jp/afk", 
+    headers={
+        "authorization": f"{USER_ID} {TOKEN}"
+    }
+)
+print("完了")
+            </code>
+        </pre>
+    </div>
+</div>
+{% endblock %}

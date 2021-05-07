@@ -1,0 +1,12 @@
+{% extends 'oauth/base.html' %}
+{% block title %}アクセス許可{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="/static/css/oauth/login.css">
+{% endblock %}
+{% block main %}
+<h1 class="page-title">アクセス許可</h1>
+<p class="centerp">最初に下のボタンからログインして下さい。</p><br>
+<div id="login-button">
+    <a href="{{url}}" class="big-button">ログイン</a>
+</div>
+{%endblock%}

@@ -1,0 +1,27 @@
+#charts-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: calc(100% - 24px);
+    position: relative;
+    left: 12px;
+}
+
+.chart-container {
+    background: #f2f3f5;
+    padding: 12px;
+    border-radius: 5px;
+    margin: 12px;
+    min-width: 0;
+    /* overflow: scroll; */
+}
+
+
+/*  */
+
+
+/* .highcharts-background {
+    fill: #f2f3f5;
+} */

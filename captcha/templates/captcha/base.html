@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{% block title %}{% endblock %}{% if self.title().strip() %} - {% endif %}SevenBot</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="/static/images/favicon.ico">
+    <link rel="icon" href="/static/images/favicon.ico">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/header.css">
+    <link rel="stylesheet" href="/static/css/footer.css">
+    <script defer src="/static/js/header.js"></script>
+    <script defer src="/static/js/share.js"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RV0BBT9CCF"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-RV0BBT9CCF');
+    </script>
+    <!-- block head -->
+    {% block head %}
+    {% endblock %}
+    <!-- endblock -->
+</head>
+
+<body>
+    <header>
+        <div id="header-top">
+            <a href="/">
+                <picture>
+                    <source srcset="/static/images/header-icon.webp" type="image/webp">
+                    <img src="/static/images/header-icon.png">
+                </picture>
+                <span id="site-name">SevenBot</span>
+            </a>
+
+            <ul id="menu">
+                <li class="menu-content">
+                    <a href="https://sevenbot.jp/support" target="blank">サポートサーバー</a>
+                </li>
+                <li class="menu-content menu-important">
+                    <a href="https://sevenbot.jp/invite" target="blank">導入する</a>
+                </li>
+            </ul>
+            <div id="header-menu-opener">
+                <svg width="54" height="30" viewBox="-2 -2 34 18">
+                    <polyline points="0,0 16,16 32,0" fill="none" stroke-width="1" stroke="#fff"></polyline>
+                </svg>
+            </div>
+        </div>
+        <div id="header-menu">
+            <ul id="header-menu-bottom">
+                <li class="header-menu-content" style="background: #fff;"><a href="https://sevenbot.jp/invite" style="color: #0cf;">招待</a></li>
+                <li class="header-menu-content"
+                    style="color: #fff;border: 1px solid #fff;box-sizing: border-box;background:transpant;"><a href="https://sevenbot.jp/support">サポート</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <div id="content">
+        {% block main %}
+        {% endblock %}
+        {% if not self.main().strip() %}
+            <div class="--fade --onload">
+                <h1 class="page-title">お前は知りすぎた</h1>
+                <p class="centerp">
+                    君は見てはいけないものを見てしまった。<br><br>
+                    っていう冗談はおいといて、これはサーバーの内部ページだ。<br>
+                    ヘッダーとかの共通する部分をここに置いてる。<br>
+                    だからここには何もないよ。<br>
+                    <a href="/">トップに戻る</a>
+                </p>
+            </div>
+        {% endif %}
+        <div class="tooltip green" style="display:none;">
+            <div class="tooltip-opacity" style="opacity: 1; transform: none;">
+                <div class="tooltip-bottom"></div>
+                <div class="tooltip-main"><div>コピーした！</div></div>
+            </div>
+        </div>
+        <footer>
+            <small style="top: 1rem;position: relative;">SevenBot - &copy; 2020 <a href="https://twitter.com/sevenc_nanashi">名無し。<span id="footer-copyright-pc">（@sevenc-nanashi）</span></a></small>
+            <ul id="footer-bottom">
+                <li>
+                    <a href="https://top.gg/bot/718760319207473152">
+                        <img src="https://top.gg/api/widget/status/718760319207473152.svg" alt="SevenBot">
+                    </a>
+                </li>
+                <li>
+                    <a href="https://discord.gg/YpgHwz8"><img src="https://discordapp.com/api/guilds/715540925081714788/widget.png?style=shield" alt="Discord Shield"></a>
+                </li>
+            </ul>
+        </footer>
+        <div id="google-alert">
+            当サイトではGoogleアナリティクスを使用しています。<br>
+            これを無効化するには、Cookieを無効にして下さい。<br>
+            <a href="https://policies.google.com/technologies/ads?hl=ja" target="-blank">詳細はこちら</a><br>
+        </div>
+    </div>
+</body>
+
+</html>

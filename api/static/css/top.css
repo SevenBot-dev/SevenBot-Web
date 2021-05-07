@@ -1,0 +1,33 @@
+body {
+    overflow-y: hidden;
+}
+
+#wrap {
+    overflow-x: clip;
+}
+
+#main {
+    width: 100%;
+    left: 0px;
+    height: 100vh;
+}
+
+#main-icon {
+    width: 30%;
+    height: auto;
+}
+
+#main-content {
+    width: 80%;
+    height: 80%;
+    position: absolute;
+    margin: auto;
+    text-align: center;
+    top: calc(50% - 5vh);
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#login-button {
+    text-align: center;
+}

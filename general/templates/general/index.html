@@ -1,0 +1,88 @@
+{% extends 'general/base.html' %}
+{% block title %}トップ{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="/static/css/index.css">
+<script defer type="text/javascript" src="/static/js/index.js"></script>
+<script defer type="text/javascript" src="/static/js/slidein.js"></script>
+<meta content="SevenBot" property="og:title">
+<meta content="名無し。（@MNoNamer）が作った、超（？）多機能Discord Bot、SevenBotのサイトです。" property="og:description">
+<meta name="description" content="名無し。（@MNoNamer）が作った、超（？）多機能Discord Bot、SevenBotのサイトです。">
+<meta name="metadescription" content="名無し。（@MNoNamer）が作った、超（？）多機能Discord Bot、SevenBotのサイトです。">
+<meta content="https://sevenbot.jp" property="og:url">
+<meta content="https://cdn.discordapp.com/emojis/729680776349745223.webp" property="og:image">
+<meta content="#00CCFF" data-react-helmet="true" name="theme-color">
+{% endblock %}
+{% block main %}
+<div id="main" class="--slideup --fade --onload" style="height:100vh">
+    <div id="main-content">
+        <h1 class="page-title">SevenBot</h1>
+        <picture>
+            <source srcset="/static/images/icon-with-bg.webp" type="image/webp">
+            <img src="/static/images/icon-with-bg.png" id="main-icon" width="80%">
+        </picture>
+    </div>
+    <div id="scroll-sign">
+        <svg width="36" height="20" viewBox="-2 -2 34 18">
+            <polyline points="0,0 16,16 32,0" stroke="#72767d" fill="none" stroke-width="1"></polyline>
+        </svg>
+    </div>
+
+</div>
+<div style="width:100vw; overflow:hidden;">
+    <picture>
+        <source srcset="/static/images/sevenbot.webp" type="image/webp">
+        <img src="/static/images/sevenbot.png" id="sb-img">
+    </picture>
+</div>
+<div class="top-features">
+    <div class="top-features-content --slideleft">
+        <h1 class="top-features-title">キーボードを変えるのが面倒？</h1>
+        <p class="top-features-desc">
+            !、?、:のためにキーボードを変えるのはもううんざり？<br> SevenBotのPrefixは#、.を使うため、キーボードを切り換える必要はありません！
+            <br> #helpみたいなコマンド名と同じチャンネルがあっても大丈夫！
+            <br>
+            <span class="light">（キーボード提供： <a href="https://twitter.com/cat_atto" target="blank">AttoCat(@cat_atto)</a>）</span>
+        </p>
+
+    </div>
+    <picture>
+        <source srcset="/static/feature-imgs/keyboard.webp" type="image/webp">
+        <img src="/static/feature-imgs/keyboard.png"  class="top-features-image">
+    </picture>
+</div>
+<div class="top-features">
+    <div class="top-features-content --slideleft">
+        <h1 class="top-features-title">変なあいさつをさせたい？</h1>
+        <p class="top-features-desc">
+            Botに変なあいさつをさせたい？<br> SevenBotの自動返信を使えば、サーバー独自の挨拶をさせることができます！
+            <br> もちろん、挨拶以外でもOK!
+            <br> テンプレテキストにも使えます！
+            <br>
+            <span class="light">（撮影元： <a href="https://discord.gg/M2VcGerSKn" target="blank">🐢超 雑談鯖</a>）</span>
+        </p>
+    </div>
+    <picture>
+        <source srcset="/static/feature-imgs/autoreply.webp" type="image/webp">
+        <img src="/static/feature-imgs/autoreply.png" class="top-features-image">
+    </picture>
+</div>
+<div class="top-features">
+    <div class="top-features-content --slideleft">
+        <h1 class="top-features-title">出られない事情を伝えたい？</h1>
+        <p class="top-features-desc">
+            「今塾で無理」みたいに事情を伝えたい？<br> SevenBotのAFK機能を使えば、メンション時に事情を伝えることができます！
+            <br> メンションされた場所をまとめることも出来ます！
+        </p>
+    </div>
+    <picture>
+        <source srcset="/static/feature-imgs/afk.webp" type="image/webp">
+        <img src="/static/feature-imgs/afk.png" class="top-features-image">
+    </picture>
+</div>
+<div id="top-invite">
+    <div class="--slideup ">
+        <h1 style="word-break: keep-all;font-size: 1.75rem;">興味を持って貰えたかな？</h1>
+        <a href="invite.html" target="blank" class="big-button">ここから導入しよう！</a>
+    </div>
+</div>
+{% endblock %}

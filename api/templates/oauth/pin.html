@@ -1,0 +1,12 @@
+{% extends 'oauth/base.html' %}
+{% block title %}アクセス許可{% endblock %}
+{% block head %}
+{% endblock %}
+{% block main %}
+<h1 class="page-title">アクセス許可</h1>
+
+<div class="centerp">
+    {{app_name}}に戻り、このコードを入力して下さい。<br><br>
+    <div class="inline-code" style="font-size: 4em;text-align: center;">{{pin}}</div>
+</div>
+{%endblock%}

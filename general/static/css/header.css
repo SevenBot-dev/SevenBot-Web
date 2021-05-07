@@ -1,0 +1,183 @@
+header {
+    background-color: #0cf;
+    display: inline-block;
+    color: #fff!important;
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    left: 0;
+    margin: 0;
+    height: 128px;
+    width: 100%
+}
+
+#header-top {
+    height: 96px
+}
+
+#header-menu-bottom {
+    display: none
+}
+
+#header-menu {
+    height: 32px
+}
+
+#header-top a img {
+    height: 100%;
+    vertical-align: middle
+}
+
+#site-name {
+    vertical-align: middle;
+    font-size: 32px;
+    font-weight: 600;
+    color: #fff;
+    font-family: Whitney, Hiragino Sans, ヒラギノ角ゴ ProN W3, Hiragino Kaku Gothic ProN, メイリオ, Meiryo, Osaka, MS PGothic, Helvetica Neue, Helvetica, Arial, sans-serif
+}
+
+.header-menu-bottom {
+    display: none
+}
+
+#menu {
+    float: right;
+    padding-left: 0;
+    list-style: none;
+    position: absolute;
+    top: 0;
+    right: 0
+}
+
+.menu-content {
+    display: inline-block;
+    margin: 8px;
+    margin-right: 16px;
+    height: 48px;
+    font-size: 20px;
+    text-align: center
+}
+
+.menu-content>a {
+    color: #fff;
+    line-height: 40px;
+    border-radius: 4px;
+    border: 2px solid #fff;
+    height: 40px;
+    padding: 4px 8px;
+    box-sizing: border-box;
+    background-color: transparent;
+    transition: background-color ease-out .2s
+}
+
+.menu-content:not(.menu-important)>a:hover,
+.menu-content:not(.menu-important)>a:focus {
+    background-color: #fff4
+}
+
+.menu-important>a {
+    color: #0cf;
+    line-height: 40px;
+    border-radius: 4px;
+    border: 2px solid #fff;
+    height: 40px;
+    padding: 4px 8px;
+    box-sizing: border-box;
+    background-color: #fff;
+    transition: background-color ease-out .2s
+}
+
+#header-menu-container {
+    list-style: none;
+    position: absolute;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    --menu-margin: 2px;
+    display: flex
+}
+
+.header-menu-content {
+    height: calc(32px - var(--menu-margin)*2);
+    width: calc(100%/6 - var(--menu-margin)*2);
+    text-align: center;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: var(--menu-margin);
+    background-color: #fff2;
+    border-radius: 2px;
+    transition: background-color ease-out .25s
+}
+
+.header-menu-content:hover,
+.header-menu-content:focus {
+    background-color: #fff4
+}
+
+.header-menu-content>a {
+    color: #fff;
+    width: 100%
+}
+
+@media(max-width:850px) {
+    #menu {
+        display: none
+    }
+    #content {
+        padding-top: 64px
+    }
+    #site-name {
+        font-size: 24px;
+    }
+    #header-menu {
+        display: none;
+        position: absolute;
+        top: 64px;
+        min-height: calc(100vh - 96px - 50vh);
+        height: calc((2rem + 4px) * 8 + 2px);
+        left: 0;
+        right: 0;
+        background: #0cf
+    }
+    header {
+        height: 64px!important
+    }
+    #header-top {
+        height: 100%;
+    }
+    #header-menu-opener {
+        display: block;
+        position: absolute;
+        stroke-width: 16px;
+        top: 1rem;
+        right: 1rem
+    }
+    #header-menu-container {
+        flex-direction: column
+    }
+    .header-menu-content {
+        width: calc(100% - 8px);
+        margin-left: 4px;
+        height: 2rem
+    }
+    #header-menu-bottom {
+        list-style: none;
+        position: absolute;
+        display: block;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        --menu-margin: 2px;
+        display: flex;
+        bottom: 2px;
+        flex-direction: column-reverse
+    }
+}
+
+@media(max-width:250px) {
+    #site-name {
+        display: none
+    }
+}

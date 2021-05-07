@@ -1,0 +1,27 @@
+#content div p {
+    width: 60%;
+    margin: auto;
+}
+
+h1,
+h2 {
+    text-align: center;
+}
+
+.big-button {
+    position: absolute !important;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#about-feature {
+    width: 40%;
+    margin: 0 auto;
+}
+
+@media(max-width:850px) {
+    #about-feature {
+        width: 60%;
+        margin: 0 auto;
+    }
+}

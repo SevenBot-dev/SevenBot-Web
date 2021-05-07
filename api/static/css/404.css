@@ -1,0 +1,10 @@
+#content>div>p {
+    width: 60%;
+    margin: auto;
+}
+
+.big-button {
+    position: absolute !important;
+    left: 50%;
+    transform: translateX(-50%);
+}

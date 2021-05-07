@@ -1,0 +1,18 @@
+{% extends 'captcha/base.html' %}
+{% block title %}404{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="/static/css/404.css">
+{% endblock %}
+{% block main %}
+<h1 class="page-title">404 Not Found!</h1>
+<div class="--fade --onload">
+    <p>
+        404 Not Found - ページが見付かりませんでした。<br> どうやら迷ってしまったようですね。
+        <br> トップページまで送ってあげましょう。
+        <br>
+        <div class="big-button">
+            <a href="https://sevenbot.jp/">トップページ</a>
+        </div>
+    </p>
+</div>
+{% endblock %}

@@ -1,0 +1,153 @@
+{% extends 'general/base.html' %}
+{% block title %}APIリファレンス{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="/static/css/api.css">
+{% endblock %}
+{% block main %}
+<div class="--fade">
+    <h1 class="page-title">APIリファレンス</h1>
+    <p class="content-p">
+        SevenBot Web APIの説明です。 <a href="/api-example">例</a><br> ベースURL：
+        <a href="https://api.sevenbot.jp">https://api.sevenbot.jp</a>
+    </p>
+</div>
+<div class="--fade --slideup">
+    <h1>AFK API</h1>
+    <p class="content-p">
+        AFKを設定, 取得します。<br>
+        認証：<span class="inline-code">ユーザーID APIキー</span>（<span class="inline-code">sbuauth</span>と呼びます）<br>
+        スコープ：<span class="inline-code">afk</span>
+    </p>
+    <div class="--fade --slideup">
+        <h2>AFKを取得<span class="request-separator"> - </span><span class="request"><span class="request-type request-get">GET</span> /afk</span></h2>
+        <p class="content-p"></p>
+        <h3>パラメータ</h3>
+        <table>
+            <thead>
+                <tr>
+                    <td>名前</td>
+                    <td>タイプ</td>
+                    <td>説明</td>
+                    <td>省略</td>
+                    <td>デフォルト</td>
+                    <td>例</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>userid</td>
+                    <td>数値</td>
+                    <td>取得したいユーザーID。</td>
+                    <td>不可</td>
+                    <td class="empty-td">-</td>
+                    <td>718760319207473152</td>
+                </tr>
+            </tbody>
+        </table>
+        <h3>戻り値</h3>
+        <table>
+            <thead>
+                <tr>
+                    <td>名前</td>
+                    <td>タイプ</td>
+                    <td>説明</td>
+                    <td>例</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>message</td>
+                    <td>真偽型</td>
+                    <td>指定したユーザーがAFKかどうか</td>
+                    <td>False</td>
+                </tr>
+                <tr>
+                    <td>reason?</td>
+                    <td>文字列</td>
+                    <td>指定したユーザーのAFKの理由</td>
+                    <td>"眠い"</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="--fade --slideup">
+        <h2>AFKを設定<span class="request-separator"> - </span><span class="request"><span class="request-type request-put">PUT</span> /afk</span>
+        </h2>
+
+        <h3>パラメータ</h3>
+        <table>
+            <thead>
+                <tr>
+                    <td>名前</td>
+                    <td>タイプ</td>
+                    <td>説明</td>
+                    <td>省略</td>
+                    <td>デフォルト</td>
+                    <td>例</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>reason</td>
+                    <td>文字列</td>
+                    <td>AFKの理由を指定します。</td>
+                    <td>可能</td>
+                    <td>理由無し</td>
+                    <td>"眠い"</td>
+                </tr>
+            </tbody>
+        </table>
+        <h3>戻り値</h3>
+        <table>
+            <thead>
+                <tr>
+                    <td>名前</td>
+                    <td>タイプ</td>
+                    <td>説明</td>
+                    <td>例</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>tweet</td>
+                    <td>null|false|文字列(URL)</td>
+                    <td>ツイートのURL。失敗時はfalse, 未登録時はnull</td>
+                    <td>"https://twitter.com/..."</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="--fade --slideup">
+        <h2>AFKを解除<span class="request-separator"> - </span><span class="request"><span class="request-type request-delete">DELETE</span> /afk</span>
+        </h2>
+
+        <h3>パラメータ</h3>
+        <p class="content-p">(無し)</p>
+        <h3>戻り値</h3>
+        <table>
+            <thead>
+                <tr>
+                    <td>名前</td>
+                    <td>タイプ</td>
+                    <td>説明</td>
+                    <td>例</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>urls</td>
+                    <td>配列[文字列(URL)]</td>
+                    <td>メンションされたメッセージのURL。</td>
+                    <td>["https://discord.com/channels/...."]</td>
+                </tr>
+                <tr>
+                    <td>tweet</td>
+                    <td>null|false|文字列(URL)</td>
+                    <td>ツイートのURL。失敗時はfalse, 未登録時はnull</td>
+                    <td>"https://twitter.com/..."</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

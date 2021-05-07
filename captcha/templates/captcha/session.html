@@ -1,0 +1,15 @@
+{% extends 'captcha/base.html' %}
+{% block title %}認証失敗{% endblock %}
+{% block head %}
+{% endblock %}
+{% block main %}
+<h1 class="page-title">SevenBot Web Authorization</h1>
+{%if not timeout%}
+<p class="centerp">
+セッションが見付かりませんでした。<br>
+Cookieが無効になっている可能性があります。
+</p>
+{%else%}
+<p class="centerp">セッションの有効期限が切れています。</p>
+{%endif%}
+{%endblock%}
