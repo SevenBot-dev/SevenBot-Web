@@ -184,9 +184,9 @@ def afk_key():
     except ValueError:
         return make_response(jsonify({"error_description": "userid muse be numbers.", "code": "bad_argument"}), 400)
     if res is None:
-        return make_response(jsonify({"error_description": False}), 200)
+        return make_response(jsonify({"message": False}), 200)
     else:
-        return make_response(jsonify({"error_description": True, "reason": res["reason"]}), 200)
+        return make_response(jsonify({"message": True, "reason": res["reason"]}), 200)
 
 
 @app.route('/afk', methods=["post", "put"])
