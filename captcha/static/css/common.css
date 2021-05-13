@@ -144,8 +144,12 @@
     --discord-theme: #5865f2;
     --discord-theme-dark: #4752c4;
     --sb-theme: #0cf;
+}
+
+body {
+    background: var(--background-primary);
+    color: var(--text-normal);
     font-family: Whitney, hiragino sans, ヒラギノ角ゴ pro w3, ヒラギノ角ゴ pron w3, hiragino kaku gothic pron, メイリオ, Meiryo, Osaka, ms pgothic, helvetica neue, Helvetica, Arial, sans-serif;
-    color: var(--text-normal)
 }
 
 a {
