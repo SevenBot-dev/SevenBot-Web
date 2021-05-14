@@ -32,7 +32,7 @@ body {
     position: absolute;
     text-align: center;
     width: 100%;
-    top: calc(100vh - 64px - 128px);
+    top: calc(100vh - 64px);
 }
 
 #scroll-sign>svg {
