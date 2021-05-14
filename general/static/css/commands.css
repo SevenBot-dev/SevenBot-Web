@@ -118,7 +118,7 @@ h1 {
 
 .empty-td {
     text-align: center;
-    color: #4f5660
+    color: var(--text-muted)
 }
 
 .pinged td {
