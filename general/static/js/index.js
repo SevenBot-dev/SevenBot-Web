@@ -28,7 +28,7 @@ if (document.cookie.replace(/(?:(?:^|.*;\s*)animated\s*\=\s*([^;]*).*$)|^.*$/, "
     document.cookie = "animated=true; expires=Fri, 31 Dec 9999 23:59:59 GMT";
 
     window.scrollTo(0, 0);
-    sc = document.getElementById("scrollSign");
+    sc = document.getElementById("scroll-sign");
 
 
     sc.style.opacity = 0;
