@@ -1,3 +1,17 @@
+@media (prefers-color-scheme: light) {
+    * {
+        --status-tooltip-color: #ffffffe3;
+        --status-x-axis-color: #18191c10;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    * {
+        --status-tooltip-color: #18191ce3;
+        --status-x-axis-color: #ffffff10;
+    }
+}
+
 #charts-container {
     display: flex;
     flex-wrap: wrap;

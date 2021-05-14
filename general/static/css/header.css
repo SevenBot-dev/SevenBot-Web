@@ -23,7 +23,7 @@ header {
     height: 32px
 }
 
-#header-top a img {
+#header-sb-icon {
     height: 100%;
     vertical-align: middle
 }
@@ -179,5 +179,11 @@ header {
 @media(max-width:250px) {
     #site-name {
         display: none
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    #header-sb-icon {
+        filter: brightness(1.15);
     }
 }

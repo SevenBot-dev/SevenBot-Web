@@ -47,7 +47,7 @@ rawChartData.forEach((d, i) => {
 chartPing = Highcharts.chart('chart-ping', {
     chart: {
         // styledMode: true
-        backgroundColor: "#f2f3f5",
+        backgroundColor: "var(--background-secondary)",
 
         // panning: true,
 
@@ -57,7 +57,7 @@ chartPing = Highcharts.chart('chart-ping', {
         text: 'Ping（Botの応答速度）',
     },
     yAxis: [{
-        gridLineColor: "#e3e5e8",
+        gridLineColor: "var(--status-x-axis-color)",
         title: {
             text: 'Ping',
             style: {
@@ -93,9 +93,9 @@ chartPing = Highcharts.chart('chart-ping', {
             day: "%m/%d %H:%M"
         },
         tickLength: 0,
-        crosshair: { color: "#e3e5e8" },
-        lineColor: "#747f8d",
-        labels: { style: { color: "#747f8d" } },
+        crosshair: { color: "var(--background-tertiary)" },
+        lineColor: "var(--status-x-axis-color)",
+        labels: { style: { color: "var(--interactive-normal)" } },
     },
     legend: {
         layout: 'vertical',
@@ -127,10 +127,10 @@ chartPing = Highcharts.chart('chart-ping', {
 
     tooltip: {
         xDateFormat: "%m/%d %H:%M",
-        backgroundColor: "#ffffffe3",
+        backgroundColor: "var(--status-tooltip-color)",
         borderWidth: 0,
-
-        shadow: false
+        shadow: false,
+        style: { color: "var(--text-normal)" }
     },
     credits: { enabled: false },
 
@@ -138,7 +138,7 @@ chartPing = Highcharts.chart('chart-ping', {
 chartUser = Highcharts.chart('chart-guild-user', {
     chart: {
         // styledMode: true
-        backgroundColor: "#f2f3f5",
+        backgroundColor: "var(--background-secondary)",
 
 
     },
@@ -147,6 +147,7 @@ chartUser = Highcharts.chart('chart-guild-user', {
         text: 'サーバー数、認識できるユーザー数',
     },
     yAxis: [{
+        gridLineColor: "var(--status-x-axis-color)",
         title: {
             text: 'サーバー数',
             style: {
@@ -206,9 +207,9 @@ chartUser = Highcharts.chart('chart-guild-user', {
             day: "%m/%d %H:%M"
         },
         tickLength: 0,
-        crosshair: { color: "#e3e5e8" },
-        lineColor: "#747f8d",
-        labels: { style: { color: "#747f8d" } }
+        crosshair: { color: "var(--background-tertiary)" },
+        lineColor: "var(--status-x-axis-color)",
+        labels: { style: { color: "var(--interactive-normal)" } }
     },
     credits: { enabled: false },
     legend: {
@@ -250,17 +251,17 @@ chartUser = Highcharts.chart('chart-guild-user', {
     }],
     tooltip: {
         xDateFormat: "%m/%d %H:%M",
-        backgroundColor: "#ffffffe3",
+        backgroundColor: "var(--status-tooltip-color)",
         borderWidth: 0,
-        shadow: false
+        shadow: false,
+        style: { color: "var(--text-normal)" }
     },
-
 
 });
 chartVPS = Highcharts.chart('chart-guild-vps', {
     chart: {
         // styledMode: true
-        backgroundColor: "#f2f3f5",
+        backgroundColor: "var(--background-secondary)",
 
 
     },
@@ -269,9 +270,10 @@ chartVPS = Highcharts.chart('chart-guild-vps', {
         text: 'CPU、メモリの使用率',
     },
     yAxis: [{
+        gridLineColor: "var(--status-x-axis-color)",
         labels: {
             style: {
-                color: "#747f8d"
+                color: "var(--interactive-normal)"
             }
         },
         min: 0,
@@ -285,7 +287,7 @@ chartVPS = Highcharts.chart('chart-guild-vps', {
             rotation: 0,
             y: -10,
             style: {
-                color: "#747f8d"
+                color: "var(--interactive-normal)"
             }
         }
     }],
@@ -297,9 +299,9 @@ chartVPS = Highcharts.chart('chart-guild-vps', {
             day: "%m/%d %H:%M"
         },
         tickLength: 0,
-        crosshair: { color: "#e3e5e8" },
-        lineColor: "#747f8d",
-        labels: { style: { color: "#747f8d" } }
+        crosshair: { color: "var(--background-tertiary)" },
+        lineColor: "var(--status-x-axis-color)",
+        labels: { style: { color: "var(--interactive-normal)" } }
     },
     credits: { enabled: false },
     legend: {
@@ -343,17 +345,17 @@ chartVPS = Highcharts.chart('chart-guild-vps', {
     }],
     tooltip: {
         xDateFormat: "%m/%d %H:%M",
-        backgroundColor: "#ffffffe3",
+        backgroundColor: "var(--status-tooltip-color)",
         borderWidth: 0,
-        shadow: false
+        shadow: false,
+        style: { color: "var(--text-normal)" }
     },
-
 
 });
 chartSave = Highcharts.chart('chart-guild-save', {
     chart: {
         // styledMode: true
-        backgroundColor: "#f2f3f5",
+        backgroundColor: "var(--background-secondary)",
 
 
     },
@@ -362,9 +364,10 @@ chartSave = Highcharts.chart('chart-guild-save', {
         text: 'セーブデータの容量',
     },
     yAxis: [{
+        gridLineColor: "var(--status-x-axis-color)",
         labels: {
             style: {
-                color: "#747f8d"
+                color: "var(--interactive-normal)"
             }
         },
 
@@ -375,7 +378,7 @@ chartSave = Highcharts.chart('chart-guild-save', {
             rotation: 0,
             y: -10,
             style: {
-                color: "#747f8d"
+                color: "var(--interactive-normal)"
             }
         }
     }],
@@ -387,9 +390,9 @@ chartSave = Highcharts.chart('chart-guild-save', {
             day: "%m/%d %H:%M"
         },
         tickLength: 0,
-        crosshair: { color: "#e3e5e8" },
-        lineColor: "#747f8d",
-        labels: { style: { color: "#747f8d" } }
+        crosshair: { color: "var(--background-tertiary)" },
+        lineColor: "var(--status-x-axis-color)",
+        labels: { style: { color: "var(--interactive-normal)" } }
     },
     credits: { enabled: false },
     legend: {
@@ -432,11 +435,11 @@ chartSave = Highcharts.chart('chart-guild-save', {
     }],
     tooltip: {
         xDateFormat: "%m/%d %H:%M",
-        backgroundColor: "#ffffffe3",
+        backgroundColor: "var(--status-tooltip-color)",
         borderWidth: 0,
-        shadow: false
+        shadow: false,
+        style: { color: "var(--text-normal)" }
     },
-
 
 });
 chartPing.reflow()
