@@ -3,7 +3,7 @@
 }
 
 thead tr td {
-    background-color: var(--background-tertiary);
+    background-color: var(--interactive-muted);
     text-align: center
 }
 
@@ -16,7 +16,7 @@ thead tr td:nth-child(4) {
 }
 
 tbody tr td {
-    background-color: var(--background-secondary);
+    background-color: var(--background-secondary-alt);
     padding: 4px;
     position: relative;
 }
@@ -98,13 +98,13 @@ h1 {
     border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px;
     cursor: pointer;
-    background-color: var(--background-tertiary);
+    background-color: var(--background-secondary-alt);
     text-align: center;
     /*! padding-right: 7px; */
 }
 
 .has-parent.expand-tr td {
-    background-color: var(--background-secondary);
+    background-color: var(--background-secondary-alt);
     /*     padding-right: 7px; */
 }
 
@@ -113,7 +113,7 @@ h1 {
 }
 
 .has-parent td {
-    background-color: var(--background-mobile-primary)
+    background-color: var(--background-secondary)
 }
 
 .empty-td {
