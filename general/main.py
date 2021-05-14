@@ -93,7 +93,6 @@ def commands():
             for c in [co for co in cmds if co["parent"] == p]:
                 sorted_cmds.append(c)
                 if [co for co in cmds if co["parent"] == c["name"]]:
-                    print(c)
                     get_cmd(c["name"])
 
         get_cmd("")
