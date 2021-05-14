@@ -54,6 +54,7 @@ chartPing = Highcharts.chart('chart-ping', {
     },
     colors: ["#1abc9c"],
     title: {
+        style: { color: "var(--text-normal)" },
         text: 'Ping（Botの応答速度）',
     },
     yAxis: [{
@@ -144,6 +145,7 @@ chartUser = Highcharts.chart('chart-guild-user', {
     },
     colors: ["#2ecc71", "#3498db"],
     title: {
+        style: { color: "var(--text-normal)" },
         text: 'サーバー数、認識できるユーザー数',
     },
     yAxis: [{
@@ -267,6 +269,7 @@ chartVPS = Highcharts.chart('chart-guild-vps', {
     },
     colors: ["#9b59b6", "#e91e63"],
     title: {
+        style: { color: "var(--text-normal)" },
         text: 'CPU、メモリの使用率',
     },
     yAxis: [{
@@ -361,6 +364,7 @@ chartSave = Highcharts.chart('chart-guild-save', {
     },
     colors: ["#f1c40f", "#e67e22"],
     title: {
+        style: { color: "var(--text-normal)" },
         text: 'セーブデータの容量',
     },
     yAxis: [{
