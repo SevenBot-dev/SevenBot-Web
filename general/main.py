@@ -86,13 +86,21 @@ def commands():
         current_app.config["commands_cache_time"] = time.time()
     categories = []
     for ck, cv in CATEGORIES.items():
-        cmds = map(convert_commands, sorted(filter(lambda c: c["category"] == ck, com), key=lambda c: len(c["parents"]) + 100 * c["index"]))
-        categories.append({
+        cmds = list(map(convert_commands, sorted(filter(lambda c: c["category"] == ck, com), key=lambda c: c["index"])))
+        sorted_cmds = []
 
+        def get_cmd(p):
+            for c in [co for co in cmds if co["parent"] == p]:
+                sorted_cmds.append(c)
+                if [co for co in cmds if co["parent"] == c["name"]]:
+                    print(c)
+                    get_cmd(c["name"])
+
+        get_cmd("")
+        categories.append({
             "id": ck,
             "name": cv,
-            "commands": cmds,
-
+            "commands": sorted_cmds,
         })
     return render_template("general/commands.html", categories=categories)
 
