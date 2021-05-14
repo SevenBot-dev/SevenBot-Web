@@ -133,6 +133,9 @@ body {
         left: 10%;
         word-break: break-word;
     }
+    .top-features-content {
+        background-color: transparent;
+    }
     .top-features-image {
         height: auto;
         /*! margin-left: 0; */
