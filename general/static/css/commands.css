@@ -3,7 +3,7 @@
 }
 
 thead tr td {
-    background-color: #e3e5e8;
+    background-color: var(--background-tertiary);
     text-align: center
 }
 
@@ -16,7 +16,7 @@ thead tr td:nth-child(4) {
 }
 
 tbody tr td {
-    background-color: #f2f3f5;
+    background-color: var(--background-secondary);
     padding: 4px;
     position: relative;
 }
@@ -51,15 +51,15 @@ tbody tr:last-child td:nth-child(4) {
 }
 
 .syntax-command-name {
-    color: #4f5660;
+    color: var(--text-muted);
 }
 
 .syntax-arg-required {
-    color: #2e3338;
+    color: var(--interactive-hover);
 }
 
 .syntax-arg-optional {
-    color: #3a3f43;
+    color: var(--interactive-normal);
 }
 
 .more {
@@ -98,13 +98,13 @@ h1 {
     border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px;
     cursor: pointer;
-    background-color: #e8eaed;
+    background-color: var(--background-tertiary);
     text-align: center;
     /*! padding-right: 7px; */
 }
 
 .has-parent.expand-tr td {
-    background-color: #f2f3f5;
+    background-color: var(--background-secondary);
     /*     padding-right: 7px; */
 }
 
@@ -113,7 +113,7 @@ h1 {
 }
 
 .has-parent td {
-    background-color: #fafafa
+    background-color: var(--background-mobile-primary)
 }
 
 .empty-td {
@@ -122,11 +122,11 @@ h1 {
 }
 
 .pinged td {
-    background-color: #fff6e7
+    background: var(--background-mentioned);
 }
 
 .pinged:hover td {
-    background-color: #feedd1
+    background: var(--background-mentioned-hover)
 }
 
 @media(max-width: 850px) {

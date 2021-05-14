@@ -197,7 +197,7 @@ a {
     line-height: 48px;
     font-size: 24px;
     background-color: var(--discord-theme);
-    transition: background-color ease-out .25s
+    transition: background-color ease-out .25s;
 }
 
 .big-button:hover {
@@ -228,7 +228,8 @@ a {
     text-indent: 0;
     border: none;
     white-space: pre-wrap;
-    background: var(--background-secondary)
+    background: var(--background-secondary);
+    line-height: calc(85% + 8px);
 }
 
 .hljs,

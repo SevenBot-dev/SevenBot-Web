@@ -68,7 +68,8 @@ def convert_commands(cmd):
         "desc": desc,
         "parent": cmd["parents"],
         "syntax": synt,
-        "aliases": cmd["aliases"]
+        "aliases": cmd["aliases"],
+        "is_parent": bool([co for co in current_app.config["commands_cache"] if co["parents"] == cmd["name"]])
     }
 
 

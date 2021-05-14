@@ -72,23 +72,8 @@ function btnOpener() {
     }
 
 }
-ary = ary.filter((x, i, self) => self.indexOf(x) === i)
-Array.from(document.querySelectorAll("tbody tr")).forEach(e => {
-    if (ary.includes(e.getAttribute("name"))) {
-        expandTr = document.createElement("tr");
-        expandBtn = document.createElement("td");
-        expandBtn.setAttribute("colspan", "4")
-        expandBtn.innerHTML = '<svg width="18" height="10" viewBox="-2 -2 34 18"><polyline points="0,0 16,16 32,0" stroke="#72767d" fill="none" stroke-width="1"></polyline></svg>'
-        expandTr.appendChild(expandBtn)
-        expandTr.setAttribute("class", "expand-tr")
-        if (e.getAttribute("parent")) {
-            expandTr.setAttribute("parent", e.getAttribute("parent"))
-            expandTr.setAttribute("class", "expand-tr has-parent")
-        }
-        expandTr.setAttribute("for", e.getAttribute("name"))
-        e.parentElement.insertBefore(expandTr, e.nextSibling);
-        expandTr.addEventListener("click", btnOpener)
-    }
+Array.from(document.querySelectorAll(".expand-tr")).forEach(e => {
+    e.addEventListener("click", btnOpener)
 })
 
 function scrollToHash() {
