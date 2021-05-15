@@ -146,13 +146,13 @@ h1 {
         border-radius: 0;
     }
     td:nth-child(1) {
-        background-color: #e3e5e8;
+        background-color: var(--interactive-muted);
         border-top-left-radius: 3px;
         border-top-right-radius: 3px;
         /*! padding: 8px; */
     }
     tr.has-parent td:nth-child(1) {
-        background-color: #f2f3f5;
+        background-color: var(--background-secondary-alt);
     }
     td:last-child {
         border-bottom-left-radius: 3px;
@@ -167,9 +167,9 @@ h1 {
         bottom: 25%;
     }
     .pinged td:nth-child(1) {
-        background-color: #feedd1;
+        background-color: var(--background-mentioned-hover);
     }
     .pinged td:not(:nth-child(1)) {
-        background-color: #fff6e7;
+        background-color: var(--background-mentioned);
     }
 }
