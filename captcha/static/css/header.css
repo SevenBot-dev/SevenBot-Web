@@ -1,5 +1,5 @@
 header {
-    background-color: #0cf;
+    background-color: var(--sb-theme);
     display: inline-block;
     color: #fff!important;
     position: fixed;
@@ -23,7 +23,7 @@ header {
     height: 32px
 }
 
-#header-top a img {
+#header-sb-icon {
     height: 100%;
     vertical-align: middle
 }
@@ -76,7 +76,7 @@ header {
 }
 
 .menu-important>a {
-    color: #0cf;
+    color: var(--sb-theme);
     line-height: 40px;
     border-radius: 4px;
     border: 2px solid #fff;
@@ -138,7 +138,7 @@ header {
         height: calc((2rem + 4px) * 2 + 2px);
         left: 0;
         right: 0;
-        background: #0cf
+        background: var(--sb-theme)
     }
     header {
         height: 64px!important
@@ -178,5 +178,11 @@ header {
 @media(max-width:250px) {
     #site-name {
         display: none
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    #header-sb-icon {
+        filter: brightness(1.15);
     }
 }

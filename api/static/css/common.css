@@ -59,6 +59,7 @@
         --deprecated-text-input-border-hover: #b9bbbe;
         --deprecated-text-input-border-disabled: #dcddde;
         --deprecated-text-input-prefix: #b9bbbe;
+        --sb-theme: #0cf;
     }
 }
 
@@ -123,6 +124,7 @@
         --deprecated-text-input-border-hover: #040405;
         --deprecated-text-input-border-disabled: #202225;
         --deprecated-text-input-prefix: #dcddde;
+        --sb-theme: #3498db;
     }
 }
 
@@ -143,7 +145,6 @@
     --focus-primary: #00b0f4;
     --discord-theme: #5865f2;
     --discord-theme-dark: #4752c4;
-    --sb-theme: #0cf;
 }
 
 body {
@@ -196,7 +197,7 @@ a {
     line-height: 48px;
     font-size: 24px;
     background-color: var(--discord-theme);
-    transition: background-color ease-out .25s
+    transition: background-color ease-out .25s;
 }
 
 .big-button:hover {
@@ -227,7 +228,8 @@ a {
     text-indent: 0;
     border: none;
     white-space: pre-wrap;
-    background: var(--background-secondary)
+    background: var(--background-secondary);
+    line-height: calc(85% + 8px);
 }
 
 .hljs,
