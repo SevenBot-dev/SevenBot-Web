@@ -51,15 +51,15 @@ tbody tr:last-child td:nth-child(4) {
 }
 
 .syntax-command-name {
-    color: var(--text-muted);
+    color: var(--interactive-normal);
 }
 
 .syntax-arg-required {
-    color: var(--interactive-hover);
+    color: var(--interactive-active);
 }
 
 .syntax-arg-optional {
-    color: var(--interactive-normal);
+    color: var(--interactive-hover);
 }
 
 .more {
