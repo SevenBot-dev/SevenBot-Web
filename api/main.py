@@ -169,7 +169,7 @@ def afk_key():
     except KeyError:
         return make_response(jsonify({"error_description": "authorization header is missing. Please specify authorization header.", "code": "invalid_request"}), 401)
     except (IndexError, ValueError):
-        return make_response(jsonify({"error_description": "authorization header must follor sbtoken format.", "code": "invalid_authorization"}), 401)
+        return make_response(jsonify({"error_description": "authorization header must follow sbuauth format.", "code": "invalid_authorization"}), 401)
 
     if key is None:
         return make_response(jsonify({"error_description": "API key or user ID is incorrect. Please recheck your user ID and your API key.", "code": "invalid_client"}), 401)
