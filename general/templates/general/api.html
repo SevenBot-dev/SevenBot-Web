@@ -1,9 +1,5 @@
-{% extends 'general/base.html' %}
-{% block title %}APIリファレンス{% endblock %}
-{% block head %}
-<link rel="stylesheet" href="/static/css/api.css">
-{% endblock %}
-{% block main %}
+{% extends 'general/base.html' %} {% block title %}APIリファレンス{% endblock %} {% block head %}
+<link rel="stylesheet" href="/static/css/api.css"> {% endblock %} {% block main %}
 <div class="--fade">
     <h1 class="page-title">APIリファレンス</h1>
     <p class="content-p">
@@ -11,15 +7,16 @@
         <a href="https://api.sevenbot.jp">https://api.sevenbot.jp</a>
     </p>
 </div>
-<div class="--fade --slideup">
+<div>
     <h1>AFK API</h1>
     <p class="content-p">
-        AFKを設定, 取得します。<br>
-        認証：<span class="inline-code">ユーザーID APIキー</span>（<span class="inline-code">sbuauth</span>と呼びます）<br>
-        スコープ：<span class="inline-code">afk</span>
+        AFKを設定, 取得します。<br> 認証：
+        <span class="inline-code">ユーザーID APIキー</span>（<span class="inline-code">sbuauth</span>と呼びます）<br> スコープ：
+        <span class="inline-code">afk</span>
     </p>
-    <div class="--fade --slideup">
-        <h2>AFKを取得<span class="request-separator"> - </span><span class="request"><span class="request-type request-get">GET</span> /afk</span></h2>
+    <div>
+        <h2>AFKを取得<span class="request-separator"> - </span><span class="request"><span class="request-type request-get">GET</span> /afk</span>
+        </h2>
         <p class="content-p"></p>
         <h3>パラメータ</h3>
         <table>
@@ -70,8 +67,8 @@
             </tbody>
         </table>
     </div>
-    <div class="--fade --slideup">
-        <h2>AFKを設定<span class="request-separator"> - </span><span class="request"><span class="request-type request-put">PUT</span> /afk</span>
+    <div>
+        <h2>AFKを設定<span class="request-separator"> - </span><span class="request"><span class="request-type request-put">POST/PUT</span> /afk</span>
         </h2>
 
         <h3>パラメータ</h3>
@@ -117,7 +114,7 @@
             </tbody>
         </table>
     </div>
-    <div class="--fade --slideup">
+    <div>
         <h2>AFKを解除<span class="request-separator"> - </span><span class="request"><span class="request-type request-delete">DELETE</span> /afk</span>
         </h2>
 

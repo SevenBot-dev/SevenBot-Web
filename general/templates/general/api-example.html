@@ -1,50 +1,99 @@
-{% extends 'general/base.html' %}
-{% block title %}APIサンプル{% endblock %}
-{% block head %}
+{% extends 'general/base.html' %} {% block title %}APIサンプル{% endblock %} {% block head %}
 <link rel="stylesheet" href="/static/css/api.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/solarized-light.min.css">
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/solarized-light.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
 <script>
-    hljs.initHighlightingOnLoad();
+    hljs.highlightAll()
 </script>
-{% endblock %}
-{% block main %}
-<div class="--fade">
-    <h1 class="page-title">APIサンプル</h1>
-    <p class="content-p">
-        SevenBot Web APIの例です。
-    </p>
-</div>
-<div class="--fade --slideup">
-    <h1>AFK API</h1>
-    <div class="--fade --slideup">
-        <h2>AFKを取得</span>
-        </h2>
+{% endblock %} {% block main %}
+<h1 class="page-title">APIサンプル</h1>
+<p class="content-p">
+    SevenBot Web APIの例です。
+</p>
 
-        <pre>
-            <code class="centerp python">import requests
+<h1>AFK API</h1>
+<h2>AFKを取得</h2>
+<div class="sample-code centerp python">
+    <h3>Python</h3>
+    <pre><code class="python">import sys
+import time
+import requests
+
+USER_ID = 00000000000000000
+TOKEN = "ThisIsT0ken"
 
 userid = int(input("取得したいユーザーのIDを入力してください："))
 print("通信中…")
-response = requests.get(
-    "https://api.sevenbot.jp/afk",
-    params={
-        "userid": userid
-    }
-)
+def get_afk():
+    response = requests.get(
+        "https://api.sevenbot.jp/afk",
+        params={
+            "userid": userid
+        },
+        headers={
+            "authorization": f"{USER_ID} {TOKEN}"
+        }
+    )
+    if response.status_code == 401:
+        print("認証に失敗しました。")
+        sys.exit()
+    elif response.status_code == 429:
+        print("レートリミットに到達しました、やり直しています。")
+        time.sleep(10)
+        return get_afk()
+    else:
+        return response.json()
 
-if response.json()["message"] is False:
+result = get_afk()
+if result["message"] is False:
     print(f"{userid}はAFKではありません。")
 else:
-    print(f"{userid}はAFKです。\n理由：\n{response.json()['reason'] or 'なし'}")
-            </code>
-        </pre>
-    </div>
-    <div class="--fade --slideup">
-        <h2>AFKを設定</h2>
+    print(f"{userid}はAFKです。\n理由：\n{result['reason'] or '(なし)'}")
+</code></pre>
+</div>
+<div class="sample-code centerp ruby">
+    <h3>Ruby</h3>
+    <pre><code class="ruby">require "json"
+require "rest-client"
 
-        <pre>
-            <code class="centerp python">import requests
+USER_ID = 00000000000000000
+TOKEN = "ThisIsT0ken"
+
+print "取得したいユーザーのIDを入力してください："
+userid = gets.chomp.to_i
+puts "通信中…"
+
+def get_afk(userid)
+  begin
+    response = RestClient.get "https://api.sevenbot.jp/afk", { params: { userid: userid }, authorization: "#{USER_ID} #{TOKEN}" }
+  rescue RestClient::Unauthorized => e
+    $stderr.puts "認証に失敗しました。"
+    exit
+  else
+    case response.code
+    when 419
+      puts "レートリミットに到達しました、やり直しています。"
+      get_afk userid
+    when 200
+      JSON.parse response
+    end
+  end
+end
+
+result = get_afk userid
+if result["message"] == false
+  puts "#{userid}はAFKではありません。"
+else
+  puts "#{userid}はAFKです。\n理由：\n#{result["reason"] || "(なし)"}"
+end
+</code></pre>
+</div>
+<h2>AFKを設定</h2>
+<div class="sample-code python">
+    <h3>Python</h3>
+    <pre><code class="centerp code python">import sys
+import time
+import requests
 
 USER_ID = 00000000000000000
 TOKEN = "ThisIsT0ken"
@@ -54,34 +103,123 @@ if reason:
 else:
     json = {}
 print("通信中…", end="")
-requests.put(
-    "https://api.sevenbot.jp/afk", 
-    headers={
-        "authorization": f"{USER_ID} {TOKEN}"
-    }, json=json
-)
-print("完了")
-            </code>
-        </pre>
-    </div>
-    <div class="--fade --slideup">
-        <h2>AFKを解除</h2>
+def set_afk():
+    response = requests.put(
+        "https://api.sevenbot.jp/afk", 
+        headers={
+            "authorization": f"{USER_ID} {TOKEN}"
+        }, json=json
+    )
+    if response.status_code == 401:
+        print("認証に失敗しました。")
+        sys.exit()
+    elif response.status_code == 429:
+        print("レートリミットに到達しました、やり直しています。")
+        time.sleep(10)
+        set_afk()
 
-        <pre>
-            <code class="centerp python">import requests
+set_afk()
+print("完了")
+</code></pre>
+</div>
+<div class="sample-code ruby">
+    <h3>Ruby</h3>
+    <pre><code class="centerp code ruby">require "json"
+require "rest-client"
+
+USER_ID = 00000000000000000
+TOKEN = "ThisIsT0ken"
+
+print "理由を入力して下さい："
+reason = gets.chomp
+if reason.length > 0
+  begin
+    { "reason" => reason }.to_json
+  rescue JSON::GeneratorError
+    reason = reason.force_encoding("ISO-8859-1").encode("UTF-8")
+  end
+end
+puts "通信中…"
+
+def set_afk(reason)
+  begin
+    response = RestClient.put "https://api.sevenbot.jp/afk", (reason.length > 0 ? { "reason" => reason } : {}).to_json, { authorization: "#{USER_ID} #{TOKEN}" }
+  rescue RestClient::Unauthorized => e
+    $stderr.puts "認証に失敗しました。"
+    exit
+  else
+    case response.code
+    when 419
+      puts "レートリミットに到達しました、やり直しています。"
+      set_afk reason
+    when 200
+      return
+    end
+  end
+end
+
+set_afk reason
+puts "完了"
+</code></pre>
+</div>
+
+<h2>AFKを解除</h2>
+<div class="sample-code python">
+    <h3>Python</h3>
+    <pre><code class="centerp code python">import sys
+import time
+import requests
 
 USER_ID = 00000000000000000
 TOKEN = "ThisIsT0ken"
 print("通信中…", end="")
-requests.delete(
-    "https://api.sevenbot.jp/afk", 
-    headers={
-        "authorization": f"{USER_ID} {TOKEN}"
-    }
-)
+def delete_afk():
+    response = requests.delete(
+        "https://api.sevenbot.jp/afk", 
+        headers={
+            "authorization": f"{USER_ID} {TOKEN}"
+        }
+    )
+    if response.status_code == 401:
+        print("認証に失敗しました。")
+        sys.exit()
+    elif response.status_code == 429:
+        print("レートリミットに到達しました、やり直しています。")
+        time.sleep(10)
+        delete_afk()
+
+
+delete_afk()
 print("完了")
-            </code>
-        </pre>
-    </div>
-</div>
+</code></pre></div>
+<div class="sample-code ruby">
+    <h3>Ruby</h3>
+    <pre><code class="centerp code ruby">require "json"
+require "rest-client"
+
+USER_ID = 00000000000000000
+TOKEN = "ThisIsT0ken"
+
+puts "通信中…"
+
+def delete_afk(reason)
+  begin
+    response = RestClient.delete "https://api.sevenbot.jp/afk", "", { authorization: "#{USER_ID} #{TOKEN}" }
+  rescue RestClient::Unauthorized => e
+    $stderr.puts "認証に失敗しました。"
+    exit
+  else
+    case response.code
+    when 419
+      puts "レートリミットに到達しました、やり直しています。"
+      set_afk reason
+    when 200
+      return
+    end
+  end
+end
+
+set_afk reason
+puts "完了"
+</code></pre></div>
 {% endblock %}
