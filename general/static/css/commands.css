@@ -8,7 +8,7 @@ thead tr td {
 }
 
 thead tr td:nth-child(1) {
-    border-top-left-radius: 3px
+    border-top-left-radius: 3px;
 }
 
 thead tr td:nth-child(4) {
@@ -26,11 +26,13 @@ tbody tr td {
 }
 
 tbody tr:not(.expand-tr) td:nth-child(1) {
-    width: 20%
+    width: 20%;
+    cursor: pointer;
 }
 
 tbody tr td:nth-child(3) {
     width: 25%;
+    cursor: pointer;
     word-break: keep-all
 }
 
