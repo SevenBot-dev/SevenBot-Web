@@ -268,7 +268,9 @@ def teapot():
 
 @app.route('/dbl', methods=["get", "post"])
 def dbl():
-    requests.post("https://canary.discord.com/api/webhooks/773443377147936778/wdDFijmd9G0dVict2qpP-3rOP9i2i3e-LDcAlWSRCVF5WwTJziLoMVETMb8Ldy5qCONP",
+    if request.headers.get('authorization') != os.getenv('dbl_auth'):
+        return make_response(jsonify(error_description="Only Discord Bot List(top.gg) can access here!"), 401)
+    requests.post(os.getenv("dbl_webhook"),
                   json={"content": f"<@!{request.json['user']}> さんが高評価をしてくれました！",
                         "allowed_mentions": {
                             "parse": []
