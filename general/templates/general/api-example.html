@@ -1,5 +1,6 @@
 {% extends 'general/base.html' %} {% block title %}APIサンプル{% endblock %} {% block head %}
 <link rel="stylesheet" href="/static/css/api.css">
+<link rel="stylesheet" href="/static/css/api-example.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/solarized-light.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
 <script>
@@ -13,9 +14,10 @@
 
 <h1>AFK API</h1>
 <h2>AFKを取得</h2>
-<div class="sample-code centerp python">
-    <h3>Python</h3>
-    <pre><code class="python">import sys
+<div class="sample-code-container">
+    <div class="sample-code python">
+        <h3>Python</h3>
+        <pre><code class="python">import sys
 import time
 import requests
 
@@ -50,10 +52,10 @@ if result["message"] is False:
 else:
     print(f"{userid}はAFKです。\n理由：\n{result['reason'] or '(なし)'}")
 </code></pre>
-</div>
-<div class="sample-code centerp ruby">
-    <h3>Ruby</h3>
-    <pre><code class="ruby">require "json"
+    </div>
+    <div class="sample-code ruby">
+        <h3>Ruby</h3>
+        <pre><code class="ruby">require "json"
 require "rest-client"
 
 USER_ID = 00000000000000000
@@ -87,11 +89,14 @@ else
   puts "#{userid}はAFKです。\n理由：\n#{result["reason"] || "(なし)"}"
 end
 </code></pre>
+    </div>
 </div>
 <h2>AFKを設定</h2>
-<div class="sample-code python">
-    <h3>Python</h3>
-    <pre><code class="centerp code python">import sys
+<div class="sample-code-container">
+
+    <div class="sample-code python">
+        <h3>Python</h3>
+        <pre><code class="code python">import sys
 import time
 import requests
 
@@ -121,10 +126,10 @@ def set_afk():
 set_afk()
 print("完了")
 </code></pre>
-</div>
-<div class="sample-code ruby">
-    <h3>Ruby</h3>
-    <pre><code class="centerp code ruby">require "json"
+    </div>
+    <div class="sample-code ruby">
+        <h3>Ruby</h3>
+        <pre><code class="code ruby">require "json"
 require "rest-client"
 
 USER_ID = 00000000000000000
@@ -161,12 +166,15 @@ end
 set_afk reason
 puts "完了"
 </code></pre>
+    </div>
 </div>
 
 <h2>AFKを解除</h2>
-<div class="sample-code python">
-    <h3>Python</h3>
-    <pre><code class="centerp code python">import sys
+<div class="sample-code-container">
+
+    <div class="sample-code python">
+        <h3>Python</h3>
+        <pre><code class="code python">import sys
 import time
 import requests
 
@@ -192,9 +200,9 @@ def delete_afk():
 delete_afk()
 print("完了")
 </code></pre></div>
-<div class="sample-code ruby">
-    <h3>Ruby</h3>
-    <pre><code class="centerp code ruby">require "json"
+    <div class="sample-code ruby">
+        <h3>Ruby</h3>
+        <pre><code class="code ruby">require "json"
 require "rest-client"
 
 USER_ID = 00000000000000000
@@ -222,4 +230,6 @@ end
 set_afk reason
 puts "完了"
 </code></pre></div>
+</div>
+
 {% endblock %}

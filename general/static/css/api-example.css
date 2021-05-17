@@ -1,0 +1,10 @@
+.sample-code-container {
+    display: flex;
+    width: 80%;
+    margin: auto;
+}
+
+.sample-code {
+    width: 50%;
+    margin: 16px;
+}
