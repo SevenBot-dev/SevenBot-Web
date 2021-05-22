@@ -145,6 +145,7 @@
     --focus-primary: #00b0f4;
     --discord-theme: #5865f2;
     --discord-theme-dark: #4752c4;
+    --monospace-font: Consolas, Andale Mono WT, Andale Mono, Lucida Console, Menlo, Lucida Sans Typewriter, DejaVu Sans Mono, Bitstream Vera Sans Mono, Liberation Mono, Nimbus Mono L, Monaco, Courier New, Courier, monospace;
 }
 
 body {
@@ -225,7 +226,7 @@ a {
     margin: -.2em 0;
     border-radius: 3px;
     font-size: 85%;
-    font-family: Consolas, Andale Mono WT, Andale Mono, Lucida Console, Lucida Sans Typewriter, DejaVu Sans Mono, Bitstream Vera Sans Mono, Liberation Mono, Nimbus Mono L, Monaco, Courier New, Courier, monospace;
+    font-family: var(--monospace-font);
     text-indent: 0;
     border: none;
     white-space: pre-wrap;
@@ -235,7 +236,7 @@ a {
 
 .hljs,
 .hljs * {
-    font-family: Consolas, Andale Mono WT, Andale Mono, Lucida Console, Lucida Sans Typewriter, DejaVu Sans Mono, Bitstream Vera Sans Mono, Liberation Mono, Nimbus Mono L, Monaco, Courier New, Courier, monospace;
+    font-family: var(--monospace-font);
     background: var(--background-secondary)!important
 }
 
@@ -262,7 +263,7 @@ a {
     line-height: 1.125rem;
     border: none;
     border-radius: 4px;
-    font-family: Consolas, Andale Mono WT, Andale Mono, Lucida Console, Lucida Sans Typewriter, DejaVu Sans Mono, Bitstream Vera Sans Mono, Liberation Mono, Nimbus Mono L, Monaco, Courier New, Courier, monospace;
+    font-family: var(--monospace-font);
     background: var(--background-secondary)!important;
     padding: .5em
 }
