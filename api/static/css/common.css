@@ -150,7 +150,8 @@
 body {
     background: var(--background-primary);
     color: var(--text-normal);
-    font-family: Whitney, hiragino sans, ヒラギノ角ゴ pro w3, ヒラギノ角ゴ pron w3, hiragino kaku gothic pron, メイリオ, Meiryo, Osaka, ms pgothic, helvetica neue, Helvetica, Arial, sans-serif;
+    font-weight: 300;
+    font-family: Whitney, hiragino sans, ヒラギノ角ゴ pro w3, ヒラギノ角ゴ pron w3, ヒラギノ角ゴ pro, hiragino kaku gothic pron, メイリオ, Meiryo, Osaka, ms pgothic, helvetica neue, Helvetica, Arial, sans-serif;
 }
 
 a {
