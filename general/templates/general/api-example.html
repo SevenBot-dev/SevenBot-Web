@@ -68,7 +68,7 @@ puts "通信中…"
 def get_afk(userid)
   begin
     response = RestClient.get "https://api.sevenbot.jp/afk", { params: { userid: userid }, authorization: "#{USER_ID} #{TOKEN}" }
-  rescue RestClient::Unauthorized => e
+  rescue RestClient::Unauthorized
     $stderr.puts "認証に失敗しました。"
     exit
   else
@@ -149,7 +149,7 @@ puts "通信中…"
 def set_afk(reason)
   begin
     response = RestClient.put "https://api.sevenbot.jp/afk", (reason.length > 0 ? { "reason" => reason } : {}).to_json, { authorization: "#{USER_ID} #{TOKEN}" }
-  rescue RestClient::Unauthorized => e
+  rescue RestClient::Unauthorized
     $stderr.puts "認証に失敗しました。"
     exit
   else
@@ -213,7 +213,7 @@ puts "通信中…"
 def delete_afk(reason)
   begin
     response = RestClient.delete "https://api.sevenbot.jp/afk", "", { authorization: "#{USER_ID} #{TOKEN}" }
-  rescue RestClient::Unauthorized => e
+  rescue RestClient::Unauthorized
     $stderr.puts "認証に失敗しました。"
     exit
   else
