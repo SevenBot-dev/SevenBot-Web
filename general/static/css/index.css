@@ -1,20 +1,20 @@
 body {
-    overflow-y: hidden;
+    overflow-y: hidden
 }
 
 #wrap {
-    overflow-x: clip;
+    overflow-x: clip
 }
 
 #main {
     width: 100%;
-    left: 0px;
-    height: 100vh;
+    left: 0;
+    height: 100vh
 }
 
 #main-icon {
     width: 30%;
-    height: auto;
+    height: auto
 }
 
 #main-content {
@@ -25,14 +25,14 @@ body {
     text-align: center;
     top: calc(50% - 5vh);
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%)
 }
 
 #scroll-sign {
     position: absolute;
     text-align: center;
     width: 100%;
-    top: calc(100vh - 64px);
+    top: calc(100vh - 64px)
 }
 
 #scroll-sign>svg {
@@ -40,12 +40,12 @@ body {
     width: auto;
     transform: scale(100%);
     transform-origin: 50% 100%;
-    transition: transform 0.5s;
+    transition: transform .5s
 }
 
 #scroll-sign>svg:hover,
 #scroll-sign>svg:focus {
-    transform: scale(150%);
+    transform: scale(150%)
 }
 
 .top-features {
@@ -53,7 +53,7 @@ body {
     padding: 16px 0;
     background-color: var(--background-secondary-alt);
     position: relative;
-    margin-bottom: 32px;
+    margin-bottom: 32px
 }
 
 #top-invite {
@@ -64,7 +64,7 @@ body {
     padding: 16px 0;
     margin-bottom: 32px;
     text-align: center;
-    left: 0;
+    left: 0
 }
 
 .top-features-content {
@@ -74,15 +74,14 @@ body {
     margin-right: 0;
     padding: 16px 0;
     z-index: 1;
-    position: relative;
+    position: relative
 }
 
 .top-features-desc {
     width: 80%;
     font-size: 1rem;
     z-index: 2;
-    /*! min-width: 400px; */
-    word-wrap: normal;
+    word-wrap: normal
 }
 
 .top-features-image {
@@ -90,55 +89,56 @@ body {
     position: absolute;
     top: 0;
     height: 100%;
-    width: auto;
+    width: auto
 }
 
 .top-features-image {
     float: right;
     -webkit-mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(255, 255, 255, 1) 25%, rgba(255, 255, 255, 1) 100%);
     mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(255, 255, 255, 1) 25%, rgba(255, 255, 255, 1) 100%);
-    right: -16px;
+    right: -16px
 }
 
-#sb-img {
-    height: calc(100vh - 128px);
+#top-background {
+    height: calc(100vh - var(--header-height));
     position: absolute;
-    left: 50%;
-    top: 128px;
-    transform: translate(-50%);
+    top: var(--header-height);
     z-index: -1;
-    overflow: hidden;
-    max-width: 100%;
-    object-fit: cover;
+    width: 100%;
+    background-size: cover;
+    background-position: 50% 50%;
+    background-image: url('../images/sevenbot.png');
+    background-image: url('../images/sevenbot.webp');
+    background-attachment: fixed;
+    mask-image: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgb(255, 255, 255) 25%, rgb(255, 255, 255) 100%);
+    -webkit-mask-image: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgb(255, 255, 255) 25%, rgb(255, 255, 255) 100%);
 }
 
 .page-title {
-    color: #fff;
+    color: #fff
 }
 
-@media(max-width: 850px) {
+@media(max-width:850px) {
     .top-features {
         width: 100%;
-        background: none;
+        background: 0 0
     }
     .top-features-title {
-        /* word-break: keep-all; */
         position: relative;
-        left: -1rem;
+        left: -1rem
     }
     .top-features-content {
         margin-left: 0;
-        position: absolute !important;
+        position: absolute!important;
         width: 80%;
         left: 10%;
-        word-break: break-word;
+        word-break: break-word
     }
     .top-features-content {
-        background-color: transparent;
+        background-color: transparent
     }
     .top-features-image {
         height: auto;
-        /*! margin-left: 0; */
         right: 0;
         width: 100%;
         float: unset;
@@ -146,9 +146,9 @@ body {
         mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0) -5%, rgba(0, 0, 0, 0) 0%, rgba(128, 128, 128, 0.75) 60%, rgba(128, 128, 128, 0.75) 90%, rgba(0, 0, 0, 0) 100%, rgba(0, 0, 0, 0) 105%);
         filter: blur(0.5px);
         display: block;
-        position: relative !important;
+        position: relative!important
     }
     #sb-img {
-        top: 64px;
+        top: 64px
     }
 }

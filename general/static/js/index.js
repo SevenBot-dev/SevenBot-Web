@@ -19,7 +19,7 @@ function scrollControl(event) {
 
 
 if (document.cookie.replace(/(?:(?:^|.*;\s*)animated\s*\=\s*([^;]*).*$)|^.*$/, "$1") === "true") {
-    si = document.getElementById("sb-img");
+    si = document.getElementById("top-background");
     si.setAttribute("style", "mask-image: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgb(255, 255, 255) 25%, rgb(255, 255, 255) 100%);")
     si.setAttribute("style", "-webkit-mask-image: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgb(255, 255, 255) 25%, rgb(255, 255, 255) 100%);")
     returnScroll()

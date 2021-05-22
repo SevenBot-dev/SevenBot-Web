@@ -1,4 +1,4 @@
-@media (prefers-color-scheme: light) {
+@media(prefers-color-scheme:light) {
     * {
         --header-primary: #060607;
         --header-secondary: #4f5660;
@@ -59,11 +59,11 @@
         --deprecated-text-input-border-hover: #b9bbbe;
         --deprecated-text-input-border-disabled: #dcddde;
         --deprecated-text-input-prefix: #b9bbbe;
-        --sb-theme: #0cf;
+        --sb-theme: #0cf
     }
 }
 
-@media (prefers-color-scheme: dark) {
+@media(prefers-color-scheme:dark) {
     * {
         --header-primary: #fff;
         --header-secondary: #b9bbbe;
@@ -124,7 +124,7 @@
         --deprecated-text-input-border-hover: #040405;
         --deprecated-text-input-border-disabled: #202225;
         --deprecated-text-input-prefix: #dcddde;
-        --sb-theme: #3498db;
+        --sb-theme: #3498db
     }
 }
 
@@ -145,14 +145,14 @@
     --focus-primary: #00b0f4;
     --discord-theme: #5865f2;
     --discord-theme-dark: #4752c4;
-    --monospace-font: Consolas, Andale Mono WT, Andale Mono, Lucida Console, Menlo, Lucida Sans Typewriter, DejaVu Sans Mono, Bitstream Vera Sans Mono, Liberation Mono, Nimbus Mono L, Monaco, Courier New, Courier, monospace;
+    --monospace-font: Consolas, Andale Mono WT, Andale Mono, Lucida Console, Menlo, Lucida Sans Typewriter, DejaVu Sans Mono, Bitstream Vera Sans Mono, Liberation Mono, Nimbus Mono L, Monaco, Courier New, Courier, monospace
 }
 
 body {
     background: var(--background-primary);
     color: var(--text-normal);
     font-weight: 300;
-    font-family: Whitney, hiragino sans, ヒラギノ角ゴ pro w3, ヒラギノ角ゴ pron w3, ヒラギノ角ゴ pro, hiragino kaku gothic pron, メイリオ, Meiryo, Osaka, ms pgothic, helvetica neue, Helvetica, Arial, sans-serif;
+    font-family: Whitney, hiragino sans, ヒラギノ角ゴ pro w3, ヒラギノ角ゴ pron w3, ヒラギノ角ゴ pro, hiragino kaku gothic pron, メイリオ, Meiryo, Osaka, ms pgothic, helvetica neue, Helvetica, Arial, sans-serif
 }
 
 a {
@@ -172,7 +172,7 @@ a {
 
 #content {
     position: absolute;
-    padding-top: 128px;
+    padding-top: var(--header-height);
     padding-bottom: 128px;
     width: 100%;
     min-height: 100vh;
@@ -199,7 +199,7 @@ a {
     line-height: 48px;
     font-size: 24px;
     background-color: var(--discord-theme);
-    transition: background-color ease-out .25s;
+    transition: background-color ease-out .25s
 }
 
 .big-button:hover {
@@ -231,7 +231,7 @@ a {
     border: none;
     white-space: pre-wrap;
     background: var(--background-secondary);
-    line-height: calc(85% + 8px);
+    line-height: calc(85% + 8px)
 }
 
 .hljs,
@@ -243,11 +243,11 @@ a {
 .hljs {
     border: 1px solid var(--background-tertiary);
     border-radius: 4px;
-    color: var(--header-secondary) !important;
-    font-size: 0.875rem;
+    color: var(--header-secondary)!important;
+    font-size: .875rem;
     line-height: 1.125rem;
     text-indent: 0;
-    white-space: pre-wrap;
+    white-space: pre-wrap
 }
 
 .inline-code2 {
@@ -326,7 +326,7 @@ a {
 }
 
 .tooltip-main div {
-    color: #fff;
+    color: #fff
 }
 
 .tooltip-bottom {
