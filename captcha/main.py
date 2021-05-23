@@ -147,7 +147,6 @@ def check_ok():
     print(r.text)
     if r.json()["success"]:
         rc = maincollecton.find_one({"sid": request.args["sessionid"]})
-        print(rc)
         uid, gid, rid = rc["uid"], rc["gid"], rc["rid"]
         requests.put(f"https://discord.com/api/v8/guilds/{gid}/members/{uid}/roles/{rid}", headers={"authorization": "Bot " + os.environ.get("token")})
         dm = requests.post("https://discord.com/api/v8/users/@me/channels",
@@ -162,7 +161,7 @@ def check_ok():
                       headers={"authorization": "Bot " + os.environ.get("token")},
                       json={"content": f"{gname} での認証が完了しました。"}
                       )
-
+        maincollecton.delete_one({"sid": request.args["sessionid"]})
         # /guilds/{guild.id}/members/{user.id}/roles/{role.id}
     return make_response(r.text, r.status_code)
 
