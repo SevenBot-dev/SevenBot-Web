@@ -37,7 +37,7 @@
 
                 </tr>
                 {%if command["is_parent"]%} {%if command['parent']%}
-                <tr class="expand-tr has-parent" for="{{command['name'].replace(' ', '-')}}" parent="{{command['parent']}}">
+                <tr class="expand-tr has-parent" for="{{command['name'].replace(' ', '-')}}" parent="{{command['parent'].replace(' ', '-')}}">
                     {%else%}
                     <tr class="expand-tr" for="{{command['name'].replace(' ', '-')}}">
                         {%endif%}
