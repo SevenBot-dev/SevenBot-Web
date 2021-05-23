@@ -7,7 +7,7 @@ function copyCommand(elem) {
 
 function copyLink(elem) {
     if (navigator.clipboard) {
-        navigator.clipboard.writeText("https://sevenbot.jp/commands#" + elem.innerText.trim().replace(" ", "-"))
+        navigator.clipboard.writeText("https://sevenbot.jp/commands#" + elem.innerText.trim().replaceAll(" ", "-"))
         showTooltip("コピーした！", elem)
     }
 }
