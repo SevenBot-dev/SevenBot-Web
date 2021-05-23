@@ -23,7 +23,7 @@
                 {% else %}
                 <tr name="{{command['name'].replace(' ', '-')}}">
                     {% endif %}
-                    <td onclick="copyLink(this)">{{command["name"]}}</td>
+                    <td onclick="copyLink(this)"><span class="inline-code inline-code2">{{command["name"]}}</span></td>
                     <td>{% autoescape false %}{{command["desc"]}}{% endautoescape %}</td>
                     {% if command["syntax"] %}
                     <td><span class="inline-code inline-code2" onclick="copyCommand(this)">{% autoescape false %}{{ command["syntax"] }}{% endautoescape %}</span></td>
