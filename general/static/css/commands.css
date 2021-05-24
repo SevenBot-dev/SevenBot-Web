@@ -48,6 +48,24 @@ tbody tr:last-child td:nth-child(4) {
     border-bottom-right-radius: 3px
 }
 
+.empty-td {
+    text-align: center;
+}
+
+.empty {
+    color: var(--text-muted);
+    pointer-events: none;
+    transform: scaleX(400%);
+}
+
+.pinged td {
+    background: var(--background-mentioned);
+}
+
+.pinged:hover td {
+    background: var(--background-mentioned-hover)
+}
+
 .inline-code * {
     font-family: var(--monospace-font);
 }
@@ -116,19 +134,6 @@ h1 {
 
 .has-parent td {
     background-color: var(--background-secondary)
-}
-
-.empty-td {
-    text-align: center;
-    color: var(--text-muted)
-}
-
-.pinged td {
-    background: var(--background-mentioned);
-}
-
-.pinged:hover td {
-    background: var(--background-mentioned-hover)
 }
 
 @media(max-width: 850px) {

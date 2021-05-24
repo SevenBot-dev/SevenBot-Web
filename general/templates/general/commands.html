@@ -26,13 +26,17 @@
                     <td onclick="copyLink(this)"><span class="inline-code inline-code2">{{command["name"]}}</span></td>
                     <td>{% autoescape false %}{{command["desc"]}}{% endautoescape %}</td>
                     {% if command["syntax"] %}
-                    <td><span class="inline-code inline-code2" onclick="copyCommand(this)">{% autoescape false %}{{ command["syntax"] }}{% endautoescape %}</span></td>
+                    <td onclick="copyCommand(this)"><span class="inline-code inline-code2">{% autoescape false %}{{ command["syntax"] }}{% endautoescape %}</span></td>
                     {% else %}
-                    <td class="empty-td">-</td>
+                    <td class="empty-td">
+                        <div class="empty">-</div>
+                    </td>
                     {% endif %} {% if command["aliases"] %}
                     <td>{% for alias in command["aliases"] %}{{ ", " if loop.index != 1 else "" }}<span class="inline-code inline-code2">{{alias}}</span>{% endfor %}</td>
                     {% else %}
-                    <td class="empty-td">-</td>
+                    <td class="empty-td">
+                        <div class="empty">-</div>
+                    </td>
                     {% endif %}
 
                 </tr>

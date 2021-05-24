@@ -1,6 +1,6 @@
 function copyCommand(elem) {
     if (navigator.clipboard) {
-        navigator.clipboard.writeText("sb#" + elem.innerText.trim())
+        navigator.clipboard.writeText("sb#" + elem.childNodes[0].innerText.trim())
         showTooltip("コピーした！", elem)
     }
 }
