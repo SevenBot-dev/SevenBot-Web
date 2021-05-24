@@ -1,0 +1,85 @@
+{
+    "categories": [{
+        "name": "AFK API",
+        "description": "AFKを設定, 取得します。",
+        "authorization": "sbuauth",
+        "scope": "afk",
+        "endpoints": [{
+                "endpoint": "/afk",
+                "type": ["get"],
+                "name": "AFKを取得",
+                "arguments": {
+                    "userid": {
+                        "type": "数値",
+                        "description": "取得したいユーザーID。",
+                        "optional": false,
+                        "default": null,
+                        "example": 718760319207473152
+                    }
+                },
+                "response": {
+                    "message": {
+                        "optional": false,
+                        "type": "真偽型",
+                        "description": "指定したユーザーがAFKかどうか",
+                        "example": "False"
+                    },
+                    "reason": {
+                        "optional": true,
+                        "type": "文字列",
+                        "description": "指定したユーザーのAFKの理由",
+                        "example": "\"眠い\""
+                    }
+                }
+            },
+            {
+                "endpoint": "/afk",
+                "type": ["post", "put"],
+                "name": "AFKを設定",
+                "arguments": {
+                    "reason": {
+                        "type": "文字列",
+                        "description": "AFKの理由。",
+                        "optional": true,
+                        "default": "理由無し",
+                        "example": "\"眠い\""
+                    }
+                },
+                "response": {
+                    "tweet": {
+                        "optional": true,
+                        "type": "false|文字列(URL)",
+                        "description": "ツイートのURL。失敗時はfalse。",
+                        "example": "\"https://twitter.com/...\""
+                    }
+                }
+            },
+            {
+                "endpoint": "/afk",
+                "type": ["delete"],
+                "name": "AFKを解除",
+                "arguments": {},
+                "response": {
+                    "urls": {
+                        "optional": false,
+                        "type": "配列[文字列(URL)]",
+                        "description": "メンションされたメッセージのURL。",
+                        "example": "[\"https://discord.com/channels/....\"]"
+                    },
+                    "tweet": {
+                        "optional": true,
+                        "type": "false|文字列(URL)",
+                        "description": "ツイートのURL。失敗時はfalse。",
+                        "example": "\"https://twitter.com/...\""
+                    }
+                }
+            }
+        ]
+
+
+
+    }],
+    "authorization": {
+        "sbuauth": "ユーザー名 APIキー"
+    }
+}

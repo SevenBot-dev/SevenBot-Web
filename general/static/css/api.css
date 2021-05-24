@@ -32,7 +32,7 @@ tbody tr td:nth-child(3) {
 }
 
 tbody tr td:nth-child(4) {
-    width: 5%;
+    width: 10%;
 }
 
 tbody tr td:nth-child(5) {
@@ -65,7 +65,12 @@ h1 {
 
 .empty-td {
     text-align: center;
-    color: var(--text-muted)
+}
+
+.empty {
+    color: var(--text-muted);
+    pointer-events: none;
+    transform: scaleX(400%);
 }
 
 .request-type {
@@ -97,6 +102,20 @@ table {
 
 .request-type {
     color: var(--text-warning);
+}
+
+.request-type-container {
+    position: relative;
+    display: inline-block;
+    transform: translateY(-5%)
+}
+
+.request-type-slash {
+    color: var(--text-warning);
+    position: relative;
+    font-weight: 300;
+    display: inline-block;
+    transform: translateY(-5%)
 }
 
 .request-separator {

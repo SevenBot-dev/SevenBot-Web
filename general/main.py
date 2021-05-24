@@ -3,6 +3,7 @@ import os
 import random
 import re
 import string
+import sys
 import time
 
 from dotenv import load_dotenv
@@ -12,6 +13,8 @@ from jinja2.exceptions import TemplateNotFound
 import mimetypes
 from pymongo import MongoClient
 
+if sys.platform.lower() == "win32":
+    os.system('color')
 mimetypes.add_type('image/webp', '.webp')
 if not os.getenv("heroku"):
     load_dotenv("../.env")
@@ -103,6 +106,13 @@ def commands():
             "commands": sorted_cmds,
         })
     return render_template("general/commands.html", categories=categories)
+
+
+@app.route("/api")
+def api():
+    with open("general/api.json", "r") as f:
+        api_info = json.load(f)
+    return render_template("general/api.html", endpoints=api_info["categories"], auths=api_info["authorization"])
 
 
 @app.route("/status")
