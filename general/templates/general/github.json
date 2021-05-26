@@ -1,0 +1,8 @@
+{
+    "type": "redirect",
+    "url": "https://github.com/SevenBot-dev",
+    "embed": {
+        "title": "GitHub",
+        "description": "ここからSevenBotのGitHubにアクセスすることが出来ます。"
+    }
+}
