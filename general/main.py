@@ -8,7 +8,7 @@ import time
 
 from dotenv import load_dotenv
 from flask import (Flask, Blueprint, make_response, redirect,
-                   render_template, current_app)
+                   safe_join, render_template, current_app, request)
 from jinja2.exceptions import TemplateNotFound
 import mimetypes
 from pymongo import MongoClient
@@ -136,12 +136,19 @@ def status():
 def index(pagename):
     try:
         resp = render_template(f"general/{pagename}.html")
-        if REDIRECT_PATTERN.match(resp):
-            uri = REDIRECT_PATTERN.match(resp)[1]
-            resp = redirect(uri)
         return resp
     except TemplateNotFound:
-        return render_template("general/404.html"), 404
+        path = safe_join("general/templates/general", pagename + ".json")
+        if os.path.exists(path):
+            with open(path, "r") as f:
+                raw_resp = json.load(f)
+            if raw_resp["type"] == "redirect":
+                if "compatible;" in request.headers.get("user-agent", ""):
+                    return render_template("general/embed.html", title=raw_resp["embed"]["title"], description=raw_resp["embed"]["description"])
+                else:
+                    return redirect(raw_resp["url"])
+        else:
+            return render_template("general/404.html"), 404
 
 
 @app.errorhandler(404)
