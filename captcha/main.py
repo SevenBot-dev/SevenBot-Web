@@ -151,6 +151,7 @@ def check_ok():
         'sitekey': os.environ.get("sitekey")
     }
     r = requests.post('https://hcaptcha.com/siteverify', data=data)
+    print(r.text)
     if r.json()["success"]:
         rc = maincollecton.find_one({"sid": request.form["sessionid"]})
         uid, gid, rid = rc["uid"], rc["gid"], rc["rid"]
