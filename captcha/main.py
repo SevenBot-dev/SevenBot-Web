@@ -5,21 +5,28 @@ import os
 import random
 import string
 import time
+import urllib.parse
 
 from dotenv import load_dotenv
 from flask import (Flask, Blueprint, jsonify, make_response, redirect,
-                   render_template, request, session)
+                   render_template, request)
 from pymongo import MongoClient
 import requests
+
 if __name__ == "__main__":
     load_dotenv("../.env")
+    host = "http://localhost:5000"
+else:
+    host = "https://captcha.sevenbot.jp"
+ruri = host + "/callback"
 mainclient = MongoClient(os.environ.get("connectstr"))
 maincollecton = mainclient.sevenbot.captcha
 DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET = os.environ.get(
     "discord_client_id"), os.environ.get("discord_client_secret")
 app = Blueprint('captcha', __name__, template_folder='./templates', static_folder='./static')
 
-API_ENDPOINT = 'https://discord.com/api/v8'
+login_url = f"https://discord.com/api/oauth2/authorize?client_id={DISCORD_CLIENT_ID}&redirect_uri={urllib.parse.quote(ruri)}&response_type=code&scope=guilds%20identify&state={{}}"
+API_ENDPOINT = 'https://discord.com/api/v9'
 SCOPE = 'guilds%20identify'
 
 
@@ -29,7 +36,7 @@ def exchange_code(code):
         'client_secret': DISCORD_CLIENT_SECRET,
         'grant_type': 'authorization_code',
         'code': code,
-        'redirect_uri': "https://captcha.sevenbot.jp/callback",
+        'redirect_uri': ruri,
         'scope': SCOPE
     }
     headers = {'Content-Type': 'application/x-www-form-urlencoded'}
@@ -67,14 +74,8 @@ def index():
     return render_template("captcha/index.html")
 
 
-@app.route('/test', subdomain="test")
-def test_test():
-    return "Test"
-
-
 @app.route('/verify')
 def captcha():
-
     sessionid = request.args.get("id")
     if not sessionid:
         return render_template(
@@ -85,29 +86,35 @@ def captcha():
     def show_login():
         r = make_response(render_template(
             'captcha/login.html',
-            url="https://discord.com/api/oauth2/authorize?client_id=718760319207473152&redirect_uri=https%3A%2F%2Fcaptcha.sevenbot.jp%2Fcallback&response_type=code&scope=guilds%20identify"
+            url=login_url.format(sessionid),
         ), 200)
-        session["sessionid"] = sessionid
+        r.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
         return r
     if not maincollecton.find_one({"sid": sessionid}):
-        return render_template(
+        r = make_response(render_template(
             'captcha/session.html',
             timeout=False
-        )
+        ))
+        r.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+        return r
     elif time.time() - float(maincollecton.find_one({"sid": sessionid})["time"]) > 300:
         maincollecton.delete_one({"sid": sessionid})
-        return render_template(
+        r = make_response(render_template(
             'captcha/session.html',
             timeout=True
-        )
+        ))
+        r.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+        return r
     elif request.cookies.get('token'):
-        r = requests.get("https://discord.com/api/v8/users/@me", headers={"authorization": "Bearer " + str(request.cookies.get('token'))})
+        r = requests.get("https://discord.com/api/v9/users/@me", headers={"authorization": "Bearer " + str(request.cookies.get('token'))})
         if r.status_code == 401:
             return show_login()
         if r.json()["id"] != str(maincollecton.find_one({"sid": sessionid})["uid"]):
-            return render_template("captcha/wrong_user.html", url="https://discord.com/api/oauth2/authorize?client_id=718760319207473152&redirect_uri=https%3A%2F%2Fcaptcha.sevenbot.jp%2Fcallback&response_type=code&scope=guilds%20identify")
+            r = make_response(render_template("captcha/wrong_user.html", url=login_url.format(sessionid)))
+            r.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+            return r
         r = make_response(render_template("captcha/login.html", url=None), 200)
-        session["sessionid"] = sessionid
+        r.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
         return r
     else:
         return show_login()
@@ -115,14 +122,14 @@ def captcha():
 
 @app.route('/callback')
 def callback():
-    if "sessionid" not in session.keys():
+    if "state" not in request.args.keys():
         return render_template(
             'captcha/session.html',
             timeout=False
         )
     code = request.args['code']
     code_json = exchange_code(code)
-    response = make_response(redirect('https://captcha.sevenbot.jp/verify?id=' + session["sessionid"]))
+    response = make_response(redirect(host + '/verify?id=' + request.args["state"]))
     response.set_cookie(
         "token",
         value=code_json["access_token"],
@@ -144,20 +151,19 @@ def check_ok():
         'sitekey': os.environ.get("sitekey")
     }
     r = requests.post('https://hcaptcha.com/siteverify', data=data)
-    print(r.text)
     if r.json()["success"]:
         rc = maincollecton.find_one({"sid": request.args["sessionid"]})
         uid, gid, rid = rc["uid"], rc["gid"], rc["rid"]
-        requests.put(f"https://discord.com/api/v8/guilds/{gid}/members/{uid}/roles/{rid}", headers={"authorization": "Bot " + os.environ.get("token")})
-        dm = requests.post("https://discord.com/api/v8/users/@me/channels",
+        requests.put(f"https://discord.com/api/v9/guilds/{gid}/members/{uid}/roles/{rid}", headers={"authorization": "Bot " + os.environ.get("token")})
+        dm = requests.post("https://discord.com/api/v9/users/@me/channels",
                            headers={"authorization": "Bot " + os.environ.get("token")},
                            json={"recipient_id": uid}
                            )
 
-        g = requests.get(f"https://discord.com/api/v8/guilds/{gid}",
+        g = requests.get(f"https://discord.com/api/v9/guilds/{gid}",
                          headers={"authorization": "Bot " + os.environ.get("token")})
         gname = g.json()["name"]
-        requests.post("https://discord.com/api/v8/channels/" + dm.json()["id"] + "/messages",
+        requests.post("https://discord.com/api/v9/channels/" + dm.json()["id"] + "/messages",
                       headers={"authorization": "Bot " + os.environ.get("token")},
                       json={"content": f"{gname} での認証が完了しました。"}
                       )
@@ -175,14 +181,14 @@ def make_session():
                 "message": "You cannot access this endpoint."
             }), 403)
 
-    hash = hashlib.md5(str(time.time()).encode()).hexdigest()[:16]
-    maincollecton.insert_one({"sid": hash, "uid": res['uid'], "gid": res['gid'], "rid": res['rid'], "time": time.time()})
-    return make_response(jsonify({"message": hash}), 201)
+    shash = hashlib.md5(str(time.time()).encode()).hexdigest()[:16]
+    maincollecton.insert_one({"sid": shash, "uid": res['uid'], "gid": res['gid'], "rid": res['rid'], "time": time.time()})
+    return make_response(jsonify({"message": shash}), 201)
 
 
 @app.route('/index')
 def index2():
-    return redirect("https://captcha.sevenbot.jp/")
+    return redirect(host)
 
 
 @app.route('/success')

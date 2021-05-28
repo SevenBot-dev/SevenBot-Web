@@ -1,10 +1,7 @@
-{% extends 'captcha/base.html' %}
-{% block title %}認証{% endblock %}
-{% block head %}
+{% extends 'captcha/base.html' %} {% block title %}認証{% endblock %} {% block head %}
 <script type="text/javascript" src="/static/js/login.js" defer></script>
 <script src="https://hcaptcha.com/1/api.js" async defer></script>
-{% endblock %}
-{% block main %}
+{% endblock %} {% block main %}
 <h1 class="page-title">SevenBot Web Authorization</h1>
 <div style="text-align:center;">
     {%if url%}
