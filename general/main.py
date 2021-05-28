@@ -143,7 +143,7 @@ def index(pagename):
             with open(path, "r") as f:
                 raw_resp = json.load(f)
             if raw_resp["type"] == "redirect":
-                if "compatible;" in request.headers.get("user-agent", ""):
+                if "compatible;" in request.headers.get("user-agent", "") or "Twitterbot" in request.headers.get("user-agent", ""):
                     return render_template("general/embed.html", title=raw_resp["embed"]["title"], description=raw_resp["embed"]["description"])
                 else:
                     return redirect(raw_resp["url"])
