@@ -7,7 +7,7 @@ async function checked(records) {
         cache: 'no-cache',
         credentials: 'same-origin',
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Type': 'application/json',
         },
         redirect: 'follow',
         referrerPolicy: 'no-referrer',
