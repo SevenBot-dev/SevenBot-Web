@@ -1,20 +1,27 @@
 target = document.getElementsByClassName('h-captcha')[0]
 
-function checked(records) {
-    if (document.getElementsByClassName('h-captcha')[0].childNodes[0].attributes.getNamedItem("data-hcaptcha-response").nodeValue != "") {
-        xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function(e) {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    if (JSON.parse(xhr.response)["success"]) {
-                        location.href = "https://captcha.sevenbot.jp/success"
-                    }
-                }
-            }
+async function checked(records) {
+    const response = await fetch("https://captcha.sevenbot.jp/check", {
+        method: 'POST',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
+        body: JSON.stringify({
+            token: document.getElementsByClassName('h-captcha')[0].childNodes[0].attributes.getNamedItem("data-hcaptcha-response").value,
+            sessionid: (new URL(document.location)).searchParams.get("id")
+        })
+    })
+    if (response.status == 200) {
+        if (response.json()["success"]) {
+            location.href = "https://captcha.sevenbot.jp/success"
         }
-        xhr.open('POST', "https://captcha.sevenbot.jp/check")
-        xhr.send("token=" + document.getElementsByClassName('h-captcha')[0].childNodes[0].attributes.getNamedItem("data-hcaptcha-response").value + "&sessionid=" + (new URL(document.location)).searchParams.get("id"));
     }
+
 }
 document.getElementById("not-working").addEventListener("click", checked)
 ptarget = document.getElementsByClassName('h-captcha')[0]
