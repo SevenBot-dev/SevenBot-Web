@@ -12,8 +12,8 @@ function checked(records) {
                 }
             }
         }
-        xhr.open('POST', "https://captcha.sevenbot.jp/check?token=" + document.getElementsByClassName('h-captcha')[0].childNodes[0].attributes.getNamedItem("data-hcaptcha-response").value + "&sessionid=" + (new URL(document.location)).searchParams.get("id"))
-        xhr.send();
+        xhr.open('POST', "https://captcha.sevenbot.jp/check")
+        xhr.send("token=" + document.getElementsByClassName('h-captcha')[0].childNodes[0].attributes.getNamedItem("data-hcaptcha-response").value + "&sessionid=" + (new URL(document.location)).searchParams.get("id"));
     }
 }
 document.getElementById("not-working").addEventListener("click", checked)

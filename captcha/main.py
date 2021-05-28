@@ -146,13 +146,13 @@ def callback():
 @app.route('/check', methods=["post"])
 def check_ok():
     data = {
-        'response': request.args["token"],
+        'response': request.form["token"],
         'secret': os.environ.get("hcaptcha_secret"),
         'sitekey': os.environ.get("sitekey")
     }
     r = requests.post('https://hcaptcha.com/siteverify', data=data)
     if r.json()["success"]:
-        rc = maincollecton.find_one({"sid": request.args["sessionid"]})
+        rc = maincollecton.find_one({"sid": request.form["sessionid"]})
         uid, gid, rid = rc["uid"], rc["gid"], rc["rid"]
         requests.put(f"https://discord.com/api/v9/guilds/{gid}/members/{uid}/roles/{rid}", headers={"authorization": "Bot " + os.environ.get("token")})
         dm = requests.post("https://discord.com/api/v9/users/@me/channels",
@@ -167,7 +167,7 @@ def check_ok():
                       headers={"authorization": "Bot " + os.environ.get("token")},
                       json={"content": f"{gname} での認証が完了しました。"}
                       )
-        maincollecton.delete_one({"sid": request.args["sessionid"]})
+        maincollecton.delete_one({"sid": request.form["sessionid"]})
         # /guilds/{guild.id}/members/{user.id}/roles/{role.id}
     return make_response(r.text, r.status_code)
 
