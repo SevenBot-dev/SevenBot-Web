@@ -59,7 +59,13 @@ def convert_commands(cmd):
     else:
         synt = f'<span class="syntax-command-name">{cmd["name"]}</span> '
         for s in cmd["syntax"]:
-            synt += ("<span class=\"syntax-arg-optional\">[{}]</span>" if s["optional"] else "<span class=\"syntax-arg-required\">&lt;{}&gt;</span>").format(s["name"]) + " "
+            synt += "<span class=\"syntax-arg-optional\">[" if s["optional"] else "<span class=\"syntax-arg-required\">&lt;"
+            synt += s["name"]
+            if s["variable"]:
+                synt += "..."
+            if not s["kwarg"]:
+                synt += "]</span>" if s["optional"] else "&gt;</span>"
+                synt += " "
         synt = synt.rstrip()
     desc = cmd["desc"]
     for p in COMMAND_DESC_PATTERNS:

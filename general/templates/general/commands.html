@@ -10,31 +10,31 @@
     <h1 class="category" category="{{category['id']}}">{{category["name"]}} - {{category["id"]}}</h1>
     <table class="centerp">
         <thead>
-            <tr>
-                <td>コマンド名</td>
-                <td>説明</td>
-                <td>構文</td>
-                <td>エイリアス</td>
+            <tr id="command-header">
+                <td class="command-header-td command-name">コマンド名</td>
+                <td class="command-header-td command-desc">説明</td>
+                <td class="command-header-td command-syntax">構文</td>
+                <td class="command-header-td command-aliases">エイリアス</td>
             </tr>
         </thead>
         <tbody>
             {% for command in category["commands"] %} {% if command["parent"] %}
-            <tr class="has-parent" parent="{{ command['parent'].replace(' ', '-') }}" name="{{command['name'].replace(' ', '-')}}">
+            <tr class="has-parent command-tr" parent="{{ command['parent'].replace(' ', '-') }}" name="{{command['name'].replace(' ', '-')}}">
                 {% else %}
-                <tr name="{{command['name'].replace(' ', '-')}}">
+                <tr name="{{command['name'].replace(' ', '-')}}" class="command-tr">
                     {% endif %}
-                    <td onclick="copyLink(this)"><span class="inline-code inline-code2">{{command["name"]}}</span></td>
-                    <td>{% autoescape false %}{{command["desc"]}}{% endautoescape %}</td>
+                    <td onclick="copyLink(this)" class="command-td command-name"><span class="inline-code inline-code2">{{command["name"]}}</span></td>
+                    <td class="command-td command-desc">{% autoescape false %}{{command["desc"]}}{% endautoescape %}</td>
                     {% if command["syntax"] %}
-                    <td onclick="copyCommand(this)"><span class="inline-code inline-code2">{% autoescape false %}{{ command["syntax"] }}{% endautoescape %}</span></td>
+                    <td onclick="copyCommand(this)" class="command-td command-syntax"><span class="inline-code inline-code2">{% autoescape false %}{{ command["syntax"] }}{% endautoescape %}</span></td>
                     {% else %}
-                    <td class="empty-td">
+                    <td class="empty-td" class="command-td command-syntax">
                         <div class="empty">-</div>
                     </td>
                     {% endif %} {% if command["aliases"] %}
-                    <td>{% for alias in command["aliases"] %}{{ ", " if loop.index != 1 else "" }}<span class="inline-code inline-code2">{{alias}}</span>{% endfor %}</td>
+                    <td class="command-td command-aliases">{% for alias in command["aliases"] %}{{ ", " if loop.index != 1 else "" }}<span class="inline-code inline-code2">{{alias}}</span>{% endfor %}</td>
                     {% else %}
-                    <td class="empty-td">
+                    <td class="empty-td" class="command-td command-aliases">
                         <div class="empty">-</div>
                     </td>
                     {% endif %}

@@ -7,11 +7,11 @@ thead tr td {
     text-align: center
 }
 
-thead tr td:nth-child(1) {
+#command-header .command-name {
     border-top-left-radius: 3px;
 }
 
-thead tr td:nth-child(4) {
+#command-header .command-aliases {
     border-top-right-radius: 3px
 }
 
@@ -25,18 +25,17 @@ tbody tr td {
     padding: 1px;
 }
 
-tbody tr:not(.expand-tr) td:nth-child(1) {
+.command-name {
     width: 20%;
-    cursor: pointer;
 }
 
-tbody tr td:nth-child(3) {
+.command-syntax {
     width: 25%;
     cursor: pointer;
     word-break: keep-all
 }
 
-tbody tr td:nth-child(4) {
+.command-aliases {
     width: 15%
 }
 
