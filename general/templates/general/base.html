@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/static/css/header.css">
     <link rel="stylesheet" href="/static/css/footer.css">
     <script defer src="/static/js/header.js"></script>
-    <script defer src="/static/js/share.js"></script>
+    <script defer src="/static/js/common.js"></script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-RV0BBT9CCF"></script>
     <script>
@@ -121,10 +121,15 @@
 
             </ul>
         </footer>
-        <div id="google-alert">
-            当サイトではGoogleアナリティクスを使用しています。<br> これを無効化するには、Cookieを無効にして下さい。
-            <br>
-            <a href="https://policies.google.com/technologies/ads?hl=ja" target="-blank">詳細はこちら</a><br>
+        <div id="alert-container">
+            <div id="google-alert" class="alert">
+                当サイトではGoogleアナリティクスを使用しています。<br> これを無効化するには、Cookieを無効にして下さい。
+                <br>
+                <a href="https://policies.google.com/technologies/ads?hl=ja" target="-blank">詳細はこちら</a><br>
+            </div>
+            <div id="tk-alert" class="alert">
+                SevenBotのサイトはsevenbo.tkからsevenbot.jpへ移行しました。
+            </div>
         </div>
     </div>
     <!-- Cloudflare Web Analytics -->

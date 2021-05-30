@@ -20,3 +20,6 @@ if (document.cookie.replace(/(?:(?:^|.*;\s*)google-show\s*\=\s*([^;]*).*$)|^.*$/
     document.getElementById("google-alert").style.display = "block"
     document.cookie = "google-show=true; expires=Fri, 31 Dec 9999 23:59:59 GMT";
 }
+if (location.search.includes("tk-redirect")) {
+    document.getElementById("tk-alert").style.display = "block"
+}
