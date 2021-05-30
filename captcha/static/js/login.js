@@ -12,10 +12,9 @@ async function checked(records) {
             sessionid: (new URL(document.location)).searchParams.get("id")
         })
     })
-    if (response.status == 200) {
-        if ((await response.json())["success"]) {
-            location.href = "https://captcha.sevenbot.jp/success"
-        }
+    responseData = await response.json()
+    if (response.status == 200 && responseData["success"]) {
+        location.href = "https://captcha.sevenbot.jp/success"
     }
 
 }
