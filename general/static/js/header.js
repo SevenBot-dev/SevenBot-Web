@@ -1,3 +1,4 @@
+console.debug("%cLoaded: header.js", "color:#5865f2")
 menuOpener = document.getElementById("header-menu-opener")
 menuOpenerAnimating = false
 menuOpener.addEventListener("click", () => {

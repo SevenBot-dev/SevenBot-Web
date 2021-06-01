@@ -1,3 +1,5 @@
+console.debug("%cLoaded: index.js", "color:#5865f2")
+
 function noScroll() {
 
     document.addEventListener("mousewheel", scrollControl, { passive: false });

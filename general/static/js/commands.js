@@ -1,3 +1,5 @@
+console.debug("%cLoaded: commands.js", "color:#5865f2")
+
 function copyCommand(elem) {
     if (navigator.clipboard) {
         navigator.clipboard.writeText("sb#" + elem.childNodes[0].innerText.trim())

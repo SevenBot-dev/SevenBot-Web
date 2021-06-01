@@ -1,3 +1,5 @@
+console.debug("%cLoaded: common.js", "color:#5865f2")
+
 function showTooltip(text, target) {
 
     r = target.getClientRects()[0]

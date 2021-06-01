@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 
-<head>
+<head is="x-head">
     <title>{% block title %}{% endblock %}{% if self.title().strip() %} - {% endif %}SevenBot</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="/static/css/footer.css">
     <script defer src="/static/js/header.js"></script>
     <script defer src="/static/js/common.js"></script>
+    <script defer src="/static/js/loadless.js"></script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-RV0BBT9CCF"></script>
     <script>
@@ -24,9 +25,14 @@
 
         gtag('config', 'G-RV0BBT9CCF');
     </script>
+    <!-- reload-area -->
+    <!-- block singlehead -->
+    {% block singlehead %} {% endblock %}
+    <!-- endblock singlehead -->
     <!-- block head -->
     {% block head %} {% endblock %}
-    <!-- endblock -->
+    <!-- endblock head -->
+
 </head>
 
 <body>
@@ -73,7 +79,7 @@
                 </li>
 
                 <li class="header-menu-content">
-                    <a href="https://7bot.ml">Shortener</a>
+                    <a href="/contact" target="blank">お問い合わせ</a>
                 </li>
             </ul>
             <ul id="header-menu-bottom">
@@ -84,18 +90,22 @@
     </header>
 
     <div id="content">
-        {% block main %} {% endblock %} {% if not self.main().strip() %}
-        <div class="--fade --onload">
-            <h1 class="page-title">お前は知りすぎた</h1>
-            <p class="centerp">
-                君は見てはいけないものを見てしまった。<br><br> っていう冗談はおいといて、これはサーバーの内部ページだ。
-                <br> ヘッダーとかの共通する部分をここに置いてる。
-                <br> だからここには何もないよ。
-                <br>
-                <a href="/">トップに戻る</a>
-            </p>
-        </div>
-        {% endif %}
+        <!--main-->
+        <block block-name="main">
+            {% block main %} {% endblock %} {% if not self.main().strip() %}
+            <div class="--fade --onload">
+                <h1 class="page-title">お前は知りすぎた</h1>
+                <p class="centerp">
+                    君は見てはいけないものを見てしまった。<br><br> っていう冗談はおいといて、これはサーバーの内部ページだ。
+                    <br> ヘッダーとかの共通する部分をここに置いてる。
+                    <br> だからここには何もないよ。
+                    <br>
+                    <a href="/">トップに戻る</a>
+                </p>
+            </div>
+            {% endif %}
+        </block>
+        <!--endmain-->
         <div class="tooltip green" style="display:none;">
             <div class="tooltip-opacity" style="opacity: 1; transform: none;">
                 <div class="tooltip-bottom"></div>
