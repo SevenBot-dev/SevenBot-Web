@@ -1,0 +1,16 @@
+{% extends 'general/base.html' %} {% block title %}お問い合わせ{% endblock %} {% block head %}
+<link rel="stylesheet" href="/static/css/contact.css"> {% endblock %} {% block main %}
+<div class="">
+    <h1 class="page-title">お問い合わせ</h1>
+    <div id="contact-flex-container">
+        <div class="contact-container">
+            <div class="contact-title">Discord</div>
+            <iframe src="https://canary.discord.com/widget?id=715540925081714788&theme=light" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+        </div>
+        <div class="contact-container">
+            <div class="contact-title">メール</div>
+            support@sevenbot.jp
+        </div>
+    </div>
+</div>
+{% endblock %}
