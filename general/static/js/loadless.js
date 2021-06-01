@@ -3,7 +3,7 @@ var pageCaches = {}
 
 function pretendJump() {
     for (e of document.getElementsByTagName("a")) {
-        if (e.getAttribute("target") != "blank" && e.getAttribute("href").match(/^\/[^\/]/)) {
+        if (e.getAttribute("target") != "blank" && e.getAttribute("href").match(/^\/(?:[^\/]|$)/)) {
             e.addEventListener("click", jumpURL)
         }
     }
