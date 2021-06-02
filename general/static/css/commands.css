@@ -70,15 +70,15 @@ tbody tr:last-child td:nth-child(4) {
 }
 
 .syntax-command-name {
-    color: var(--interactive-normal);
+    color: #b58900;
 }
 
 .syntax-arg-required {
-    color: var(--interactive-active);
+    color: #268bd2;
 }
 
 .syntax-arg-optional {
-    color: var(--interactive-hover);
+    color: #2aa198;
 }
 
 .more {
