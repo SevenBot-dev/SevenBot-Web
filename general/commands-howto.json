@@ -1,0 +1,290 @@
+{
+    "param_description": {
+        "title": "パラメータの型",
+        "description": "パラメータにはいくつか種類があります。",
+        "table": [
+            {
+                "name": "文字列",
+                "description": "文字列。何でも入ります。\n全体を`\"`で囲むことで空白付きの文字列を渡すことが出来ます。",
+                "examples": [
+                    {
+                        "text": "Hello",
+                        "result": true
+                    },
+                    {
+                        "text": "123",
+                        "result": true
+                    },
+                    {
+                        "text": "456",
+                        "result": true
+                    },
+                    {
+                        "text": "\"1 2 3\"",
+                        "result": true
+                    }
+                ]
+            },
+            {
+                "name": "数値",
+                "description": "数値。数字で指定します。\n少数は渡せません。",
+                "examples": [
+                    {
+                        "text": "123",
+                        "result": true
+                    },
+                    {
+                        "text": "456",
+                        "result": true
+                    },
+                    {
+                        "text": "ABC",
+                        "result": false
+                    },
+                    {
+                        "text": "1.5",
+                        "result": false
+                    }
+                ]
+            },
+            {
+                "name": "Y/N",
+                "description": "Yes/No。\n様々な表記に対応していますが、日本語には対応していません。",
+                "examples": [
+                    {
+                        "text": "Yes",
+                        "result": true
+                    },
+                    {
+                        "text": "y",
+                        "result": true
+                    },
+                    {
+                        "text": "true",
+                        "result": true
+                    },
+                    {
+                        "text": "t",
+                        "result": true
+                    },
+                    {
+                        "text": "0",
+                        "result": true
+                    },
+                    {
+                        "text": "disable",
+                        "result": true
+                    },
+                    {
+                        "text": "off",
+                        "result": true
+                    },
+                    {
+                        "text": "a",
+                        "result": false
+                    },
+                    {
+                        "text": "はい",
+                        "result": false
+                    },
+                    {
+                        "text": "オン",
+                        "result": false
+                    }
+                ]
+            },
+            {
+                "name": "時間",
+                "description": "今からの時間を指定します。`00d00h00d00s`、`00:00:00`の形式で指定します（前者は使わない物は省略可能）",
+                "examples": [
+                    {
+                        "text": "1d",
+                        "result": true
+                    },
+                    {
+                        "text": "1h",
+                        "result": true
+                    },
+                    {
+                        "text": "30m",
+                        "result": true
+                    },
+                    {
+                        "text": "1h30m",
+                        "result": true
+                    },
+                    {
+                        "text": "1m30s",
+                        "result": true
+                    },
+                    {
+                        "text": "1:30:00",
+                        "result": true
+                    },
+                    {
+                        "text": "time",
+                        "result": false
+                    },
+                    {
+                        "text": "date",
+                        "result": false
+                    }
+                ]
+            }
+        ]
+    },
+    "syntax_descriptions": [
+        {
+            "title": "必須パラメータ",
+            "descriptions": [
+                {
+                    "description": "`<>`で囲まれたパラメータは必ず指定する必要があります。",
+                    "examples": [
+                        {
+                            "syntax": "#command <パラメータ1>",
+                            "examples": [
+                                {
+                                    "input": "##command <テスト>",
+                                    "result": true
+                                },
+                                {
+                                    "input": "##command",
+                                    "result": false
+                                }
+                            ]
+                        },
+                        {
+                            "syntax": "#command <パラメータ1> <パラメータ2>",
+                            "examples": [
+                                {
+                                    "input": "##command <テスト> <テスト2>",
+                                    "result": true
+                                },
+                                {
+                                    "input": "##command <テスト>",
+                                    "result": false
+                                }
+                            ]
+                        },
+                        "actual_divider",
+                        {
+                            "syntax": "#get_role_member <ロール>",
+                            "examples": [
+                                {
+                                    "input": "##get_role_member <@Admin>",
+                                    "result": true
+                                },
+                                {
+                                    "input": "##get_role_member",
+                                    "result": false
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "title": "省略可パラメータ",
+            "descriptions": [
+                {
+                    "description": "`[]`で囲まれたパラメータは省略することができます。",
+                    "examples": [
+                        {
+                            "syntax": "#command [パラメータ1]",
+                            "examples": [
+                                {
+                                    "input": "##command [テスト]",
+                                    "result": true
+                                },
+                                {
+                                    "input": "##command",
+                                    "result": true
+                                }
+                            ]
+                        },
+                        {
+                            "syntax": "#command <パラメータ1> [パラメータ2]",
+                            "examples": [
+                                {
+                                    "input": "##command <テスト> [テスト2]",
+                                    "result": true
+                                },
+                                {
+                                    "input": "##command <テスト>",
+                                    "result": true
+                                },
+                                {
+                                    "input": "##command",
+                                    "result": false
+                                }
+                            ]
+                        },
+                        "actual_divider",
+                        {
+                            "syntax": "#shorten <URL> [短縮ID]",
+                            "examples": [
+                                {
+                                    "input": "##shorten <https://sevenbot.jp> [sevenbot]",
+                                    "result": true
+                                },
+                                {
+                                    "input": "##shorten <https://sevenbot.jp>",
+                                    "result": true
+                                },
+                                {
+                                    "input": "##shorten",
+                                    "result": false
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "description": "また、指定された型に変換出来なかった場合、そのパラメータは無視されます。",
+                    "examples": [
+                        {
+                            "syntax": "#command [数値1] <パラメータ1>",
+                            "examples": [
+                                {
+                                    "input": "##command [123] <テスト>",
+                                    "result": true
+                                },
+                                {
+                                    "input": "##command <テスト>",
+                                    "result": true
+                                }
+                            ]
+                        },
+                        "actual_divider",
+                        {
+                            "syntax": "#vote <タイトル> [長さ] [複数投票] <選択肢...>",
+                            "examples": [
+                                {
+                                    "input": "##vote <SevenBotの使い勝手> [1d] [y] <良い> <悪い>",
+                                    "result": true
+                                },
+                                {
+                                    "input": "##vote <SevenBotの使い勝手> [1d] <良い> <悪い>",
+                                    "result": true
+                                },
+                                {
+                                    "input": "##vote <SevenBotの使い勝手> [y] <良い> <悪い>",
+                                    "result": true
+                                },
+                                {
+                                    "input": "##vote <SevenBotの使い勝手> <良い> <悪い>",
+                                    "result": true
+                                },
+                                {
+                                    "input": "##vote <SevenBotの使い勝手>",
+                                    "result": false
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
