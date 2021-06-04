@@ -27,7 +27,7 @@
             },
             {
                 "name": "数値",
-                "description": "数値。数字で指定します。\n少数は渡せません。",
+                "description": "数値。数字で指定します。\n小数は渡せません。",
                 "examples": [
                     {
                         "text": "123",
@@ -48,8 +48,30 @@
                 ]
             },
             {
+                "name": "小数",
+                "description": "小数。数値型とは違い、小数を渡すことが出来ます。",
+                "examples": [
+                    {
+                        "text": "123",
+                        "result": true
+                    },
+                    {
+                        "text": "456",
+                        "result": true
+                    },
+                    {
+                        "text": "1.5",
+                        "result": false
+                    },
+                    {
+                        "text": "ABC",
+                        "result": false
+                    }
+                ]
+            },
+            {
                 "name": "Y/N",
-                "description": "Yes/No。\n様々な表記に対応していますが、日本語には対応していません。",
+                "description": "Yes/No。\n様々な表記に対応していますが、日本語には対応していません。\n`True`/`False`が推奨されています。",
                 "examples": [
                     {
                         "text": "Yes",
@@ -128,6 +150,86 @@
                     {
                         "text": "date",
                         "result": false
+                    }
+                ]
+            },
+            {
+                "name": "オプション",
+                "description": "オプションを`=`で指定します。",
+                "examples": [
+                    {
+                        "text": "A=B",
+                        "result": true
+                    },
+                    {
+                        "text": "A=B C=D",
+                        "result": true
+                    },
+                    {
+                        "text": "A:B",
+                        "result": false
+                    },
+                    {
+                        "text": "A,B",
+                        "result": false
+                    }
+                ]
+            },
+            {
+                "name": "ロール",
+                "description": "Discordのロール。\nメンション、ID、ロール名のどれかで渡して下さい。",
+                "examples": [
+                    {
+                        "text": "{@Admin}",
+                        "result": true
+                    },
+                    {
+                        "text": "835513560913281065",
+                        "result": true
+                    },
+                    {
+                        "text": "Admin",
+                        "result": true
+                    }
+                ]
+            },
+            {
+                "name": "チャンネル",
+                "description": "Discordのチャンネル。\nメンション、ID、チャンネル名のどれかで渡して下さい。",
+                "examples": [
+                    {
+                        "text": "{#一般}",
+                        "result": true
+                    },
+                    {
+                        "text": "721267221841707139",
+                        "result": true
+                    },
+                    {
+                        "text": "一般",
+                        "result": true
+                    }
+                ]
+            },
+            {
+                "name": "メンバー",
+                "description": "サーバーのメンバー。\nメンション、ID、ニックネーム、ユーザー名のどれかで渡して下さい。",
+                "examples": [
+                    {
+                        "text": "{@名無し。}",
+                        "result": true
+                    },
+                    {
+                        "text": "686547120534454315",
+                        "result": true
+                    },
+                    {
+                        "text": "［管理者］名無し。",
+                        "result": true
+                    },
+                    {
+                        "text": "Nanashi.#1225",
+                        "result": true
                     }
                 ]
             }
@@ -279,6 +381,80 @@
                                 {
                                     "input": "##vote <SevenBotの使い勝手>",
                                     "result": false
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "title": "可変長パラメータ",
+            "descriptions": [
+                {
+                    "description": "`...`で終わっているパラメータは複数の値を渡すことが出来ます。",
+                    "examples": [
+                        {
+                            "syntax": "#command <パラメータ1...>",
+                            "examples": [
+                                {
+                                    "input": "##command <テスト> <テスト> <テスト>",
+                                    "result": true
+                                },
+                                {
+                                    "input": "##command <テスト> <テスト>",
+                                    "result": true
+                                }
+                            ]
+                        },
+                        "actual_divider",
+                        {
+                            "syntax": "#role [複数選択] <ロール...>",
+                            "examples": [
+                                {
+                                    "input": "##role <@赤色> <@緑色>",
+                                    "result": true
+                                },
+                                {
+                                    "input": "##role <@赤色>",
+                                    "result": true
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "title": "空白無視パラメータ",
+            "descriptions": [
+                {
+                    "description": "`>`や`]`が開いたまま終わっているパラメータは空白を無視して取得します。\n`\"`もそのまま値に入るので注意して下さい。",
+                    "examples": [
+                        {
+                            "syntax": "#command <パラメータ1",
+                            "examples": [
+                                {
+                                    "input": "##command <テスト>",
+                                    "result": true
+                                },
+                                {
+                                    "input": "##command <テスト テスト>",
+                                    "result": true
+                                }
+                            ]
+                        },
+                        "actual_divider",
+                        {
+                            "syntax": "#event_send <イベント名> [メッセージ",
+                            "examples": [
+                                {
+                                    "input": "##event_send <join> [!mention さんが参加しました。]",
+                                    "result": true
+                                },
+                                {
+                                    "input": "##event_send <join> [!mentionが参加しました。]",
+                                    "result": true
                                 }
                             ]
                         }

@@ -23,7 +23,8 @@
                     <td rowspan="{{table.examples | length}}" class="param-title">{{table.name}}</td>
                     <td rowspan="{{table.examples | length}}" class="param-description">{%autoescape false %}{{table.description}}{%endautoescape %}</td>
                     {%endif%}
-                    <td><span class="inline-code inline-code2">{{example.text}}</span></td>
+
+                    <td>{%if "mention" in example.text%}<span class="inline-code inline-code2 mention-bg">{%else%}<span class="inline-code inline-code2">{%endif%}{%autoescape false %}{{example.text}}{%endautoescape %}</span></td>
                     {%if example.result%}
                     <td class="example-ok">OK</td>
                     {%else%}

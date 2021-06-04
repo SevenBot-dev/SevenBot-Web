@@ -61,16 +61,19 @@ SYNTAX_DESC_PATTERNS = [
 ]
 
 SYNTAX_PATTERNS = [
-    [re.compile(r"&lt;([^&]+)&gt;"), r'<span class="syntax-arg-required">&lt;\1&gt;</span>'],
-    [re.compile(r"\[([^\]]+)\]"), r'<span class="syntax-arg-optional">[\1]</span>'],
+    [re.compile(r"&lt;([^&]+)(&gt;|$)"), r'<span class="syntax-arg-required">&lt;\1\2</span>'],
+    [re.compile(r"\[([^\]]+)(\]|$)"), r'<span class="syntax-arg-optional">[\1\2</span>'],
     [re.compile(r"^#([^ ]+)"), r'<span class="syntax-command-name">\1</span>'],
 ]
 
 SYNTAX_PATTERN_INPUT = [
     [re.compile(r"&lt;([^&]+)&gt;"), r'<span class="syntax-arg-required">\1</span>'],
-    [re.compile(r"\[([^\]]+)\]"), r'<span class="syntax-arg-optional">\1</span>'],
+    [re.compile(r"\[([^\]]+)]"), r'<span class="syntax-arg-optional">\1</span>'],
     [re.compile(r"^##([^ ]+)"), r'<span class="syntax-command-name">\1</span>'],
 ]
+
+MENTION_PATTERN = re.compile(r"\{([^\}]+)}")
+TYPE_PATTERN = re.compile(r".+（([^、]+)(?:、.+)?）")
 
 
 def parse_md(d):
@@ -84,6 +87,7 @@ def parse_md(d):
                 d[dk][i] = parse_md(l)
         elif isinstance(dv, str):
             desc = dv.replace("<", "&lt;").replace(">", "&gt;")
+            desc = MENTION_PATTERN.sub(r'<span class="mention">\1</span>', desc)
             for p in SYNTAX_DESC_PATTERNS:
                 desc = p[0].sub(p[1], desc)
             if desc.startswith("##"):
@@ -104,6 +108,9 @@ def convert_commands(cmd):
         for s in cmd["syntax"]:
             synt += "<span class=\"syntax-arg-optional\">[" if s["optional"] else "<span class=\"syntax-arg-required\">&lt;"
             synt += s["name"]
+            m = TYPE_PATTERN.match(s["detail"])
+            if m is not None:
+                synt += f'<span class="syntax-arg-type">:{m.group(1)}</span>'
             if s["variable"]:
                 synt += "..."
             if not s["kwarg"]:
