@@ -20,8 +20,8 @@
                 {%for example in table.examples%}
                 <tr class="command-tr">
                     {%if loop.index == 1%}
-                    <td rowspan="{{table.examples | length}}">{{table.name}}</td>
-                    <td rowspan="{{table.examples | length}}">{%autoescape false %}{{table.description}}{%endautoescape %}</td>
+                    <td rowspan="{{table.examples | length}}" class="param-title">{{table.name}}</td>
+                    <td rowspan="{{table.examples | length}}" class="param-description">{%autoescape false %}{{table.description}}{%endautoescape %}</td>
                     {%endif%}
                     <td><span class="inline-code inline-code2">{{example.text}}</span></td>
                     {%if example.result%}
@@ -59,7 +59,7 @@
                 {%for syntax_example in example.examples%}
                 <tr class="command-tr">
                     {%if loop.index == 1 %}
-                    <td rowspan="{{example.examples | length}}"><span class="inline-code inline-code2">{%autoescape false %}{{example.syntax}}{%endautoescape %}</span></td>
+                    <td rowspan="{{example.examples | length}}" class="syntax-example"><span class="inline-code inline-code2">{%autoescape false %}{{example.syntax}}{%endautoescape %}</span></td>
                     {%endif%}
                     <td><span class="inline-code inline-code2">{%autoescape false %}{{syntax_example.input}}{%endautoescape %}</span></td>
                     {%if syntax_example.result%}

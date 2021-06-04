@@ -54,3 +54,15 @@ table {
 #syntax-param-table td:nth-child(4) {
     width: 10%;
 }
+
+@media(max-width: 850px) {
+    td:nth-child(1):not(.param-title, .syntax-example, .divider-tr td){
+        background-color: var(--background-secondary-alt)
+    }
+    .param-description{
+        background-color:var(--background-secondary);
+    }
+    .syntax-example, .divider-tr td{
+        background-color: var(--interactive-muted)
+    }
+}
