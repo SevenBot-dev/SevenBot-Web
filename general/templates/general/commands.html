@@ -4,6 +4,7 @@
 {% endblock %} {% block main %}
 <div class="--fade">
     <h1 class="page-title">コマンド一覧</h1>
+    <p class="centerp"><a href="/commands-howto">ここ</a>でコマンドの見方を解説しています。</p>
 </div>
 {% for category in categories %}
 <div class="--fade --slideup">
@@ -14,7 +15,7 @@
                 <td class="command-header-td command-name">コマンド名</td>
                 <td class="command-header-td command-desc">説明</td>
                 <td class="command-header-td command-syntax">構文</td>
-                <td class="command-header-td command-aliases">エイリアス</td>
+                <td class="command-header-td command-aliases">別名</td>
             </tr>
         </thead>
         <tbody>

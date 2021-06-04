@@ -47,10 +47,53 @@ COMMAND_DESC_PATTERNS = [
     [re.compile(r"\n"), r'<br>'],
     [re.compile(r"\*\*(.+?)\*\*"), r'<span class="bold">\1</span>'],
     [re.compile(r"```(?:\n|<br>)*(.+?)```"), r'<div class="codeblock">\1</div>'],
-    [re.compile(r"`(.+?)`"), r'<span class="inline_code inline_code2">\1</span>'],
+    [re.compile(r"`(.+?)`"), r'<span class="inline-code inline-code2">\1</span>'],
     [re.compile(r"__(.+?)__"), r'<span class="underline">\1</span>'],
     [re.compile(r"\[(.+?)\]\((.+?)\)"), r'<a href="\2">\1</a>']
 ]
+SYNTAX_DESC_PATTERNS = [
+    [re.compile(r"\n"), r'<br>'],
+    [re.compile(r"\*\*(.+?)\*\*"), r'<span class="bold">\1</span>'],
+    [re.compile(r"```(?:\n|<br>)*(.+?)```"), r'<div class="codeblock">\1</div>'],
+    [re.compile(r"`(.+?)`"), r'<span class="inline-code">\1</span>'],
+    [re.compile(r"__(.+?)__"), r'<span class="underline">\1</span>'],
+    [re.compile(r"\[(.+?)\]\((.+?)\)"), r'<a href="\2">\1</a>']
+]
+
+SYNTAX_PATTERNS = [
+    [re.compile(r"&lt;([^&]+)&gt;"), r'<span class="syntax-arg-required">&lt;\1&gt;</span>'],
+    [re.compile(r"\[([^\]]+)\]"), r'<span class="syntax-arg-optional">[\1]</span>'],
+    [re.compile(r"^#([^ ]+)"), r'<span class="syntax-command-name">\1</span>'],
+]
+
+SYNTAX_PATTERN_INPUT = [
+    [re.compile(r"&lt;([^&]+)&gt;"), r'<span class="syntax-arg-required">\1</span>'],
+    [re.compile(r"\[([^\]]+)\]"), r'<span class="syntax-arg-optional">\1</span>'],
+    [re.compile(r"^##([^ ]+)"), r'<span class="syntax-command-name">\1</span>'],
+]
+
+
+def parse_md(d):
+    if isinstance(d, str):
+        return d
+    for dk, dv in d.items():
+        if isinstance(dv, dict):
+            d[dk] = parse_md(dv)
+        if isinstance(dv, list):
+            for i, l in enumerate(dv):
+                d[dk][i] = parse_md(l)
+        elif isinstance(dv, str):
+            desc = dv.replace("<", "&lt;").replace(">", "&gt;")
+            for p in SYNTAX_DESC_PATTERNS:
+                desc = p[0].sub(p[1], desc)
+            if desc.startswith("##"):
+                for p in SYNTAX_PATTERN_INPUT:
+                    desc = p[0].sub(p[1], desc)
+            elif desc.startswith("#"):
+                for p in SYNTAX_PATTERNS:
+                    desc = p[0].sub(p[1], desc)
+            d[dk] = desc
+    return d
 
 
 def convert_commands(cmd):
@@ -119,6 +162,13 @@ def api():
     with open("general/api.json", "r") as f:
         api_info = json.load(f)
     return render_template("general/api.html", endpoints=api_info["categories"], auths=api_info["authorization"])
+
+
+@app.route("/commands-howto")
+def commands_howto():
+    with open("general/commands-howto.json", "r") as f:
+        info = json.load(f)
+    return render_template("general/commands-howto.html", data=parse_md(info))
 
 
 @app.route("/status")
