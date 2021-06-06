@@ -1,3 +1,64 @@
 .big-button-container {
     text-align: center;
 }
+
+.server-list-loading {
+    text-align: center;
+}
+
+.server-list-container {
+    display: hidden;
+}
+
+#server-list-container {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin: auto;
+    flex-wrap: wrap;
+}
+
+.server-list-content {
+    background: var(--background-secondary);
+    width: 20%;
+    border-radius: 1rem;
+    margin: 0.5rem;
+}
+
+.server-list-name {
+    margin: 0.25rem;
+    font-size: 1.1rem;
+    height: calc(1.5rem);
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.server-list-icon {
+    width: 50%;
+    border-radius: 100%;
+}
+
+.server-list-button {
+    margin: 0.5rem;
+    padding: 0.25rem;
+    border-radius: 0.5rem;
+}
+
+.server-list-button a {
+    color: var(--status-positive-text)
+}
+
+.server-list-move {
+    background: var(--info-positive-foreground);
+}
+
+.server-list-invite {
+    background: var(--discord-theme);
+}
+
+.server-list-dummy {
+    width: 20%;
+    height: 0;
+    margin: 0.5rem;
+}

@@ -1,5 +1,5 @@
 body {
-    --header-height: 128px;
+    --header-height: 96px;
 }
 
 header {
@@ -16,7 +16,7 @@ header {
 }
 
 #header-top {
-    height: calc(var(--header-height) - 32px)
+    height: var(--header-height)
 }
 
 #header-menu-bottom {
