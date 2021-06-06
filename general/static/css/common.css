@@ -145,14 +145,15 @@
     --focus-primary: #00b0f4;
     --discord-theme: #5865f2;
     --discord-theme-dark: #4752c4;
-    --monospace-font: Consolas, Andale Mono WT, Andale Mono, Lucida Console, Menlo, Lucida Sans Typewriter, DejaVu Sans Mono, Bitstream Vera Sans Mono, Liberation Mono, Nimbus Mono L, Monaco, Courier New, Courier, monospace
+    --monospace-font: Consolas, Andale Mono WT, Andale Mono, Lucida Console, Menlo, Lucida Sans Typewriter, DejaVu Sans Mono, Bitstream Vera Sans Mono, Liberation Mono, Nimbus Mono L, Monaco, Courier New, Courier, monospace;
+    --default-font: Whitney, hiragino sans, ヒラギノ角ゴ pro w3, ヒラギノ角ゴ pron w3, ヒラギノ角ゴ pro, hiragino kaku gothic pron, メイリオ, Meiryo, Osaka, ms pgothic, helvetica neue, Helvetica, Arial, sans-serif;
 }
 
 body {
     background: var(--background-primary);
     color: var(--text-normal);
     font-weight: 300;
-    font-family: Whitney, hiragino sans, ヒラギノ角ゴ pro w3, ヒラギノ角ゴ pron w3, ヒラギノ角ゴ pro, hiragino kaku gothic pron, メイリオ, Meiryo, Osaka, ms pgothic, helvetica neue, Helvetica, Arial, sans-serif
+    font-family: var(--default-font)
 }
 
 a {
@@ -186,7 +187,7 @@ a {
 }
 
 .big-button {
-    color: #fff!important;
+    color: #fff !important;
     line-height: 40px;
     height: 40px;
     padding: 4px 8px;
@@ -237,13 +238,13 @@ a {
 .hljs,
 .hljs * {
     font-family: var(--monospace-font);
-    background: var(--background-secondary)!important
+    background: var(--background-secondary) !important
 }
 
 .hljs {
     border: 1px solid var(--background-tertiary);
     border-radius: 4px;
-    color: var(--header-secondary)!important;
+    color: var(--header-secondary) !important;
     font-size: .875rem;
     line-height: 1.125rem;
     text-indent: 0;
@@ -251,7 +252,7 @@ a {
 }
 
 .inline-code2 {
-    background: var(--background-tertiary)!important
+    background: var(--background-tertiary) !important
 }
 
 .underline {
@@ -264,7 +265,7 @@ a {
     border: none;
     border-radius: 4px;
     font-family: var(--monospace-font);
-    background: var(--background-secondary)!important;
+    background: var(--background-secondary) !important;
     padding: .5em
 }
 

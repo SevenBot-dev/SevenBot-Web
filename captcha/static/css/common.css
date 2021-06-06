@@ -1,4 +1,4 @@
-@media (prefers-color-scheme: light) {
+@media(prefers-color-scheme:light) {
     * {
         --header-primary: #060607;
         --header-secondary: #4f5660;
@@ -59,11 +59,11 @@
         --deprecated-text-input-border-hover: #b9bbbe;
         --deprecated-text-input-border-disabled: #dcddde;
         --deprecated-text-input-prefix: #b9bbbe;
-        --sb-theme: #0cf;
+        --sb-theme: #0cf
     }
 }
 
-@media (prefers-color-scheme: dark) {
+@media(prefers-color-scheme:dark) {
     * {
         --header-primary: #fff;
         --header-secondary: #b9bbbe;
@@ -145,13 +145,15 @@
     --focus-primary: #00b0f4;
     --discord-theme: #5865f2;
     --discord-theme-dark: #4752c4;
+    --monospace-font: Consolas, Andale Mono WT, Andale Mono, Lucida Console, Menlo, Lucida Sans Typewriter, DejaVu Sans Mono, Bitstream Vera Sans Mono, Liberation Mono, Nimbus Mono L, Monaco, Courier New, Courier, monospace;
+    --default-font: Whitney, hiragino sans, ヒラギノ角ゴ pro w3, ヒラギノ角ゴ pron w3, ヒラギノ角ゴ pro, hiragino kaku gothic pron, メイリオ, Meiryo, Osaka, ms pgothic, helvetica neue, Helvetica, Arial, sans-serif;
 }
 
 body {
     background: var(--background-primary);
     color: var(--text-normal);
     font-weight: 300;
-    font-family: Whitney, hiragino sans, ヒラギノ角ゴ pro w3, ヒラギノ角ゴ pron w3, ヒラギノ角ゴ pro, hiragino kaku gothic pron, メイリオ, Meiryo, Osaka, ms pgothic, helvetica neue, Helvetica, Arial, sans-serif;
+    font-family: var(--default-font)
 }
 
 a {
@@ -171,7 +173,7 @@ a {
 
 #content {
     position: absolute;
-    padding-top: 128px;
+    padding-top: var(--header-height);
     padding-bottom: 128px;
     width: 100%;
     min-height: 100vh;
@@ -185,7 +187,7 @@ a {
 }
 
 .big-button {
-    color: #fff!important;
+    color: #fff !important;
     line-height: 40px;
     height: 40px;
     padding: 4px 8px;
@@ -198,7 +200,7 @@ a {
     line-height: 48px;
     font-size: 24px;
     background-color: var(--discord-theme);
-    transition: background-color ease-out .25s;
+    transition: background-color ease-out .25s
 }
 
 .big-button:hover {
@@ -225,27 +227,32 @@ a {
     margin: -.2em 0;
     border-radius: 3px;
     font-size: 85%;
-    font-family: Consolas, Andale Mono WT, Andale Mono, Lucida Console, Lucida Sans Typewriter, DejaVu Sans Mono, Bitstream Vera Sans Mono, Liberation Mono, Nimbus Mono L, Monaco, Courier New, Courier, monospace;
+    font-family: var(--monospace-font);
     text-indent: 0;
     border: none;
     white-space: pre-wrap;
     background: var(--background-secondary);
-    line-height: calc(85% + 8px);
+    line-height: calc(85% + 8px)
 }
 
 .hljs,
 .hljs * {
-    font-family: Consolas, Andale Mono WT, Andale Mono, Lucida Console, Lucida Sans Typewriter, DejaVu Sans Mono, Bitstream Vera Sans Mono, Liberation Mono, Nimbus Mono L, Monaco, Courier New, Courier, monospace;
-    background: var(--background-secondary)!important
+    font-family: var(--monospace-font);
+    background: var(--background-secondary) !important
 }
 
 .hljs {
     border: 1px solid var(--background-tertiary);
-    border-radius: 4px
+    border-radius: 4px;
+    color: var(--header-secondary) !important;
+    font-size: .875rem;
+    line-height: 1.125rem;
+    text-indent: 0;
+    white-space: pre-wrap
 }
 
 .inline-code2 {
-    background: var(--background-tertiary)!important
+    background: var(--background-tertiary) !important
 }
 
 .underline {
@@ -257,21 +264,26 @@ a {
     line-height: 1.125rem;
     border: none;
     border-radius: 4px;
-    font-family: Consolas, Andale Mono WT, Andale Mono, Lucida Console, Lucida Sans Typewriter, DejaVu Sans Mono, Bitstream Vera Sans Mono, Liberation Mono, Nimbus Mono L, Monaco, Courier New, Courier, monospace;
-    background: var(--background-secondary)!important;
+    font-family: var(--monospace-font);
+    background: var(--background-secondary) !important;
     padding: .5em
 }
 
-#google-alert {
-    display: none;
+#alert-container {
     position: fixed;
-    left: 20px;
-    bottom: 20px;
+    left: 10px;
+    bottom: 10px;
+    z-index: 1000;
+}
+
+.alert {
+    display: none;
+    position: relative;
     padding: 20px;
     max-width: calc(100vw - 40px);
     background: var(--background-floating);
     border-radius: 8px;
-    z-index: 1000
+    margin: 10px;
 }
 
 .tooltip-main {
@@ -320,7 +332,7 @@ a {
 }
 
 .tooltip-main div {
-    color: #fff;
+    color: #fff
 }
 
 .tooltip-bottom {

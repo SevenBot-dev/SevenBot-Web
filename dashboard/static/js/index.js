@@ -1,10 +1,14 @@
+console.debug("%cLoaded: index.js", "color:#5865f2")
 async function showGuilds() {
+    console.debug("Fetching /api/servers")
     resp = await fetch("/api/servers", {
         headers: { "authorization": document.cookie.match(/ token=(.+?);/)[1] }
     })
+    console.debug("Fetched")
     data = await resp.json()
     template = document.getElementById("server-list-content-template")
     serverList = document.getElementById("server-list-container")
+    console.debug("Adding elements")
     for (server of data.manage) {
         newContent = template.content.cloneNode(true)
         newContent.querySelector(".server-list-name").innerHTML = server.name
@@ -29,7 +33,9 @@ async function showGuilds() {
 
 function main() {
     if (document.getElementById("server-list-container")) {
+        console.debug("%cShowing guild list", "color:#0067e0")
         showGuilds().then(() => { })
+        console.debug("%cDone", "color:#3ba55c")
     }
 }
 

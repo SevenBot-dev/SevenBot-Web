@@ -19,8 +19,7 @@ if not os.getenv("heroku"):
     load_dotenv("../.env")
     print("[general]Not heroku, loaded .env", os.environ.get("connectstr"))
 mainclient = MongoClient(os.environ.get("connectstr"))
-commandscollection = mainclient.sevenbot.commands
-statuscollection = mainclient.sevenbot.status_log
+settings_collection = mainclient.sevenbot.guild_settings
 DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET = os.environ.get(
     "discord_client_id"), os.environ.get("discord_client_secret")
 
@@ -86,8 +85,15 @@ def set_user_cache(token):
     return data
 
 
+def get_cache_token(token):
+    cc = current_app.config["user_caches"].get(token)
+    if cc is None or time.time() - cc["time"] > 300:
+        set_user_cache(token)
+    return current_app.config["user_caches"][token]
+
+
 def get_bot_guilds():
-    if current_app.config.get("bot_guild_cache") is not None and time.time() - current_app.config["bot_guild_cache_time"] > 300:
+    if current_app.config.get("bot_guild_cache") is not None and time.time() - current_app.config["bot_guild_cache_time"] < 300:
         return current_app.config["bot_guild_cache"]
     li = 0
     ret = []
@@ -117,11 +123,7 @@ def load_logged_in_user():
     refresh_token = request.cookies.get('refresh_token')
     g.cookies = {}
     if token is not None:
-        uc = current_app.config["user_caches"]
-        if uc.get(token) is not None:
-            g.user = uc[token]
-        else:
-            g.user = None
+        g.user = get_cache_token(token)
     elif refresh_token is not None:
         t = refresh_token(refresh_token)
         g.cookies["access_token"] = dict(
@@ -150,6 +152,14 @@ def index():
         return render_template("dashboard/index.html", logged_in=True)
     else:
         return render_template("dashboard/index.html", logged_in=False)
+
+
+@app.route("/manage/<int:guild_id>")
+def manage(guild_id):
+    user_info = current_app.config["user_caches"][request.cookies.get("token")]
+    guild_data = [gi for gi in user_info["guild"] if gi["id"] == str(guild_id)][0]
+    data = {"guild": guild_data}
+    return render_template("dashboard/manage.html", data=json.dumps(data), raw_data=data)
 
 
 @app.route("/invite")
@@ -190,12 +200,22 @@ def callback():
 @app.get("/api/servers")
 def api_servers():
     bot_guilds = get_bot_guilds()
-    user_guilds = current_app.config["user_caches"][request.headers["authorization"]]
-    mutual_guilds = {gu["id"] for gu in bot_guilds} & {gu["id"] for gu in user_guilds["guild"] if can_invite(gu["permissions"])}
+    user_info = current_app.config["user_caches"][request.headers["authorization"]]
+    mutual_guilds = {gu["id"] for gu in bot_guilds} & {gu["id"] for gu in user_info["guild"] if can_invite(gu["permissions"])}
     return {
-        "manage": [gu for gu in user_guilds["guild"] if gu["id"] in mutual_guilds and can_invite(gu["permissions"])],
-        "invite": [gu for gu in user_guilds["guild"] if can_invite(gu["permissions"]) and gu["id"] not in mutual_guilds]
+        "manage": [gu for gu in user_info["guild"] if gu["id"] in mutual_guilds and can_invite(gu["permissions"])],
+        "invite": [gu for gu in user_info["guild"] if can_invite(gu["permissions"]) and gu["id"] not in mutual_guilds]
     }
+
+
+@app.get("/api/<int:guild_id>/settings")
+def api_settings(guild_id):
+    bot_guilds = get_bot_guilds()
+    user_info = current_app.config["user_caches"][request.headers["authorization"]]
+    mutual_guilds = {gu["id"] for gu in bot_guilds} & {gu["id"] for gu in user_info["guild"] if can_invite(gu["permissions"])}
+    if str(guild_id) not in mutual_guilds:
+        return "", 403
+    return settings_collection.find_one({"gid": guild_id}, {"_id": False})
 
 
 @app.errorhandler(404)

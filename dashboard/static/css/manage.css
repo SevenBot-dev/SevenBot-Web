@@ -1,0 +1,96 @@
+.textbox {
+    border: var(--interactive-muted) 1px solid;
+    border-radius: 3px;
+    appearance: none;
+    background: var(--deprecated-text-input-bg);
+    margin-bottom: 4px;
+    transition: border 0.25s;
+    resize: none;
+    height: calc(100% - 1rem);
+    width: calc(100% - 0.5rem);
+    margin: 0;
+    display: block;
+    font-family: var(--default-font);
+    font-weight: 100;
+}
+
+
+.textbox:focus,
+.textbox:active {
+    appearance: none;
+    border: var(--discord-theme) 1px solid;
+    outline: none;
+
+}
+
+thead tr td {
+    background-color: var(--interactive-muted);
+    text-align: center
+}
+
+thead tr td:first-child {
+    border-top-left-radius: 0.25rem;
+}
+
+thead tr td:last-child {
+    border-top-right-radius: 0.25rem;
+}
+
+tbody tr td {
+    background-color: var(--background-secondary-alt);
+    padding: 4px;
+    position: relative;
+}
+
+tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 0.25rem;
+}
+
+tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 0.25rem;
+}
+
+.autoreply-id {
+    width: 10%;
+
+}
+
+.autoreply-target {
+    width: 45%;
+}
+
+.autoreply-reply {
+    width: 45%;
+}
+
+#loading {
+    text-align: center;
+    position: relative;
+    top: 4rem;
+    font-size: 1.5rem;
+}
+
+#main {
+    display: none
+}
+
+#server-title {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+    text-align: center;
+}
+
+section {
+    background: var(--background-secondary);
+    border-radius: 1rem;
+    padding: 1rem;
+    width: 80%;
+    margin: auto;
+    margin-bottom: 1rem;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    text-align: center;
+}
