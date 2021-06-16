@@ -63,7 +63,7 @@ TOKEN = "ThisIsT0ken"
 
 print "取得したいユーザーのIDを入力してください："
 userid = gets.chomp.to_i
-puts "通信中…"
+print "通信中…"
 
 def get_afk(userid)
   begin
@@ -75,6 +75,7 @@ def get_afk(userid)
     case response.code
     when 419
       puts "レートリミットに到達しました、やり直しています。"
+      sleep 10
       get_afk userid
     when 200
       JSON.parse response
@@ -144,7 +145,7 @@ if reason.length > 0
     reason = reason.force_encoding("ISO-8859-1").encode("UTF-8")
   end
 end
-puts "通信中…"
+print "通信中…"
 
 def set_afk(reason)
   begin
@@ -156,6 +157,7 @@ def set_afk(reason)
     case response.code
     when 419
       puts "レートリミットに到達しました、やり直しています。"
+      sleep 10
       set_afk reason
     when 200
       return
@@ -208,9 +210,9 @@ require "rest-client"
 USER_ID = 00000000000000000
 TOKEN = "ThisIsT0ken"
 
-puts "通信中…"
+print "通信中…"
 
-def delete_afk(reason)
+def delete_afk()
   begin
     response = RestClient.delete "https://api.sevenbot.jp/afk", "", { authorization: "#{USER_ID} #{TOKEN}" }
   rescue RestClient::Unauthorized
@@ -220,14 +222,15 @@ def delete_afk(reason)
     case response.code
     when 419
       puts "レートリミットに到達しました、やり直しています。"
-      set_afk reason
+      sleep 10
+      delete_afk
     when 200
       return
     end
   end
 end
 
-set_afk reason
+delete_afk
 puts "完了"
 </code></pre></div>
 </div>
