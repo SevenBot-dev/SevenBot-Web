@@ -60,14 +60,6 @@ tbody tr:last-child td:nth-child(4) {
     transform: scaleX(400%);
 }
 
-.pinged td {
-    background: var(--background-mentioned);
-}
-
-.pinged:hover td {
-    background: var(--background-mentioned-hover)
-}
-
 .inline-code * {
     font-family: var(--monospace-font);
 }
@@ -183,4 +175,12 @@ h1 {
     .pinged td:not(:nth-child(1)) {
         background-color: var(--background-mentioned);
     }
+}
+
+.pinged td {
+    background: var(--background-mentioned);
+}
+
+.pinged:hover td {
+    background: var(--background-mentioned-hover)
 }
