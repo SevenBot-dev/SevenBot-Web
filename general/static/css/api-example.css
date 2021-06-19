@@ -8,3 +8,10 @@
     width: 50%;
     margin: 16px;
 }
+
+@media(max-width: 850px) {
+    .sample-code {
+        width: 100%;
+        margin: 16px;
+    }
+}
