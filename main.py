@@ -31,16 +31,12 @@ def limiter_whitelist():
     return not request.host.startswith("api.")
 
 
-if os.getenv("heroku"):
-    app.config['SERVER_NAME'] = 'sevenbot.jp'
-    app.secret_key = make_random_str(10)
-    app.register_blueprint(general)
-    app.register_blueprint(general, subdomain="www")
-    app.register_blueprint(api, subdomain="api")
-
-    app.register_blueprint(captcha, subdomain="captcha")
-else:
-    app.register_blueprint(general)
+app.config['SERVER_NAME'] = 'sevenbot.jp' if os.getenv("heroku") else "local.host:5000"
+app.secret_key = make_random_str(10)
+app.register_blueprint(general)
+app.register_blueprint(general, subdomain="www", name="www_general")
+app.register_blueprint(api, subdomain="api")
+app.register_blueprint(captcha, subdomain="captcha")
 
 
 @app.errorhandler(404)
