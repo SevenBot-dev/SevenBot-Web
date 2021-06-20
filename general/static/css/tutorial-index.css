@@ -1,0 +1,40 @@
+#tutorial-container {
+    width: 60%;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.tutorial-article {
+    background: var(--background-secondary);
+
+    padding: 12px;
+    width: calc(50% - 24px);
+    border-radius: 1rem;
+    margin: 12px;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.tutorial-article a {
+    color: var(--text-normal);
+}
+
+.tutorial-title {
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.tutorial-thumbnail {
+    width: 100%;
+}
+
+@media(max-width: 850px) {
+    .tutorial-article {
+        width: 100%;
+    }
+
+    #tutorial-container {
+        width: 80%;
+    }
+}

@@ -1,3 +1,4 @@
+from glob import glob
 import json
 import os
 import random
@@ -8,10 +9,12 @@ import time
 
 from dotenv import load_dotenv
 from flask import (Flask, Blueprint, make_response, redirect,
-                   safe_join, render_template, current_app, request)
+                   render_template, current_app, request)
 from jinja2.exceptions import TemplateNotFound
 import mimetypes
 from pymongo import MongoClient
+import werkzeug
+import yaml
 
 if sys.platform.lower() == "win32":
     os.system('color')
@@ -63,15 +66,65 @@ SYNTAX_DESC_PATTERNS = [
 SYNTAX_PATTERNS = [
     [re.compile(r"&lt;([^&]+)(&gt;|$)"), r'<span class="syntax-arg-required">&lt;\1\2</span>'],
     [re.compile(r"\[([^\]]+)(\]|$)"), r'<span class="syntax-arg-optional">[\1\2</span>'],
-    [re.compile(r"^#([^ ]+)"), r'<span class="syntax-command-name">\1</span>'],
+    [re.compile(r"^([^ ]+)"), r'<span class="syntax-command-name">\1</span>'],
 ]
 
 SYNTAX_PATTERN_INPUT = [
     [re.compile(r"&lt;([^&]+)&gt;"), r'<span class="syntax-arg-required">\1</span>'],
     [re.compile(r"\[([^\]]+)]"), r'<span class="syntax-arg-optional">\1</span>'],
-    [re.compile(r"^##([^ ]+)"), r'<span class="syntax-command-name">\1</span>'],
+    [re.compile(r"^([^ [<]+)"), r'<span class="syntax-command-name">\1</span>'],
 ]
+MD_MASTER_PATTERN = re.compile(r"---\n([\s\S]+)\n---([\s\S]+)$")
+DARK_SWITCH_TAG = r"""<picture>
+    <source srcset="/static/tutorial-imgs/!image-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)">
+    <source srcset="/static/tutorial-imgs/!image-dark.png" type="image/png" media="(prefers-color-scheme: dark)">
+    <source srcset="/static/tutorial-imgs/!image.webp" type="image/webp">
+    <img src="/static/tutorial-imgs/!image.png" class="tutorial-image">
+</picture>"""
+WEBP_SWITCH_TAG = r"""<picture>
+    <source srcset="/static/tutorial-imgs/!image.webp" type="image/webp">
+    <img src="/static/tutorial-imgs/!image.png" class="tutorial-image">
+</picture>"""
 
+
+def convert_sbmd(match):
+    cmd, content = match.groups()
+    content = content.replace("<", "&lt;").replace(">", "&gt;")
+    if cmd == "syntax":
+        for pattern, sub in SYNTAX_PATTERNS:
+            content = pattern.sub(sub, content)
+        content = '<span class="inline-code">{}</span>'.format(content)
+    elif cmd == "syntax-input":
+        for pattern, sub in SYNTAX_PATTERN_INPUT:
+            content = pattern.sub(sub, content)
+        content = '<span class="inline-code">{}</span>'.format(content)
+    elif cmd == "asset-image":
+        content = WEBP_SWITCH_TAG.replace("!image", content)
+    elif cmd == "dark-asset-image":
+        content = DARK_SWITCH_TAG.replace("!image", content)
+    elif cmd == "command-ref":
+        command = convert_commands(next((c for c in current_app.config["commands_cache"] if c["name"] == content), None))
+        content = '<a href="/commands#{}"><span class="inline-code command-syntax">{}</span></a>'.format(command["name"].replace(" ", "-"), command["syntax"])
+    return content
+
+
+raw_md_patterns = [
+    [r"^(#+) (.+)$", lambda m: f"<h{len(m[1])}>{m[2]}</h{len(m[1])}>"],
+    [r"\*\*(.+?)\*\*", r'<span class="bold">\1</a>'],
+    [r"```(?:\n|<br>)*(.+?)```", r'<div class="codeblock">\1</div>'],
+    [r"`(.+?)`", r'<span class="inline-code">\1</span>'],
+    [r"__(.+?)__", r'<span class="underline">\1</span>'],
+    [r"!\[(.+?)\]\((.+?)\)", r'<img src="\2" alt="\1">'],
+    [r"\[(.+?)\]\((.+?)\)", r'<a href="\2">\1</a>'],
+    [r"\{([^|]+)\|([^}]+)\}", convert_sbmd],
+    [r"  $", "<br>"],
+    [r"\n\n", "\n<br>\n"]
+]
+tmp_patterns = []
+for pattern, sub in raw_md_patterns:
+    tmp_patterns.append((re.compile(pattern, flags=re.MULTILINE), sub))
+
+MD_PATTERNS = tmp_patterns
 MENTION_PATTERN = re.compile(r"\{([^\}]+)}")
 TYPE_PATTERN = re.compile(r".+（([^、]+)(?:、.+)?）")
 
@@ -91,9 +144,11 @@ def parse_md(d):
             for p in SYNTAX_DESC_PATTERNS:
                 desc = p[0].sub(p[1], desc)
             if desc.startswith("##"):
+                desc = desc.replace("#", "")
                 for p in SYNTAX_PATTERN_INPUT:
                     desc = p[0].sub(p[1], desc)
             elif desc.startswith("#"):
+                desc = desc.replace("#", "")
                 for p in SYNTAX_PATTERNS:
                     desc = p[0].sub(p[1], desc)
             d[dk] = desc
@@ -195,13 +250,13 @@ def status():
 
 
 @app.route("/", defaults={"pagename": "index"})
-@app.route("/<pagename>")
+@app.route("/<path:pagename>")
 def index(pagename):
     try:
-        resp = render_template(f"general/{pagename}.html")
+        resp = render_template(werkzeug.utils.safe_join("general/", pagename + ".html"))
         return resp
-    except TemplateNotFound:
-        path = safe_join("general/templates/general", pagename + ".json")
+    except (TemplateNotFound, werkzeug.exceptions.NotFound):
+        path = werkzeug.utils.safe_join("general/templates/general", pagename + ".json")
         if os.path.exists(path):
             with open(path, "r") as f:
                 raw_resp = json.load(f)
@@ -212,6 +267,42 @@ def index(pagename):
                     return redirect(raw_resp["url"])
         else:
             return render_template("general/404.html"), 404
+
+
+@app.route("/tutorial")
+def tutorials_index():
+    mds = glob("general/tutorials/*.md")
+    datas = []
+    for md in mds:
+        with open(md) as f:
+            raw_md = f.read()
+        head_md, _ = MD_MASTER_PATTERN.match(raw_md).groups()
+        datas.append((os.path.basename(md).removesuffix(".md"), yaml.safe_load(head_md)))
+    return render_template("general/tutorial-index.html", data=sorted(datas, key=lambda d: d[1]["index"]))
+
+
+@app.route("/tutorial/<path:path>")
+def tutorials(path):
+    com = []
+    if (time.time() - current_app.config.get("commands_cache_time", 0)) < 300:
+        com = current_app.config.get("commands_cache")
+        print("[tutorial]Cache is available, loaded from cache.")
+    else:
+        print("[tutorial]Cache is expired or missing, reloading.")
+        for c in commandscollection.find({}, {"_id": False}):
+            com.append(c)
+        current_app.config["commands_cache"] = com
+        current_app.config["commands_cache_time"] = time.time()
+    try:
+        with open(werkzeug.utils.safe_join("general/tutorials/", path + ".md")) as f:
+            raw_md = f.read()
+        head_md, body_md = MD_MASTER_PATTERN.match(raw_md).groups()
+        for pattern, sub in MD_PATTERNS:
+            body_md = pattern.sub(sub, body_md)
+        md_data = yaml.safe_load(head_md)
+        return render_template("general/tutorial.html", body=body_md, **md_data)
+    except (werkzeug.exceptions.NotFound, FileNotFoundError):
+        return render_template("general/404.html"), 404
 
 
 @app.errorhandler(404)

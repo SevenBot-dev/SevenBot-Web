@@ -1,0 +1,19 @@
+{% extends 'general/base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="/static/css/tutorial-index.css">
+{% endblock %}
+{% block main %}
+<h1 class="page-title">チュートリアル</h1>
+<div id="tutorial-container">
+    {% for article in data %}
+    <article class="tutorial-article">
+        <a href="/tutorial/{{article[0]}}">
+            <div class="tutorial-title">{{article[1].title}}</div>
+            <p class="tutorial-desc">{{article[1].description}}</p>
+            <img class="tutorial-thumbnail" src="/static/tutorial-thumbnails/{{article[1].thumbnail}}.png">
+        </a>
+    </article>
+    {%endfor%}
+</div>
+{% endblock %}
