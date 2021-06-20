@@ -1,12 +1,15 @@
-{% extends 'general/base.html' %} {% block title %}APIサンプル{% endblock %} {% block head %}
+{% extends 'general/base.html' %}
+{% block title %}APIサンプル{% endblock %}
+{% block head %}
 <link rel="stylesheet" href="/static/css/api.css">
 <link rel="stylesheet" href="/static/css/api-example.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/solarized-light.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
-<script>
+<script defer>
     hljs.highlightAll()
 </script>
-{% endblock %} {% block main %}
+{% endblock %}
+{% block main %}
 <h1 class="page-title">APIサンプル</h1>
 <p class="content-p">
     SevenBot Web APIの例です。

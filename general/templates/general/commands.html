@@ -1,7 +1,10 @@
-{% extends 'general/base.html' %} {% block title %}コマンド{% endblock %} {% block head %}
+{% extends 'general/base.html' %}
+{% block title %}コマンド{% endblock %}
+{% block head %}
 <link rel="stylesheet" href="/static/css/commands.css">
 <script defer type="text/javascript" src="/static/js/commands.js"></script>
-{% endblock %} {% block main %}
+{% endblock %}
+{% block main %}
 <div class="--fade">
     <h1 class="page-title">コマンド一覧</h1>
     <p class="centerp"><a href="/commands-howto">ここ</a>でコマンドの見方を解説しています。</p>
@@ -19,39 +22,44 @@
             </tr>
         </thead>
         <tbody>
-            {% for command in category["commands"] %} {% if command["parent"] %}
-            <tr class="has-parent command-tr" parent="{{ command['parent'].replace(' ', '-') }}" name="{{command['name'].replace(' ', '-')}}">
+            {% for command in category["commands"] %}
+                {% if command["parent"] %}
+                <tr class="has-parent command-tr" parent="{{ command['parent'].replace(' ', '-') }}" name="{{command['name'].replace(' ', '-')}}">
                 {% else %}
                 <tr name="{{command['name'].replace(' ', '-')}}" class="command-tr">
-                    {% endif %}
+                {% endif %}
                     <td onclick="copyLink(this)" class="command-td command-name"><span class="inline-code inline-code2">{{command["name"]}}</span></td>
                     <td class="command-td command-desc">{% autoescape false %}{{command["desc"]}}{% endautoescape %}</td>
                     {% if command["syntax"] %}
-                    <td onclick="copyCommand(this)" class="command-td command-syntax"><span class="inline-code inline-code2">{% autoescape false %}{{ command["syntax"] }}{% endautoescape %}</span></td>
+                        <td onclick="copyCommand(this)" class="command-td command-syntax"><span class="inline-code inline-code2">{% autoescape false %}{{ command["syntax"] }}{% endautoescape %}</span></td>
                     {% else %}
-                    <td class="empty-td" class="command-td command-syntax">
-                        <div class="empty">-</div>
-                    </td>
-                    {% endif %} {% if command["aliases"] %}
-                    <td class="command-td command-aliases">{% for alias in command["aliases"] %}{{ ", " if loop.index != 1 else "" }}<span class="inline-code inline-code2">{{alias}}</span>{% endfor %}</td>
+                        <td class="empty-td" class="command-td command-syntax">
+                            <div class="empty">-</div>
+                        </td>
+                    {% endif %}
+                    {% if command["aliases"] %}
+                        <td class="command-td command-aliases">{% for alias in command["aliases"] %}{{ ", " if loop.index != 1 else "" }}<span class="inline-code inline-code2">{{alias}}</span>{% endfor %}</td>
                     {% else %}
-                    <td class="empty-td" class="command-td command-aliases">
-                        <div class="empty">-</div>
-                    </td>
+                        <td class="empty-td" class="command-td command-aliases">
+                            <div class="empty">-</div>
+                        </td>
                     {% endif %}
 
                 </tr>
-                {%if command["is_parent"]%} {%if command['parent']%}
+                {%if command["is_parent"]%}
+                {%if command['parent']%}
                 <tr class="expand-tr has-parent" for="{{command['name'].replace(' ', '-')}}" parent="{{command['parent'].replace(' ', '-')}}">
-                    {%else%}
-                    <tr class="expand-tr" for="{{command['name'].replace(' ', '-')}}">
-                        {%endif%}
-                        <td colspan="4">
-                            <svg width="18" height="10" viewBox="-2 -2 34 18"><polyline points="0,0 16,16 32,0" stroke="var(--interactive-normal)" fill="none" stroke-width="1"></polyline></svg>
-                        </td>
-                    </tr>
-                    {%endif%} {% endfor %}
+                {%else%}
+                <tr class="expand-tr" for="{{command['name'].replace(' ', '-')}}">
+                {%endif%}
+                    <td colspan="4">
+                         <svg width="18" height="10" viewBox="-2 -2 34 18"><polyline points="0,0 16,16 32,0" stroke="var(--interactive-normal)" fill="none" stroke-width="1"></polyline></svg>
+                    </td>
+                </tr>
+                {%endif%}
+            {% endfor %}
         </tbody>
     </table>
 </div>
-{% endfor %} {% endblock %}
+{% endfor %}
+{% endblock %}

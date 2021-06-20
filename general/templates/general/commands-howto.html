@@ -1,6 +1,10 @@
-{% extends 'general/base.html' %} {% block title %}コマンドヘルプ{% endblock %} {% block head %}
+{% extends 'general/base.html' %}
+{% block title %}コマンドヘルプ{% endblock %}
+{% block head %}
 <link rel="stylesheet" href="/static/css/commands.css">
-<link rel="stylesheet" href="/static/css/commands-howto.css"> {% endblock %} {% block main %}
+<link rel="stylesheet" href="/static/css/commands-howto.css">
+{% endblock %}
+{% block main %}
 <div>
     <h1 class="page-title">コマンド一覧の見方</h1>
     <section class="syntax-section">
@@ -24,7 +28,9 @@
                     <td rowspan="{{table.examples | length}}" class="param-description">{%autoescape false %}{{table.description}}{%endautoescape %}</td>
                     {%endif%}
 
-                    <td>{%if "mention" in example.text%}<span class="inline-code inline-code2 mention-bg">{%else%}<span class="inline-code inline-code2">{%endif%}{%autoescape false %}{{example.text}}{%endautoescape %}</span></td>
+                    <td>
+                        {%if "mention" in example.text%}<span class="inline-code inline-code2 mention-bg">{%else%}<span class="inline-code inline-code2">{%endif%}{%autoescape false %}{{example.text}}{%endautoescape %}</span>
+                    </td>
                     {%if example.result%}
                     <td class="example-ok">OK</td>
                     {%else%}
