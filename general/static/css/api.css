@@ -1,107 +1,104 @@
 thead tr td {
     background-color: var(--background-tertiary);
-    text-align: center;
+    text-align: center
 }
 
 thead tr td:nth-child(1) {
-    border-top-left-radius: 3px;
+    border-top-left-radius: 3px
 }
 
 thead tr td:nth-child(6) {
-    border-top-right-radius: 3px;
+    border-top-right-radius: 3px
 }
 
 tbody tr td {
     background-color: var(--background-secondary);
-    /*     text-align: center; */
     padding: 4px;
-    position: relative;
+    position: relative
 }
 
 tbody tr td:nth-child(1) {
-    width: 15%;
+    width: 15%
 }
 
 tbody tr td:nth-child(2) {
-    width: 10%;
+    width: 10%
 }
 
 tbody tr td:nth-child(3) {
     width: 25%;
-    word-break: keep-all;
+    word-break: keep-all
 }
 
 tbody tr td:nth-child(4) {
-    width: 10%;
+    width: 10%
 }
 
 tbody tr td:nth-child(5) {
-    width: 25%;
+    width: 25%
 }
 
 tbody tr:last-child td:nth-child(1) {
-    border-bottom-left-radius: 3px;
+    border-bottom-left-radius: 3px
 }
 
 tbody tr:last-child td:nth-child(4) {
-    border-bottom-right-radius: 3px;
+    border-bottom-right-radius: 3px
 }
 
 .more {
     position: absolute;
-    right: 0.5rem;
-    bottom: 0.25rem;
+    right: .5rem;
+    bottom: .25rem;
     user-select: none;
-    cursor: pointer;
+    cursor: pointer
 }
 
 .datail {
-    display: none;
+    display: none
 }
 
 h1 {
-    text-align: center;
+    text-align: center
 }
 
 .empty-td {
-    text-align: center;
+    text-align: center
 }
 
 .empty {
     color: var(--text-muted);
     pointer-events: none;
-    transform: scaleX(400%);
+    transform: scaleX(400%)
 }
 
 .request-type {
-    font-weight: bold;
+    font-weight: 700
 }
 
-h1,
-h2,
-h3 {
-    text-align: center;
+h1,h2,h3 {
+    text-align: center
 }
 
 .content-p {
     width: 40%;
-    margin: auto;
+    margin: auto
 }
 
 table {
     width: 60%;
-    margin: auto;
+    margin: auto
 }
 
 .request {
     font-size: 80%;
     position: relative;
     display: inline-block;
-    vertical-align: middle;
+    vertical-align: middle
 }
 
 .request-type {
-    color: var(--text-warning);
+    color: var(--text-warning)
 }
 
 .request-type-container {
@@ -124,37 +121,47 @@ table {
     font-size: 70%;
     display: inline-block;
     vertical-align: middle;
-    padding: 0 8px;
+    padding: 0 8px
 }
 
 @media(max-width: 850px) {
     thead {
-        display: none;
+        display:none
     }
+
+    table {
+        width: 80%;
+        overflow: hidden;
+    }
+
     tr {
-        border-bottom: 8px solid transparent;
+        border-bottom: 8px solid transparent
     }
+
     td {
         display: block;
-        width: calc(130%) !important;
-        left: -15%;
+        width: 100% !important;
         margin-bottom: 3px;
-        border-radius: 0;
+        border-radius: 0
     }
+
     td:nth-child(1) {
         background-color: var(--background-tertiary);
         border-top-left-radius: 3px;
-        border-top-right-radius: 3px;
-        /*! padding: 8px; */
+        border-top-right-radius: 3px
     }
+
     tr.has-parent td:nth-child(1) {
-        background-color: var(--background-secondary);
+        background-color: var(--background-secondary)
     }
+
     td:last-child {
         border-bottom-left-radius: 3px;
-        border-bottom-right-radius: 3px;
+        border-bottom-right-radius: 3px
     }
+
     .content-p {
         width: 80%
     }
 }
+
