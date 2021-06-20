@@ -314,4 +314,4 @@ if __name__ == "__main__":
     testapp = Flask(__name__)
     testapp.register_blueprint(app)
     testapp.secret_key = "ABCdefGHI"
-    testapp.run(debug=True)
+    testapp.run("0.0.0.0", debug=True)
