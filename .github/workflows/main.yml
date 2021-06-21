@@ -1,0 +1,22 @@
+name: Purge cache in Cloudflare
+on:
+  push:
+    branches:
+      - "main"
+    paths:
+      - "*/static/**"
+jobs:
+  purge-cache:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cloudflare Purge Cache Action
+        # You may pin to the exact commit or the version.
+        # uses: 3stacks/cloudflare-purge-cache-action@87de3f60c71dbca28e37c329d15d3aa2671fc8cd
+        uses: 3stacks/cloudflare-purge-cache-action@v1.0.6
+        with:
+          # Your Cloudflare auth token
+          authToken: ${{ secrets.cloudflare_auth_token }}
+          # The zone you wish to purge
+          siteName: ${{ secrets.cloudflare_zone }}
+          # The admin email for this zone
+          authEmail: ${{ secrets.cloudflare_email }}
