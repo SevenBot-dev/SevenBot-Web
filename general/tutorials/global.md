@@ -10,7 +10,7 @@ index: 3
 {dark-asset-image|global-1}
 
 {command-ref|gchat activate}を使ってグローバルチャットを作ります。  
-{syntax-input|[撮影グローバル]}の部分は自由に置き換えて下さい。
+{syntax|[チャンネル名]}（サンプルだと{syntax-input|[撮影グローバル]}）は自由に置き換えて下さい。
 
 {dark-asset-image|global-2}
 パスワードを聞かれるので入力します。
@@ -20,7 +20,7 @@ index: 3
 {dark-asset-image|global-3}
 
 {command-ref|gchat activate}を使ってグローバルチャットを繋ぎます。  
-{syntax-input|[撮影グローバル]}の部分は上で入力した名前にして下さい。
+{syntax|[チャンネル名]}（サンプルだと{syntax-input|[撮影グローバル]}）は上で入力した名前にして下さい。
 
 {dark-asset-image|global-4}
 パスワードを聞かれるので入力します。  
