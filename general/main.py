@@ -66,7 +66,7 @@ SYNTAX_DESC_PATTERNS = [
 SYNTAX_PATTERNS = [
     [re.compile(r"&lt;([^&]+)(&gt;|$)"), r'<span class="syntax-arg-required">&lt;\1\2</span>'],
     [re.compile(r"\[([^\]]+)(\]|$)"), r'<span class="syntax-arg-optional">[\1\2</span>'],
-    [re.compile(r"^([^ ]+)"), r'<span class="syntax-command-name">\1</span>'],
+    [re.compile(r"^([^ [<]+)"), r'<span class="syntax-command-name">\1</span>'],
 ]
 
 SYNTAX_PATTERN_INPUT = [
