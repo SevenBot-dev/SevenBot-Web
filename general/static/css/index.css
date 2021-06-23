@@ -94,8 +94,8 @@ body {
 
 .top-features-image {
     float: right;
-    -webkit-mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(255, 255, 255, 1) 25%, rgba(255, 255, 255, 1) 100%);
-    mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(255, 255, 255, 1) 25%, rgba(255, 255, 255, 1) 100%);
+    -webkit-mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0) -10%, rgba(255, 255, 255, 1) 25%, rgba(255, 255, 255, 1) 110%);
+    mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0) -10%, rgba(255, 255, 255, 1) 25%, rgba(255, 255, 255, 1) 110%);
     right: -16px
 }
 
@@ -123,31 +123,42 @@ body {
         width: 100%;
         background: 0 0
     }
+
     .top-features-title {
         position: relative;
         left: -1rem
     }
+
     .top-features-content {
         margin-left: 0;
-        position: absolute!important;
+        position: absolute !important;
         width: 80%;
         left: 10%;
         word-break: break-word
     }
-    .top-features-content {
-        background-color: transparent
+
+    .top-features {
+        background-color: transparent;
+        overflow: hidden;
+        /* outline-offset: -2px; */
     }
+
     .top-features-image {
         height: auto;
         right: 0;
         width: 100%;
         float: unset;
         -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0) -5%, rgba(0, 0, 0, 0) 0%, rgba(128, 128, 128, 0.75) 60%, rgba(128, 128, 128, 0.75) 90%, rgba(0, 0, 0, 0) 100%, rgba(0, 0, 0, 0) 105%);
+        -webkit-mask-mode: alpha;
         mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0) -5%, rgba(0, 0, 0, 0) 0%, rgba(128, 128, 128, 0.75) 60%, rgba(128, 128, 128, 0.75) 90%, rgba(0, 0, 0, 0) 100%, rgba(0, 0, 0, 0) 105%);
+        mask-mode: alpha;
         filter: blur(0.5px);
+        outline: 3px solid var(--background-primary);
+        outline-offset: -3px;
         display: block;
-        position: relative!important
+        position: relative !important
     }
+
     #sb-img {
         top: 64px
     }
