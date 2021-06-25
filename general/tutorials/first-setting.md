@@ -2,7 +2,7 @@
 title: オススメの初期設定
 description: SevenBotを入れたら最初にやっておくべき設定を解説します。
 thumbnail: first-setting
-index: 2
+index: 3
 ---
 SevenBotを入れたら最初にやっておくべき設定を解説します。
 
