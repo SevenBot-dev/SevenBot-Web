@@ -66,13 +66,15 @@ SYNTAX_DESC_PATTERNS = [
 SYNTAX_PATTERNS = [
     [re.compile(r"&lt;([^&]+)(&gt;|$)"), r'<span class="syntax-arg-required">&lt;\1\2</span>'],
     [re.compile(r"\[([^\]]+)(\]|$)"), r'<span class="syntax-arg-optional">[\1\2</span>'],
-    [re.compile(r"^([^ [<]+)"), r'<span class="syntax-command-name">\1</span>'],
+    [re.compile(r"(sb(?:#|\. ?)|^)([^ [<\s]+)"), r'\1<span class="syntax-command-name">\2</span>'],
+    [re.compile(r"^(sb(?:#|\. ?))"), r'<span class="syntax-prefix">\1</span>'],
 ]
 
 SYNTAX_PATTERN_INPUT = [
     [re.compile(r"&lt;([^&]+)&gt;"), r'<span class="syntax-arg-required">\1</span>'],
     [re.compile(r"\[([^\]]+)]"), r'<span class="syntax-arg-optional">\1</span>'],
-    [re.compile(r"^([^ [<]+)"), r'<span class="syntax-command-name">\1</span>'],
+    [re.compile(r"(sb(?:#|\. ?)|^)([^ [<\s]+)"), r'\1<span class="syntax-command-name">\2</span>'],
+    [re.compile(r"^(sb(?:#|\. ?))"), r'<span class="syntax-prefix">\1</span>'],
 ]
 MD_MASTER_PATTERN = re.compile(r"---\n([\s\S]+)\n---([\s\S]+)$")
 DARK_SWITCH_TAG = r"""<picture>
@@ -105,6 +107,8 @@ def convert_sbmd(match):
     elif cmd == "command-ref":
         command = convert_commands(next((c for c in current_app.config["commands_cache"] if c["name"] == content), None))
         content = '<a href="/commands#{}"><span class="inline-code command-syntax">{}</span></a>'.format(command["name"].replace(" ", "-"), command["syntax"])
+    else:
+        content = match[0]
     return content
 
 
@@ -226,13 +230,6 @@ def api():
     return render_template("general/api.html", endpoints=api_info["categories"], auths=api_info["authorization"])
 
 
-@app.route("/commands-howto")
-def commands_howto():
-    with open("general/data/commands-howto.json", "r") as f:
-        info = json.load(f)
-    return render_template("general/commands-howto.html", data=parse_md(info))
-
-
 @app.route("/status")
 def status():
     com = []
@@ -296,13 +293,22 @@ def tutorials(path):
     try:
         with open(werkzeug.utils.safe_join("general/tutorials/", path + ".md")) as f:
             raw_md = f.read()
+    except (werkzeug.exceptions.NotFound, FileNotFoundError):
+        return render_template("general/404.html"), 404
+    else:
         head_md, body_md = MD_MASTER_PATTERN.match(raw_md).groups()
         for pattern, sub in MD_PATTERNS:
             body_md = pattern.sub(sub, body_md)
         md_data = yaml.safe_load(head_md)
+        if md_data.get("json"):
+            extra_datas = {}
+            for j in md_data['json']:
+                with open(f"general/data/{j}.json", "r") as f:
+                    extra_datas[j] = parse_md(json.load(f))
+            md_data["data"] = extra_datas
+        for ih in re.finditer(r"\{import-html\|([^(\]]+?)\}", body_md):
+            body_md = body_md.replace(ih[0], render_template(f"tutorial-html/{ih[1]}.html", **md_data))
         return render_template("general/tutorial.html", body=body_md, **md_data)
-    except (werkzeug.exceptions.NotFound, FileNotFoundError):
-        return render_template("general/404.html"), 404
 
 
 @app.errorhandler(404)
