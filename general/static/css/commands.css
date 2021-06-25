@@ -65,6 +65,10 @@ tbody tr:last-child td:nth-child(4) {
     font-family: var(--monospace-font)
 }
 
+.syntax-prefix {
+    color: #859900
+}
+
 .syntax-command-name {
     color: #b58900
 }
@@ -133,7 +137,7 @@ h1 {
 
 @media(max-width: 850px) {
     thead {
-        display:none
+        display: none
     }
 
     table {
@@ -196,4 +200,3 @@ h1 {
 .pinged:hover td {
     background: var(--background-mentioned-hover)
 }
-
