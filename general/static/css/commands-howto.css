@@ -27,6 +27,11 @@
 
 .syntax-section {
     padding-top: 2rem;
+    width: 100%;
+}
+
+.syntax-section table {
+    width: 100%;
 }
 
 table {
@@ -56,13 +61,21 @@ table {
 }
 
 @media(max-width: 850px) {
-    td:nth-child(1):not(.param-title, .syntax-example, .divider-tr td){
+    td:nth-child(1):not(.param-title, .syntax-example, .divider-tr td) {
         background-color: var(--background-secondary-alt)
     }
-    .param-description{
-        background-color:var(--background-secondary);
+
+    .param-description {
+        background-color: var(--background-secondary);
     }
-    .syntax-example, .divider-tr td{
+
+    .syntax-example,
+    .divider-tr td {
         background-color: var(--interactive-muted)
+    }
+
+    table {
+        width: 100% !important;
+        overflow: hidden;
     }
 }
