@@ -3,10 +3,8 @@
 {% block head %}
 <link rel="stylesheet" href="/static/css/api.css">
 <link rel="stylesheet" href="/static/css/api-example.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/solarized-light.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
 <script defer>
-    hljs.highlightAll()
+  hljs.highlightAll()
 </script>
 <meta content="APIサンプル - SevenBot" property="og:title">
 <meta content="SevenBot APIのサンプルを掲載しています。" property="og:description">
@@ -19,15 +17,15 @@
 {% block main %}
 <h1 class="page-title">APIサンプル</h1>
 <p class="content-p">
-    SevenBot Web APIの例です。
+  SevenBot Web APIの例です。
 </p>
 
 <h1>AFK API</h1>
 <h2>AFKを取得</h2>
 <div class="sample-code-container">
-    <div class="sample-code python">
-        <h3>Python</h3>
-        <pre><code class="python">import sys
+  <div class="sample-code python">
+    <h3>Python</h3>
+    <pre><code class="python">import sys
 import time
 import requests
 
@@ -37,35 +35,35 @@ TOKEN = "ThisIsT0ken"
 userid = int(input("取得したいユーザーのIDを入力してください："))
 print("通信中…")
 def get_afk():
-    response = requests.get(
-        "https://api.sevenbot.jp/afk",
-        params={
-            "userid": userid
-        },
-        headers={
-            "authorization": f"{USER_ID} {TOKEN}"
-        }
-    )
-    if response.status_code == 401:
-        print("認証に失敗しました。")
-        sys.exit()
-    elif response.status_code == 429:
-        print("レートリミットに到達しました、やり直しています。")
-        time.sleep(10)
-        return get_afk()
-    else:
-        return response.json()
+  response = requests.get(
+    "https://api.sevenbot.jp/afk",
+    params={
+      "userid": userid
+    },
+    headers={
+      "authorization": f"{USER_ID} {TOKEN}"
+    }
+  )
+  if response.status_code == 401:
+    print("認証に失敗しました。")
+    sys.exit()
+  elif response.status_code == 429:
+    print("レートリミットに到達しました、やり直しています。")
+    time.sleep(10)
+    return get_afk()
+  else:
+    return response.json()
 
 result = get_afk()
 if result["message"] is False:
-    print(f"{userid}はAFKではありません。")
+  print(f"{userid}はAFKではありません。")
 else:
-    print(f"{userid}はAFKです。\n理由：\n{result['reason'] or '(なし)'}")
+  print(f"{userid}はAFKです。\n理由：\n{result['reason'] or '(なし)'}")
 </code></pre>
-    </div>
-    <div class="sample-code ruby">
-        <h3>Ruby</h3>
-        <pre><code class="ruby">require "json"
+  </div>
+  <div class="sample-code ruby">
+    <h3>Ruby</h3>
+    <pre><code class="ruby">require "json"
 require "rest-client"
 
 USER_ID = 00000000000000000
@@ -100,14 +98,14 @@ else
   puts "#{userid}はAFKです。\n理由：\n#{result["reason"] || "(なし)"}"
 end
 </code></pre>
-    </div>
+  </div>
 </div>
 <h2>AFKを設定</h2>
 <div class="sample-code-container">
 
-    <div class="sample-code python">
-        <h3>Python</h3>
-        <pre><code class="code python">import sys
+  <div class="sample-code python">
+    <h3>Python</h3>
+    <pre><code class="code python">import sys
 import time
 import requests
 
@@ -137,10 +135,10 @@ def set_afk():
 set_afk()
 print("完了")
 </code></pre>
-    </div>
-    <div class="sample-code ruby">
-        <h3>Ruby</h3>
-        <pre><code class="code ruby">require "json"
+  </div>
+  <div class="sample-code ruby">
+    <h3>Ruby</h3>
+    <pre><code class="code ruby">require "json"
 require "rest-client"
 
 USER_ID = 00000000000000000
@@ -178,15 +176,15 @@ end
 set_afk reason
 puts "完了"
 </code></pre>
-    </div>
+  </div>
 </div>
 
 <h2>AFKを解除</h2>
 <div class="sample-code-container">
 
-    <div class="sample-code python">
-        <h3>Python</h3>
-        <pre><code class="code python">import sys
+  <div class="sample-code python">
+    <h3>Python</h3>
+    <pre><code class="code python">import sys
 import time
 import requests
 
@@ -212,9 +210,9 @@ def delete_afk():
 delete_afk()
 print("完了")
 </code></pre></div>
-    <div class="sample-code ruby">
-        <h3>Ruby</h3>
-        <pre><code class="code ruby">require "json"
+  <div class="sample-code ruby">
+    <h3>Ruby</h3>
+    <pre><code class="code ruby">require "json"
 require "rest-client"
 
 USER_ID = 00000000000000000
