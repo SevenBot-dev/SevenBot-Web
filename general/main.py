@@ -221,14 +221,14 @@ def commands():
 
 @app.route("/api")
 def api():
-    with open("general/api.json", "r") as f:
+    with open("general/data/api.json", "r") as f:
         api_info = json.load(f)
     return render_template("general/api.html", endpoints=api_info["categories"], auths=api_info["authorization"])
 
 
 @app.route("/commands-howto")
 def commands_howto():
-    with open("general/commands-howto.json", "r") as f:
+    with open("general/data/commands-howto.json", "r") as f:
         info = json.load(f)
     return render_template("general/commands-howto.html", data=parse_md(info))
 
