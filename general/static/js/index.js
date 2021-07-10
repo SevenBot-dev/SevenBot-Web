@@ -34,7 +34,7 @@ if (document.cookie.replace(/(?:(?:^|.*;\s*)animated\s*\=\s*([^;]*).*$)|^.*$/, "
 
 
     sc.style.opacity = 0;
-    setTimeout(function() {
+    setTimeout(function () {
         returnScroll();
         sc.animate({
             opacity: [0, 1]
@@ -44,6 +44,9 @@ if (document.cookie.replace(/(?:(?:^|.*;\s*)animated\s*\=\s*([^;]*).*$)|^.*$/, "
         i = 0
         anime = setInterval(() => {
             // console.log(si, i)
+            if(si == null){
+                clearInterval(anime)
+            }
             i += 0.1
             si.setAttribute("style", "mask-image: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgb(255, 255, 255) " + i + "%, rgb(255, 255, 255) 100%);")
             si.setAttribute("style", "-webkit-mask-image: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgb(255, 255, 255) " + i + "%, rgb(255, 255, 255) 100%);")
