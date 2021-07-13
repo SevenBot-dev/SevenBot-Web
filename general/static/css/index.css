@@ -156,7 +156,8 @@ body {
         outline: 3px solid var(--background-primary);
         outline-offset: -3px;
         display: block;
-        position: relative !important
+        position: relative !important;
+        opacity: 0.5;
     }
 
     #sb-img {
