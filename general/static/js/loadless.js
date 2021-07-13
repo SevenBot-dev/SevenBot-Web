@@ -1,7 +1,7 @@
 var isJumping = false
 var pageCaches = {}
 var aHistory = [location.pathname]
-
+menuOpener = document.getElementById("header-menu-opener")
 function pretendJump() {
     for (e of document.getElementsByTagName("a")) {
         if (e.getAttribute("target") != "blank" && e.getAttribute("href").match(/^\/(?:[^\/]|$)/)) {
@@ -42,7 +42,7 @@ function onAClick(event) {
     aHistory.push(location.pathname)
     href = this.getAttribute("href")
     jumpURL(href)
-    
+
 }
 async function jumpURL(href) {
     console.debug("%cJumping to " + href, "color:#0067e0")
@@ -78,6 +78,9 @@ async function jumpURL(href) {
     history.pushState(null, title, href)
     isJumping = false
     pretendJump()
+    if (menuOpener.getAttribute("open") === "true") {
+        menuOpener.click()
+    }
     console.debug("%cDone", "color:#3ba55c")
 }
 function onPopState(state) {
