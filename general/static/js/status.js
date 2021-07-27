@@ -419,16 +419,6 @@ function main() {
         },
 
         series: [{
-            name: 'メイン',
-            data: chartDataSave,
-            yAxis: 0,
-            showInLegend: false,
-            marker: { symbol: "circle" },
-            tooltip: {
-                valuePrefix: "",
-                valueSuffix: 'KB',
-            },
-        }, {
             name: 'データベース',
             data: chartDataDB,
             yAxis: 0,
