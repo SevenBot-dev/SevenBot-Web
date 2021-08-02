@@ -21,9 +21,11 @@ maincollecton = mainclient.sevenbot.captcha
 DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET = os.environ.get("discord_client_id"), os.environ.get("discord_client_secret")
 app = Blueprint("captcha", __name__, template_folder="./templates", static_folder="./static")
 
-login_url = "https://discord.com/api/oauth2/authorize?"
-f"client_id={DISCORD_CLIENT_ID}&redirect_uri={urllib.parse.quote(ruri)}&"
-"response_type=code&scope=guilds%20identify&state={}"
+login_url = (
+    "https://discord.com/api/oauth2/authorize?"
+    f"client_id={DISCORD_CLIENT_ID}&redirect_uri={urllib.parse.quote(ruri)}&"
+    "response_type=code&scope=guilds%20identify&state={}"
+)
 API_ENDPOINT = "https://discord.com/api/v9"
 SCOPE = "guilds%20identify"
 
