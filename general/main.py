@@ -1,15 +1,12 @@
 from glob import glob
 import json
 import os
-import random
 import re
-import string
 import sys
 import time
 
 from dotenv import load_dotenv
-from flask import (Flask, Blueprint, make_response, redirect,
-                   render_template, current_app, request)
+from flask import Flask, Blueprint, make_response, redirect, render_template, current_app, request
 from jinja2.exceptions import TemplateNotFound
 import mimetypes
 from pymongo import MongoClient
@@ -17,8 +14,8 @@ import werkzeug
 import yaml
 
 if sys.platform.lower() == "win32":
-    os.system('color')
-mimetypes.add_type('image/webp', '.webp')
+    os.system("color")
+mimetypes.add_type("image/webp", ".webp")
 if not os.getenv("heroku"):
     load_dotenv("../.env")
     print("[general]Not heroku, loaded .env", os.environ.get("connectstr"))
@@ -26,41 +23,37 @@ mainclient = MongoClient(os.environ.get("connectstr"))
 commandscollection = mainclient.sevenbot.commands
 statuscollection = mainclient.sevenbot.status_log
 
-app = Blueprint('general', __name__, template_folder='./templates', static_folder="./static")
-
-
-def make_random_str(l):
-    return ''.join(random.choices(string.ascii_letters, k=l))
+app = Blueprint("general", __name__, template_folder="./templates", static_folder="./static")
 
 
 REDIRECT_PATTERN = re.compile(r'redirect_to: "(.+)"')
 CATEGORIES = {
-    'bot': "Botの情報関連",
-    'server': "サーバーの情報関連",
-    'info': "その他情報",
-    'panel': "パネル関連",
-    'tools': "ツール",
-    'fun': "ネタコマンド",
-    'serverpanel': "パネル - サーバー関連",
-    'moderation': "モデレーション関連",
-    'global': "グローバルチャット関連",
-    'settings': "設定"
+    "bot": "Botの情報関連",
+    "server": "サーバーの情報関連",
+    "info": "その他情報",
+    "panel": "パネル関連",
+    "tools": "ツール",
+    "fun": "ネタコマンド",
+    "serverpanel": "パネル - サーバー関連",
+    "moderation": "モデレーション関連",
+    "global": "グローバルチャット関連",
+    "settings": "設定",
 }
 COMMAND_DESC_PATTERNS = [
-    [re.compile(r"\n"), r'<br>'],
+    [re.compile(r"\n"), r"<br>"],
     [re.compile(r"\*\*(.+?)\*\*"), r'<span class="bold">\1</span>'],
     [re.compile(r"```(?:\n|<br>)*(.+?)```"), r'<div class="codeblock">\1</div>'],
     [re.compile(r"`(.+?)`"), r'<span class="inline-code inline-code2">\1</span>'],
     [re.compile(r"__(.+?)__"), r'<span class="underline">\1</span>'],
-    [re.compile(r"\[(.+?)\]\((.+?)\)"), r'<a href="\2">\1</a>']
+    [re.compile(r"\[(.+?)\]\((.+?)\)"), r'<a href="\2">\1</a>'],
 ]
 SYNTAX_DESC_PATTERNS = [
-    [re.compile(r"\n"), r'<br>'],
+    [re.compile(r"\n"), r"<br>"],
     [re.compile(r"\*\*(.+?)\*\*"), r'<span class="bold">\1</span>'],
     [re.compile(r"```(?:\n|<br>)*(.+?)```"), r'<div class="codeblock">\1</div>'],
     [re.compile(r"`(.+?)`"), r'<span class="inline-code">\1</span>'],
     [re.compile(r"__(.+?)__"), r'<span class="underline">\1</span>'],
-    [re.compile(r"\[(.+?)\]\((.+?)\)"), r'<a href="\2">\1</a>']
+    [re.compile(r"\[(.+?)\]\((.+?)\)"), r'<a href="\2">\1</a>'],
 ]
 
 SYNTAX_PATTERNS = [
@@ -105,8 +98,12 @@ def convert_sbmd(match):
     elif cmd == "dark-asset-image":
         content = DARK_SWITCH_TAG.replace("!image", content)
     elif cmd == "command-ref":
-        command = convert_commands(next((c for c in current_app.config["commands_cache"] if c["name"] == content), None))
-        content = '<a href="/commands#{}"><span class="inline-code command-syntax">{}</span></a>'.format(command["name"].replace(" ", "-"), command["syntax"])
+        command = convert_commands(
+            next((c for c in current_app.config["commands_cache"] if c["name"] == content), None)
+        )
+        content = '<a href="/commands#{}"><span class="inline-code command-syntax">{}</span></a>'.format(
+            command["name"].replace(" ", "-"), command["syntax"]
+        )
     else:
         content = match[0]
     return content
@@ -122,7 +119,7 @@ raw_md_patterns = [
     [r"\[(.+?)\]\((.+?)\)", r'<a href="\2">\1</a>'],
     [r"\{([^|]+)\|([^}]+)\}", convert_sbmd],
     [r"  $", "<br>"],
-    [r"\n\n", "\n<br>\n"]
+    [r"\n\n", "\n<br>\n"],
 ]
 tmp_patterns = []
 for pattern, sub in raw_md_patterns:
@@ -165,7 +162,7 @@ def convert_commands(cmd):
     else:
         synt = f'<span class="syntax-command-name">{cmd["name"]}</span> '
         for s in cmd["syntax"]:
-            synt += "<span class=\"syntax-arg-optional\">[" if s["optional"] else "<span class=\"syntax-arg-required\">&lt;"
+            synt += '<span class="syntax-arg-optional">[' if s["optional"] else '<span class="syntax-arg-required">&lt;'
             synt += s["name"]
             m = TYPE_PATTERN.match(s["detail"])
             if m is not None:
@@ -180,14 +177,19 @@ def convert_commands(cmd):
     for p in COMMAND_DESC_PATTERNS:
         desc = p[0].sub(p[1], desc)
     if desc.count("<br>") >= 1:
-        desc = desc.split("<br>", 1)[0] + '<br><span class="datail">' + desc.split("<br>", 1)[1] + '</span><span class="more">+</span>'
+        desc = (
+            desc.split("<br>", 1)[0]
+            + '<br><span class="datail">'
+            + desc.split("<br>", 1)[1]
+            + '</span><span class="more">+</span>'
+        )
     return {
         "name": cmd["name"],
         "desc": desc,
         "parent": cmd["parents"],
         "syntax": synt,
         "aliases": cmd["aliases"],
-        "is_parent": bool([co for co in current_app.config["commands_cache"] if co["parents"] == cmd["name"]])
+        "is_parent": bool([co for co in current_app.config["commands_cache"] if co["parents"] == cmd["name"]]),
     }
 
 
@@ -215,11 +217,13 @@ def commands():
                     get_cmd(c["name"])
 
         get_cmd("")
-        categories.append({
-            "id": ck,
-            "name": cv,
-            "commands": sorted_cmds,
-        })
+        categories.append(
+            {
+                "id": ck,
+                "name": cv,
+                "commands": sorted_cmds,
+            }
+        )
     return render_template("general/commands.html", categories=categories)
 
 
@@ -258,8 +262,14 @@ def index(pagename):
             with open(path, "r") as f:
                 raw_resp = json.load(f)
             if raw_resp["type"] == "redirect":
-                if "compatible;" in request.headers.get("user-agent", "") or "Twitterbot" in request.headers.get("user-agent", ""):
-                    return render_template("general/embed.html", title=raw_resp["embed"]["title"], description=raw_resp["embed"]["description"])
+                if "compatible;" in request.headers.get("user-agent", "") or "Twitterbot" in request.headers.get(
+                    "user-agent", ""
+                ):
+                    return render_template(
+                        "general/embed.html",
+                        title=raw_resp["embed"]["title"],
+                        description=raw_resp["embed"]["description"],
+                    )
                 else:
                     return redirect(raw_resp["url"])
         else:
@@ -302,7 +312,7 @@ def tutorials(path):
         md_data = yaml.safe_load(head_md)
         if md_data.get("json"):
             extra_datas = {}
-            for j in md_data['json']:
+            for j in md_data["json"]:
                 with open(f"general/data/{j}.json", "r") as f:
                     extra_datas[j] = parse_md(json.load(f))
             md_data["data"] = extra_datas
@@ -313,7 +323,7 @@ def tutorials(path):
 
 @app.errorhandler(404)
 def page_not_found(error):
-    return make_response(render_template('general/404.html'), 404)
+    return make_response(render_template("general/404.html"), 404)
 
 
 if __name__ == "__main__":
