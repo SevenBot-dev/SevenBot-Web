@@ -355,7 +355,7 @@ def afk_delete():
 
 @app.route("/teapot", methods=["get"])
 def teapot():
-    return make_response(jsonify({"message": "I'm not a teapot.", "code": "not_teapot"}), 418)
+    return make_response(jsonify({"message": "I'm a teapot.\nTeapot cannot brew coffee.", "code": "i_am_a_teapot"}), 418)
 
 
 @app.route("/dbl", methods=["get", "post"])
