@@ -1,12 +1,11 @@
 console.debug("%cLoaded: common.js", "color:#5865f2")
 
 function showTooltip(text, target) {
-
     r = target.getClientRects()[0]
     console.log(r, r.x + r.width / 2)
     tooltip = document.querySelector(".tooltip")
-    tooltip.style.left = `${Math.floor(r.x+r.width/2)}px`
-    tooltip.style.top = `${Math.floor(window.scrollY+r.top)}px`
+    tooltip.style.left = `${Math.floor(r.x + r.width / 2)}px`
+    tooltip.style.top = `${Math.floor(window.scrollY + r.top)}px`
     document.querySelector(".tooltip .tooltip-main div").innerHTML = text
     tooltipOp = document.querySelector(".tooltip .tooltip-opacity")
     tooltip.style.display = "block"
@@ -25,3 +24,7 @@ if (document.cookie.replace(/(?:(?:^|.*;\s*)google-show\s*\=\s*([^;]*).*$)|^.*$/
 if (location.search.includes("tk-redirect")) {
     document.getElementById("tk-alert").style.display = "block"
 }
+
+setTimeout(() => {
+    Array.from(document.getElementsByClassName("alert")).forEach((alert) => { alert.style.display = "none" })
+}, 5000)

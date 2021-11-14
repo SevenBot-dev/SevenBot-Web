@@ -13,6 +13,8 @@
     <script defer src="/static/js/header.js"></script>
     <script defer src="/static/js/common.js"></script>
     <script defer src="/static/js/loadless.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/solarized-light.min.css"  media="print" onload="this.media='all'">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-RV0BBT9CCF"></script>
     <script>
@@ -63,13 +65,13 @@
         <div id="header-menu">
             <ul id="header-menu-container">
                 <li class="header-menu-content">
-                    <a href="/">トップ</a>
-                </li>
-                <li class="header-menu-content">
                     <a href="/about">概要</a>
                 </li>
                 <li class="header-menu-content">
                     <a href="/status">ステータス</a>
+                </li>
+                <li class="header-menu-content">
+                    <a href="/tutorial">チュートリアル</a>
                 </li>
                 <li class="header-menu-content">
                     <a href="/commands">コマンド</a>
@@ -83,8 +85,8 @@
                 </li>
             </ul>
             <ul id="header-menu-bottom">
-                <li class="header-menu-content" style="background: #fff;"><a href="/invite" style="color: var(--sb-theme)">招待</a></li>
-                <li class="header-menu-content" style="color: #fff;border: 1px solid #fff;box-sizing: border-box;background:transpant;"><a href="/support">サポート</a></li>
+                <li class="header-menu-content" style="background: #fff;"><a href="/invite" style="color: var(--sb-theme)" target="blank">招待</a></li>
+                <li class="header-menu-content" style="color: #fff;border: 1px solid #fff;box-sizing: border-box;background:transpant;"><a href="/support" target="blank">サポート</a></li>
             </ul>
         </div>
     </header>
@@ -118,15 +120,15 @@
             <small style="top: 1rem;position: relative;">SevenBot - &copy; 2020 <a href="https://github.com/sevenc-nanashi">名無し。<span id="footer-copyright-pc">（@sevenc-nanashi）</span></a></small>
             <ul id="footer-bottom">
                 <li>
-                    <a href="https://top.gg/bot/718760319207473152">
+                    <a href="https://top.gg/bot/718760319207473152" target="blank">
                         <img src="https://top.gg/api/widget/status/718760319207473152.svg" alt="SevenBot">
                     </a>
                 </li>
                 <li>
-                    <a href="https://discord.gg/YpgHwz8"><img src="https://discordapp.com/api/guilds/715540925081714788/widget.png?style=shield" alt="Discord Shield"></a>
+                    <a href="https://discord.gg/YpgHwz8" target="blank"><img src="https://discordapp.com/api/guilds/715540925081714788/widget.png?style=shield" alt="Discord Shield"></a>
                 </li>
                 <li>
-                    <a href="/github"><img src="https://img.shields.io/github/stars/SevenBot-dev?logo=github&style=flat&color=00ccff&label=Stars" alt="SevenBot-dev stars"></a>
+                    <a href="/github" target="blank"><img src="https://img.shields.io/github/stars/SevenBot-dev?logo=github&style=flat&color=00ccff&label=Stars" alt="SevenBot-dev stars"></a>
                 </li>
 
             </ul>

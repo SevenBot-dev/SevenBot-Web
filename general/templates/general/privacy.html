@@ -1,0 +1,47 @@
+{% extends 'general/base.html' %}
+{% block title %}プライバシー{% endblock %}
+{% block head %}
+<meta content="プライバシー - SevenBot" property="og:title">
+<meta content="SevenBotのプライバシーポリシーを掲載しています。" property="og:description">
+<meta name="description" content="SevenBotのプライバシーポリシーを掲載しています。">
+<meta name="metadescription" content="SevenBotのプライバシーポリシーを掲載しています。">
+<meta content="https://sevenbot.jp/privacy" property="og:url">
+<meta content="https://sevenbot.jp/static/images/embed-icon.webp" property="og:image">
+<meta content="#00CCFF" data-react-helmet="true" name="theme-color">
+{% endblock %}
+{% block main %}
+<h1 class="page-title">プライバシーポリシー</h1>
+<div class="centerp">
+    <h2>保存するもの</h2>
+    <p>
+        このBotは以下のデータを保存します。
+        <ul>
+            <li>メッセージの1部（ticketなど）</li>
+            <li>ユーザーのID（muteコマンドやtimed_roleコマンドなど）</li>
+            <li>チャンネルID（channel_settingsコマンドなど）</li>
+            <li>コマンドの実行回数（全体）</li>
+        </ul>
+        基本的に、これらのデータは同じサーバー内でしか表示されません。
+    </p>
+    <h2>データの削除</h2>
+    <p>
+        メインの設定データは5分おきにBotがサーバーから退出されていたら削除されます。
+        ロールリンクなどは削除されません。
+        公式サーバーでリクエストすることで、これらのデータを削除することができます。
+    </p>
+    <h2>個人情報の保存先</h2>
+    <p>
+        内部のデータはMongoDB Atlas、Discordに保存されています。
+        これらのデータは、オーナーのみがアクセスできます。
+    </p>
+    <h2>保存情報のリクエスト</h2>
+    <p>
+        基本的にはサーバー内のコマンドから表示できます。
+        公式サーバーでリクエストすることで、その他表示できないデータを表示することができます。
+    </p>
+
+    <p>
+        2020/10/19作成
+    </p>
+</div>
+{% endblock %}

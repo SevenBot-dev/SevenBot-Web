@@ -1,0 +1,77 @@
+{% set command_data = data["commands-howto"] %}
+<section class="syntax-section">
+    <div class="syntax-title">{{command_data.param_description.title}}</div>
+    <p class="syntax-description">{{command_data.param_description.description}}</p>
+    <table class="" id="syntax-param-table">
+        <thead>
+            <tr id="command-header">
+                <td class="command-header-td example-type">型名</td>
+                <td class="command-header-td example-type-desc">説明</td>
+                <td class="command-header-td example-type-input">入力</td>
+                <td class="command-header-td example-type-result">判定</td>
+            </tr>
+        </thead>
+        <tbody>
+            {%for table in command_data.param_description.table%}
+            {%for example in table.examples%}
+            <tr class="command-tr">
+                {%if loop.index == 1%}
+                <td rowspan="{{table.examples | length}}" class="param-title">{{table.name}}</td>
+                <td rowspan="{{table.examples | length}}" class="param-description">{%autoescape false %}{{table.description}}{%endautoescape %}</td>
+                {%endif%}
+
+                <td>
+                    {%if "mention" in example.text%}<span class="inline-code inline-code2 mention-bg">{%else%}<span class="inline-code inline-code2">{%endif%}{%autoescape false %}{{example.text}}{%endautoescape %}</span>
+                </td>
+                {%if example.result%}
+                <td class="example-ok">OK</td>
+                {%else%}
+                <td class="example-ng">NG</td>
+                {%endif%}
+
+            </tr>
+            {%endfor%}
+            {%endfor%}
+        </tbody>
+    </table>
+</section>
+{%for syntaxes in command_data.syntax_descriptions%}
+<section class="syntax-section">
+    <div class="syntax-title">{{syntaxes.title}}</div>
+    {%for syntax in syntaxes.descriptions%}
+    <p class="syntax-description">{%autoescape false %}{{syntax.description}}{%endautoescape %}</p>
+    <table class="">
+        <thead>
+            <tr id="command-header">
+                <td class="command-header-td example-syntax">構文</td>
+                <td class="command-header-td example-input">入力</td>
+                <td class="command-header-td example-result">判定</td>
+            </tr>
+        </thead>
+        <tbody>
+            {%for example in syntax.examples%}
+            {%if example == "actual_divider"%}
+            <tr class="divider-tr">
+                <td colspan="3">実例</td>
+            </tr>
+            {%else%}
+            {%for syntax_example in example.examples%}
+            <tr class="command-tr">
+                {%if loop.index == 1 %}
+                <td rowspan="{{example.examples | length}}" class="syntax-example"><span class="inline-code inline-code2">{%autoescape false %}{{example.syntax}}{%endautoescape %}</span></td>
+                {%endif%}
+                <td><span class="inline-code inline-code2">{%autoescape false %}{{syntax_example.input}}{%endautoescape %}</span></td>
+                {%if syntax_example.result%}
+                <td class="example-ok">OK</td>
+                {%else%}
+                <td class="example-ng">NG</td>
+                {%endif%}
+            </tr>
+            {%endfor%}
+            {%endif%}
+            {%endfor%}
+        </tbody>
+    </table>
+    {%endfor%}
+</section>
+{%endfor %}

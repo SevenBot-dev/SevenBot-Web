@@ -1,15 +1,28 @@
-{% extends 'general/base.html' %} {% block title %}ステータス{% endblock %} {% block singlehead %}
+{% extends 'general/base.html' %}
+{% block title %}ステータス{% endblock %}
+{% block singlehead %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.13/moment-timezone-with-data-2012-2022.min.js"></script>
 <script src="https://code.highcharts.com/stock/highstock.js"></script>
-{%endblock %}{% block head %}
+{%endblock %}
+{% block head %}
 <link rel="stylesheet" href="/static/css/status.css">
 <script src="/static/js/status.js" defer></script>
-<meta id="flask-passer" data='{{ data }}'> {% endblock %} {% block main %}
+<meta id="flask-passer" data='{{ data }}'>
+<meta content="ステータス - SevenBot" property="og:title">
+<meta content="SevenBotのステータスを掲載しています。" property="og:description">
+<meta name="description" content="SevenBotのステータスを掲載しています。">
+<meta name="metadescription" content="SevenBotのステータスを掲載しています。">
+<meta content="https://sevenbot.jp/status" property="og:url">
+<meta content="https://sevenbot.jp/static/images/embed-icon.webp" property="og:image">
+<meta content="#00CCFF" data-react-helmet="true" name="theme-color">
+{% endblock %}
+{% block main %}
 <h1 class="page-title">ステータス</h1>
 <p class="centerp">
-    SevenBotのPing（応答速度）・サーバー数・ユーザー数を表示します。<br> 10分ごとに更新されます。
-    <br> また、負荷軽減のため、反映に時間がかかる場合があります。
+    SevenBotのPing（応答速度）・サーバー数・ユーザー数を表示します。<br>
+    10分ごとに更新されます。<br>
+    また、負荷軽減のため、反映に時間がかかる場合があります。
 </p>
 <div id="charts-container">
     <div class="chart-container">

@@ -1,5 +1,16 @@
-{% extends 'general/base.html' %} {% block title %}お問い合わせ{% endblock %} {% block head %}
-<link rel="stylesheet" href="/static/css/contact.css"> {% endblock %} {% block main %}
+{% extends 'general/base.html' %}
+{% block title %}お問い合わせ{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="/static/css/contact.css">
+<meta content="お問い合わせ - SevenBot" property="og:title">
+<meta content="SevenBotの開発者へのお問い合わせ方法を掲載しています。" property="og:description">
+<meta name="description" content="SevenBotの開発者へのお問い合わせ方法を掲載しています。">
+<meta name="metadescription" content="SevenBotの開発者へのお問い合わせ方法を掲載しています。">
+<meta content="https://sevenbot.jp/contact" property="og:url">
+<meta content="https://sevenbot.jp/static/images/embed-icon.webp" property="og:image">
+<meta content="#00CCFF" data-react-helmet="true" name="theme-color">
+{% endblock %}
+{% block main %}
 <div class="">
     <h1 class="page-title">お問い合わせ</h1>
     <div id="contact-flex-container">

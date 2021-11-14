@@ -1,10 +1,11 @@
 var isJumping = false
 var pageCaches = {}
-
+var aHistory = [location.pathname]
+menuOpener = document.getElementById("header-menu-opener")
 function pretendJump() {
     for (e of document.getElementsByTagName("a")) {
         if (e.getAttribute("target") != "blank" && e.getAttribute("href").match(/^\/(?:[^\/]|$)/)) {
-            e.addEventListener("click", jumpURL)
+            e.addEventListener("click", onAClick)
         }
     }
 }
@@ -34,13 +35,18 @@ function makeCacheObject(target) {
         body,
     }
 }
-async function jumpURL(event) {
+function onAClick(event) {
     event.preventDefault();
     if (isJumping) { return }
     isJumping = true
+    aHistory.push(location.pathname)
     href = this.getAttribute("href")
+    jumpURL(href)
+
+}
+async function jumpURL(href) {
     console.debug("%cJumping to " + href, "color:#0067e0")
-        // console.debug(pageCaches[href])
+    // console.debug(pageCaches[href])
     if (!pageCaches[href]) {
         console.debug("Fetch and cacheing")
         response = await fetch(href, { method: "GET" })
@@ -72,8 +78,16 @@ async function jumpURL(event) {
     history.pushState(null, title, href)
     isJumping = false
     pretendJump()
+    if (menuOpener.getAttribute("open") === "true") {
+        menuOpener.click()
+    }
     console.debug("%cDone", "color:#3ba55c")
 }
+function onPopState(state) {
+    href = aHistory.pop()
+    jumpURL(href)
+}
+window.addEventListener("popstate", onPopState)
 pretendJump()
 
 pageCaches[location.pathname] = makeCacheObject(document)

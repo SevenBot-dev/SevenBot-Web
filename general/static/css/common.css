@@ -338,3 +338,11 @@ a {
 .tooltip-bottom {
     border-top-color: var(--tooltip-bg-color)
 }
+
+.mention{
+    color: #505cdc;
+    
+}
+.mention-bg{
+    background-color: rgba(88,101,242,0.15);
+}

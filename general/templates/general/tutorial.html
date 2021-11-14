@@ -1,0 +1,32 @@
+{% extends 'general/base.html' %}
+{% block title %}{{ title }} - SevenBot{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="/static/css/tutorial.css">
+{%if css%}
+{%for c in css%}
+<link rel="stylesheet" href="/static/css/{{c}}.css">
+{%endfor%}
+{%endif%}
+<meta content="{{title}} - SevenBot" property="og:title">
+<meta content="{{description}}" property="og:description">
+<meta name="description" content="{{description}}">
+<meta name="metadescription" content="{{description}}">
+<meta content="https://sevenbot.jp/static/tutorial-thumbnails/{{thumbnail}}.png" property="og:image">
+<meta content="#00CCFF" data-react-helmet="true" name="theme-color">
+{% endblock %}
+{% block main %}
+    {% if not body.strip() %}
+    <h1 class="page-title">残念！テンプレートページだ！</h1>
+    <p class="centerp">
+        うん。<br>
+        これはチュートリアル用のテンプレートページだ。<br>
+        だからここには何もないよ。<br>
+        <a href="/">トップに戻る</a>
+    </p>
+    {%else%}
+        <h1 class="page-title">{{page_title or title}}</h1>
+        <div id="main-content">
+        {%autoescape false%}{{body}}{%endautoescape%}
+        </div>
+    {%endif%}
+{% endblock %}

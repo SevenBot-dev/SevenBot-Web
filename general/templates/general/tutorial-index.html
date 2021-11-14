@@ -1,0 +1,26 @@
+{% extends 'general/base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="/static/css/tutorial-index.css">
+<meta content="チュートリアル一覧 - SevenBot" property="og:title">
+<meta content="SevenBotのチュートリアル一覧を掲載しています。" property="og:description">
+<meta name="description" content="SevenBotのチュートリアル一覧を掲載しています。">
+<meta name="metadescription" content="SevenBotのチュートリアル一覧を掲載しています。">
+<meta content="https://sevenbot.jp/tutorial-index" property="og:url">
+<meta content="https://sevenbot.jp/static/images/embed-icon.webp" property="og:image">
+<meta content="#00CCFF" data-react-helmet="true" name="theme-color">
+{% endblock %}
+{% block main %}
+<h1 class="page-title">チュートリアル一覧</h1>
+<div id="tutorial-container">
+    {% for article in data %}
+    <article class="tutorial-article">
+        <a href="/tutorial/{{article[0]}}">
+            <div class="tutorial-title">{{article[1].title}}</div>
+            <p class="tutorial-desc">{{article[1].description}}</p>
+            <img class="tutorial-thumbnail" src="/static/tutorial-thumbnails/{{article[1].thumbnail}}.png">
+        </a>
+    </article>
+    {%endfor%}
+</div>
+{% endblock %}

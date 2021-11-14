@@ -141,3 +141,4 @@ cython_debug/
 .git-old/
 *.OTF
 *.bak
+*.psd
