@@ -392,3 +392,5 @@ if not os.getenv("heroku"):
     testapp = Flask(__name__)
     testapp.register_blueprint(app)
     testapp.secret_key = "ABCdefGHI"
+    if __name__ == "__main__":
+        testapp.run(debug=True, host="0.0.0.0")
