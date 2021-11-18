@@ -17,9 +17,12 @@ import requests
 if sys.platform.lower() == "win32":
     os.system("color")
 mimetypes.add_type("image/webp", ".webp")
-if not os.getenv("heroku"):
+if os.getenv("heroku"):
+    host = "https://dashboard.sevenbot.jp"
+else:
     load_dotenv("../.env")
     print("[general]Not heroku, loaded .env")
+    host = "http://localhost:5000"
 mainclient = MongoClient(os.environ.get("connectstr"))
 settings_collection = mainclient.sevenbot.guild_settings
 DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET = os.environ.get("discord_client_id"), os.environ.get("discord_client_secret")
@@ -75,11 +78,6 @@ def check_setting_update(guild_id: int):
     return None
 
 
-if __name__ == "__main__":
-    load_dotenv("../.env")
-    host = "http://localhost:5000"
-else:
-    host = "https://dashboard.sevenbot.jp"
 ruri = host + "/callback"
 login_url = (
     "https://discord.com/api/oauth2/authorize?"
@@ -302,6 +300,13 @@ def login():
     return redirect(login_url.format(urllib.parse.quote(json.dumps(state))))
 
 
+@app.route("/logout")
+def logout():
+    g.cookies["token"] = dict(value="", path="/", expires=0)
+    g.cookies["refresh_token"] = dict(value="", path="/", expires=0)
+    return redirect("/")
+
+
 @app.route("/callback")
 def callback():
     if "state" not in request.args.keys():
@@ -383,8 +388,7 @@ def page_not_found(error):
     return make_response(render_template("dashboard/404.html"), 404)
 
 
-if __name__ == "__main__":
+if not os.getenv("heroku"):
     testapp = Flask(__name__)
     testapp.register_blueprint(app)
     testapp.secret_key = "ABCdefGHI"
-    testapp.run(debug=True)

@@ -66,6 +66,18 @@
     margin: 0 0.5rem;
 }
 
-#sidebar{
+#sidebar {
     display: none;
+}
+
+.server-list-icon-logout {
+    mask-image: url(/static/images/features/back.svg);
+    background: var(--interactive-normal);
+    height: 50%;
+    mask-size: contain;
+    margin: auto;
+}
+
+.server-list-logout {
+    background: var(--info-danger-foreground);
 }

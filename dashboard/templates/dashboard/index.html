@@ -16,7 +16,15 @@
         </p>
         {%if logged_in %}
         <p id="server-list-loading" class="loading">サーバーリストをロード中...</p>
-        <div id="server-list-container"></div>
+        <div id="server-list-container">
+            <div class="server-list-content">
+                <div class="server-list-name">切り換え</div>
+                <div class="server-list-icon server-list-icon-logout"></div>
+                <div class="server-list-logout server-list-button">
+                    <a href="/logout">ログアウト</a>
+                </div>
+            </div>
+        </div>
         <template id="server-list-content-template">
             <div class="server-list-content">
                 <div class="server-list-name"></div>
@@ -29,9 +37,9 @@
                 </div>
             </div>
         </template>
-        {%else %}
+        {% else %}
         <a href="/login?from=/" target="blank" class="big-button">ログイン</a>
-        {%endif %}
+        {% endif %}
     </div>
 </div>
 {% endblock %}
