@@ -63,6 +63,21 @@
     </header>
 
     <div id="content">
+        {% block sidebar %}
+        <aside id="sidebar">
+            <a href="/manage/{{guild_id}}" id="sidebar-top-link">
+                <div id="sidebar-top">
+                    <img src="{{raw_data.guild.icon_url}}">
+                    <div>{{raw_data.guild.name}}</div>
+                </div>
+            </a>
+            {% for item in sidebar_items %}
+            <ul>
+                <a href='/manage/{{guild_id}}/{{item.url}}'><li class='sidebar-li{% if item.url == current %} current{% endif %}' data-item="{{item.url}}" style="--icon: url('/static/images/features/{{item.icon}}.svg')"><span>{{item.name}}</span></li></a>
+            </ul>
+            {% endfor %}
+        </aside>
+        {% endblock %}
         <!--main-->
         <block block-name="main">
             {% block main %} {% endblock %} {% if not self.main().strip() %}
@@ -79,14 +94,16 @@
             {% endif %}
         </block>
         <!--endmain-->
-        <div class="tooltip green" style="display:none;">
-            <div class="tooltip-opacity" style="opacity: 1; transform: none;">
-                <div class="tooltip-bottom"></div>
-                <div class="tooltip-main">
-                    <div>コピーした！</div>
+        <template id="tooltip-template">
+            <div class="tooltip green" style="display:none;">
+                <div class="tooltip-opacity" style="opacity: 1; transform: none;">
+                    <div class="tooltip-bottom"></div>
+                    <div class="tooltip-main">
+                        <div>...</div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </template>
         <footer>
             <small style="top: 1rem;position: relative;">SevenBot - &copy; 2020 <a href="https://github.com/sevenc-nanashi">名無し。<span id="footer-copyright-pc">（@sevenc-nanashi）</span></a></small>
             <ul id="footer-bottom">
@@ -99,7 +116,7 @@
                     <a href="https://discord.gg/YpgHwz8"><img src="https://discordapp.com/api/guilds/715540925081714788/widget.png?style=shield" alt="Discord Shield"></a>
                 </li>
                 <li>
-                    <a href="/github"><img src="https://img.shields.io/github/stars/SevenBot-dev?logo=github&style=flat&color=00ccff&label=Stars" alt="SevenBot-dev stars"></a>
+                    <a href="https://sevenbot.jp/github"><img src="https://img.shields.io/github/stars/SevenBot-dev?logo=github&style=flat&color=00ccff&label=Stars" alt="SevenBot-dev stars"></a>
                 </li>
 
             </ul>

@@ -1,4 +1,5 @@
 import datetime
+import itertools
 import json
 import os
 import sys
@@ -6,7 +7,7 @@ import time
 import urllib.parse
 
 from dotenv import load_dotenv
-from flask import Flask, Blueprint, make_response, render_template, redirect, request, g, current_app
+from flask import Flask, Blueprint, make_response, render_template, redirect, request, g, current_app, jsonify
 import mimetypes
 from pymongo import MongoClient
 import requests
@@ -17,10 +18,59 @@ if sys.platform.lower() == "win32":
 mimetypes.add_type("image/webp", ".webp")
 if not os.getenv("heroku"):
     load_dotenv("../.env")
-    print("[general]Not heroku, loaded .env", os.environ.get("connectstr"))
+    print("[general]Not heroku, loaded .env")
 mainclient = MongoClient(os.environ.get("connectstr"))
 settings_collection = mainclient.sevenbot.guild_settings
 DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET = os.environ.get("discord_client_id"), os.environ.get("discord_client_secret")
+SIDEBAR_STRUCTURE = [{"name": "自動返信", "url": "autoreply", "icon": "autoreply"}]
+
+
+def check_setting_update(guild_id: int):
+    if f"{guild_id};{request.method}" in current_app.config["dash_ratelimit"]:
+        if (remain := (current_app.config["dash_ratelimit"][f"{guild_id};{request.method}"]) - time.time()) > 0:
+            return (
+                jsonify(
+                    {
+                        "message": f"操作頻度が高すぎます。\n{round(remain)}秒後に再度お試しください。",
+                        "code": "ratelimit",
+                        "success": False,
+                        "retry_after": round(remain, 2),
+                    }
+                ),
+                429,
+            )
+    if request.method == "GET":
+        current_app.config["dash_ratelimit"][f"{guild_id};{request.method}"] = time.time() + 1
+    else:
+        current_app.config["dash_ratelimit"][f"{guild_id};{request.method}"] = time.time() + 5
+    user_info = current_app.config["dash_user_caches"][request.headers["authorization"]]
+    guild = [g for g in user_info["guild"] if g["id"] == str(guild_id)][0]
+    mutual_guilds = get_mutual_guilds(user_info["guild"])
+    if str(guild_id) not in mutual_guilds:
+        return (
+            jsonify(
+                {
+                    "message": "このサーバーの設定は出来ません。",
+                    "code": "not_in_guild",
+                    "success": False,
+                }
+            ),
+            403,
+        )
+    elif not can_manage(guild):
+        return (
+            jsonify(
+                {
+                    "message": "このサーバーの設定は出来ません。",
+                    "code": "no_permission",
+                    "success": False,
+                }
+            ),
+            403,
+        )
+
+    return None
+
 
 if __name__ == "__main__":
     load_dotenv("../.env")
@@ -38,8 +88,10 @@ SCOPE = "guilds%20identify"
 
 
 def request_after(*args, **kwargs):
+    print(f"[request_after] Sending {args[0]} to {args[1]}")
     res = requests.request(*args, **kwargs)
     while res.status_code == 429:
+        print(f"[request_after] {res.status_code} {res.headers['Retry-After']}")
         time.sleep(int(res.headers["retry-after"]))
         res = requests.request(*args, **kwargs)
     return res
@@ -66,7 +118,7 @@ def refresh_token(refresh_token):
         "client_secret": DISCORD_CLIENT_SECRET,
         "grant_type": "refresh_token",
         "refresh_token": refresh_token,
-        "redirect_uri": "https://captcha.sevenbot.jp/callback",
+        "redirect_uri": "https://dashboard.sevenbot.jp/callback",
         "scope": SCOPE,
     }
     headers = {"Content-Type": "application/x-www-form-urlencoded"}
@@ -77,17 +129,29 @@ def refresh_token(refresh_token):
 
 def set_user_cache(token):
     ud = request_after("get", "%s/users/@me" % API_ENDPOINT, headers={"Authorization": "Bearer " + token})
-    g = request_after("get", "%s/users/@me/guilds" % API_ENDPOINT, headers={"Authorization": "Bearer " + token})
-    data = {"user": ud.json(), "guild": g.json(), "time": time.time()}
-    current_app.config["user_caches"][token] = data
+    guilds = request_after(
+        "get", "%s/users/@me/guilds" % API_ENDPOINT, headers={"Authorization": "Bearer " + token}
+    ).json()
+    for gu in guilds:
+        if gu["icon"] is None:
+            gu["icon_url"] = f"https://cdn.discordapp.com/embed/avatars/{int(gu['id']) % 6}.png"
+        else:
+            if "animated_icon" in gu["features"] and gu["icon"].startswith("a_"):
+                ext = ".gif"
+            else:
+                ext = ".webp"
+            gu["icon_url"] = f"https://cdn.discordapp.com/icons/{gu['id']}/{gu['icon']}{ext}"
+
+    data = {"user": ud.json(), "guild": guilds, "time": time.time()}
+    current_app.config["dash_user_caches"][token] = data
     return data
 
 
 def get_cache_token(token):
-    cc = current_app.config["user_caches"].get(token)
+    cc = current_app.config["dash_user_caches"].get(token)
     if cc is None or time.time() - cc["time"] > 300:
         set_user_cache(token)
-    return current_app.config["user_caches"][token]
+    return current_app.config["dash_user_caches"][token]
 
 
 def get_bot_guilds():
@@ -114,8 +178,24 @@ def get_bot_guilds():
     return ret
 
 
+def get_mutual_guilds(guilds):
+    guilds = list(
+        settings_collection.find(
+            {
+                "gid": {"$in": [int(guild["id"]) for guild in guilds if can_invite(guild["permissions"])]},
+            }
+        )
+    )
+
+    return [str(g["gid"]) for g in guilds]
+
+
 def can_invite(permissions):
     return bool(int(permissions) & 1 << 5)
+
+
+def can_manage(guild_data):
+    return bool(int(guild_data["permissions"]) & 1 << 5)
 
 
 app = Blueprint("dashboard", __name__, template_folder="./templates", static_folder="./static")
@@ -123,8 +203,10 @@ app = Blueprint("dashboard", __name__, template_folder="./templates", static_fol
 
 @app.before_app_request
 def load_logged_in_user():
-    if current_app.config.get("user_caches") is None:
-        current_app.config["user_caches"] = {}
+    if current_app.config.get("dash_user_caches") is None:
+        current_app.config["dash_user_caches"] = {}
+    if current_app.config.get("dash_ratelimit") is None:
+        current_app.config["dash_ratelimit"] = {}
     token = request.cookies.get("token")
     refresh_token = request.cookies.get("refresh_token")
     g.cookies = {}
@@ -158,10 +240,34 @@ def index():
 
 @app.route("/manage/<int:guild_id>")
 def manage(guild_id):
-    user_info = current_app.config["user_caches"][request.cookies.get("token")]
+    if not (user_info := current_app.config["dash_user_caches"].get(request.cookies.get("token"))):
+        return redirect("/?error=not_logged_in")
     guild_data = [gi for gi in user_info["guild"] if gi["id"] == str(guild_id)][0]
     data = {"guild": guild_data}
-    return render_template("dashboard/manage.html", data=json.dumps(data), raw_data=data)
+    return render_template(
+        "dashboard/manage/root.html",
+        data=json.dumps(data),
+        raw_data=data,
+        sidebar_items=SIDEBAR_STRUCTURE,
+        guild_id=guild_id,
+        current="root",
+    )
+
+
+@app.route("/manage/<int:guild_id>/<string:feature>")
+def manage_feat(guild_id, feature):
+    if not (user_info := current_app.config["dash_user_caches"].get(request.cookies.get("token"))):
+        return redirect("/?error=not_logged_in")
+    guild_data = [gi for gi in user_info["guild"] if gi["id"] == str(guild_id)][0]
+    data = {"guild": guild_data}
+    return render_template(
+        f"dashboard/manage/{feature}.html",
+        data=json.dumps(data),
+        raw_data=data,
+        sidebar_items=SIDEBAR_STRUCTURE,
+        guild_id=guild_id,
+        current=feature,
+    )
 
 
 @app.route("/invite")
@@ -202,27 +308,64 @@ def callback():
 
 @app.get("/api/servers")
 def api_servers():
-    bot_guilds = get_bot_guilds()
-    user_info = current_app.config["user_caches"][request.headers["authorization"]]
-    mutual_guilds = {gu["id"] for gu in bot_guilds} & {
-        gu["id"] for gu in user_info["guild"] if can_invite(gu["permissions"])
-    }
+    user_info = current_app.config["dash_user_caches"][request.headers["authorization"]]
+    # mutual_guilds = {gu["id"] for gu in bot_guilds} & {
+    #     gu["id"] for gu in user_info["guild"] if can_invite(gu["permissions"])
+    # }
+    mutual_guilds = get_mutual_guilds(user_info["guild"])
     return {
         "manage": [gu for gu in user_info["guild"] if gu["id"] in mutual_guilds and can_invite(gu["permissions"])],
         "invite": [gu for gu in user_info["guild"] if can_invite(gu["permissions"]) and gu["id"] not in mutual_guilds],
     }
 
 
-@app.get("/api/<int:guild_id>/settings")
+@app.get("/api/guilds/<int:guild_id>/settings")
 def api_settings(guild_id):
-    bot_guilds = get_bot_guilds()
-    user_info = current_app.config["user_caches"][request.headers["authorization"]]
-    mutual_guilds = {gu["id"] for gu in bot_guilds} & {
-        gu["id"] for gu in user_info["guild"] if can_invite(gu["permissions"])
-    }
-    if str(guild_id) not in mutual_guilds:
-        return "", 403
+    if fail_response := check_setting_update(guild_id):
+        return fail_response
     return settings_collection.find_one({"gid": guild_id}, {"_id": False})
+
+
+@app.post("/api/guilds/<int:guild_id>/settings/autoreply")
+def api_settings_get(guild_id):
+    if fail_response := check_setting_update(guild_id):
+        return fail_response
+    if len(request.json["data"]) > 500:
+        return {
+            "message": "自動返信の数は500個以下である必要があります。",
+            "success": False,
+            "code": "too_many_replies",
+        }, 400
+    failures = []
+    for aid, (rtarget, rreply) in request.json["data"]:
+        target, reply = rtarget.strip(), rreply.strip()
+        if set(aid) - set("0123456789abcdef"):
+            failures.append((aid, "id", "IDの文字列に設定出来ない文字が含まれています。"))
+        if len(aid) != 8:
+            failures.append((aid, "id", "IDの文字列は8文字である必要があります。"))
+        if not isinstance(target, str):
+            failures.append((aid, "target", "条件には文字列で指定してください。"))
+        if len(target) > 1023 or len(target) < 1:
+            failures.append((aid, "target", "条件は1文字以上1023文字以下で指定してください。"))
+        if not isinstance(reply, str):
+            failures.append((aid, "reply", "応答には文字列で指定してください。"))
+        if len(reply) > 1023 or len(reply) < 1:
+            failures.append((aid, "reply", "応答は1文字以上1023文字以下で指定してください。"))
+    if failures:
+        failures.sort(key=lambda x: x[0])
+        return {
+            "message": "データが無効です。",
+            "code": "invalid_data",
+            "failures": dict([k, list(v)] for k, v in itertools.groupby(failures, key=lambda x: x[0])),
+            "success": False,
+        }, 422
+    data = dict(request.json["data"])
+    settings_collection.update_one({"gid": guild_id}, {"$set": {"autoreply": data}})
+    return {
+        "message": "設定を更新しました。",
+        "code": "success",
+        "success": True,
+    }
 
 
 @app.errorhandler(404)

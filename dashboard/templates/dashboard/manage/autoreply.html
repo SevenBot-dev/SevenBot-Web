@@ -1,0 +1,41 @@
+{% extends 'dashboard/manage-base.html' %}
+{% block title %}管理{% endblock %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="/static/css/manage/autoreply.css">
+<script src="/static/js/manage/autoreply.js" defer></script>
+{% endblock %}
+{% block name %}自動返信{% endblock %}
+{% block content %}
+<table class="centerp" id="autoreply-table">
+  <thead>
+    <tr id="autoreply-header">
+      <td class="autoreply-id">ID</td>
+      <td class="autoreply-target">返信対象</td>
+      <td class="autoreply-reply">返信内容</td>
+      <td class="autoreply-action">操作</td>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Note: JSで追加される -->
+  </tbody>
+  <tfoot>
+    <tr id="autoreply-add">
+      <td colspan="4">
+        追加
+      </td>
+    </tr>
+  </tfoot>
+</table>
+<div id="save-container">
+  <div class="save-button">保存</div>
+</div>
+<template id="autoreply-template">
+  <tr class="command-tr">
+    <td class="autoreply-id"><span class="inline-code inline-code2"></span></td>
+    <td class="autoreply-target"><textarea class="textbox" placeholder="返信するメッセージの条件。"></textarea></td>
+    <td class="autoreply-reply"><textarea class="textbox" placeholder="返信するメッセージの内容。"></textarea></td>
+    <td class="autoreply-delete">削除</td>
+  </tr>
+</template>
+{% endblock %}
