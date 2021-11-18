@@ -1,7 +1,6 @@
 import datetime
 
 # import hashlib
-import json
 import os
 import random
 
@@ -15,7 +14,6 @@ import pymongo
 import requests
 from dotenv import load_dotenv
 from flask import Blueprint, Flask, jsonify, make_response, redirect, render_template, request, session, current_app
-from selenium import webdriver
 
 
 DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET = os.environ.get("discord_client_id"), os.environ.get("discord_client_secret")
@@ -118,39 +116,6 @@ def can_access(password, gid):
 @app.route("/")
 def base():
     return jsonify({"message": "Welcome to SevenBot API! You can see docs in https://sevenbot.jp/api"})
-
-
-@app.route("/webshot", methods=["post"])
-def webshot():
-    try:
-        res = json.loads(request.data.decode("utf8"))
-        if res.get("password") != os.environ.get("password"):
-            return make_response(
-                jsonify({"error_description": "You cannot access this endpoint.", "code": "forbidden"}), 403
-            )
-    except Exception:
-        return make_response(
-            jsonify({"error_description": "You cannot access this endpoint.", "code": "forbidden"}), 403
-        )
-    option = webdriver.ChromeOptions()
-    option.add_argument("--headless")
-    option.add_argument("--lang=ja-JP,ja")
-    option.add_experimental_option("prefs", {"intl.accept_languages": "ja,ja_JP"})
-    driver = webdriver.Chrome(options=option)
-
-    # driver = webdriver.Firefox()
-    # driver.set_preference("intl.accept_languages", "ja")
-
-    driver.get(res["url"])
-
-    driver.set_window_size(1280, 720)
-
-    time.sleep(2)
-
-    response = make_response(driver.get_screenshot_as_png())
-    response.headers.set("Content-Type", "image/png")
-    driver.quit()
-    return response
 
 
 @app.route("/afk", methods=["get"])
@@ -355,7 +320,9 @@ def afk_delete():
 
 @app.route("/teapot", methods=["get"])
 def teapot():
-    return make_response(jsonify({"message": "I'm a teapot.\nTeapot cannot brew coffee.", "code": "i_am_a_teapot"}), 418)
+    return make_response(
+        jsonify({"message": "I'm a teapot.\nTeapot cannot brew coffee.", "code": "i_am_a_teapot"}), 418
+    )
 
 
 @app.route("/dbl", methods=["get", "post"])
