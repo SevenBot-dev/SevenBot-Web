@@ -316,7 +316,9 @@ def callback():
 
 @app.get("/api/servers")
 def api_servers():
-    user_info = current_app.config["dash_user_caches"][request.headers["authorization"]]
+    user_info = current_app.config["dash_user_caches"].get(request.headers["authorization"])
+    if not user_info:
+        return json.dumps({"message": "ログインしていません。", "code": "not_logged_in", "success": False}), 401
     # mutual_guilds = {gu["id"] for gu in bot_guilds} & {
     #     gu["id"] for gu in user_info["guild"] if can_invite(gu["permissions"])
     # }

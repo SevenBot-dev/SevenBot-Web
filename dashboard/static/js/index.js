@@ -4,6 +4,9 @@ async function showGuilds() {
     resp = await fetch("/api/servers", {
         headers: { "authorization": document.cookie.match(/ token=(.+?);/)[1] }
     })
+    if (resp.status === 401) {
+        document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    }
     console.debug("Fetched")
     data = await resp.json()
     template = document.getElementById("server-list-content-template")
