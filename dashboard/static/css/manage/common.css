@@ -140,7 +140,7 @@ aside ul {
   width: 1.8rem;
   position: relative;
   /*! top: 0.6rem; */
-  background: var(--sidebar-color);
+  background: var(--interactive-normal);
   mask-size: cover;
 }
 
