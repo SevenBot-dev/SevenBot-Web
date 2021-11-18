@@ -44,7 +44,9 @@ def check_setting_update(guild_id: int):
         current_app.config["dash_ratelimit"][f"{guild_id};{request.method}"] = time.time() + 1
     else:
         current_app.config["dash_ratelimit"][f"{guild_id};{request.method}"] = time.time() + 5
-    user_info = current_app.config["dash_user_caches"][request.headers["authorization"]]
+    user_info = current_app.config["dash_user_caches"].get(request.headers["authorization"])
+    if user_info is None:
+        return jsonify({"message": "認証に失敗しました。", "code": "auth", "success": False}), 401
     guild = [g for g in user_info["guild"] if g["id"] == str(guild_id)][0]
     mutual_guilds = get_mutual_guilds(user_info["guild"])
     if str(guild_id) not in mutual_guilds:
