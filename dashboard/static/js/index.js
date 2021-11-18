@@ -1,7 +1,6 @@
 console.debug("%cLoaded: index.js", "color:#5865f2")
 async function showGuilds() {
     console.debug("Fetching /api/servers")
-    console.log(document.cookie)
     resp = await fetch("/api/servers", {
         headers: { "authorization": document.cookie.match(/ token=(.+?);/)[1] }
     })

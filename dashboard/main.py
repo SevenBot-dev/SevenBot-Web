@@ -216,9 +216,14 @@ def load_logged_in_user():
     if not (token := request.cookies.get("token")):
         refresh_token = request.cookies.get("refresh_token")
         if refresh_token is not None:
-            t = request_refresh_token(refresh_token)
-            g.user = set_user_cache(t)
-            return
+            try:
+                t = request_refresh_token(refresh_token)
+            except requests.exceptions.HTTPError:
+                g.cookies["refresh_token"] = dict(value="", path="/", expires=0)
+                return
+            else:
+                g.user = set_user_cache(t)
+                return
         if request.path.startswith("/manage"):
             return redirect("/")
         return
@@ -234,6 +239,9 @@ def load_logged_in_user():
 def set_g_cookie(response):
     for ck, cv in g.cookies.items():
         response.set_cookie(ck, **cv)
+    response.headers["Cache-Control"] = "no-store"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
     return response
 
 
