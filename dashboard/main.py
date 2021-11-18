@@ -1,4 +1,5 @@
 import datetime
+from hashlib import sha256
 import itertools
 import json
 import os
@@ -84,7 +85,7 @@ login_url = (
     "response_type=code&scope=guilds%20identify&state={}"
 )
 API_ENDPOINT = "https://discord.com/api/v9"
-SCOPE = "guilds%20identify"
+SCOPE = "guilds+identify"
 
 
 def request_after(*args, **kwargs):
@@ -112,14 +113,13 @@ def exchange_code(code):
     return r.json()
 
 
-def refresh_token(refresh_token):
+def request_refresh_token(refresh_token):
     data = {
         "client_id": DISCORD_CLIENT_ID,
         "client_secret": DISCORD_CLIENT_SECRET,
         "grant_type": "refresh_token",
         "refresh_token": refresh_token,
-        "redirect_uri": "https://dashboard.sevenbot.jp/callback",
-        "scope": SCOPE,
+        "redirect_uri": ruri,
     }
     headers = {"Content-Type": "application/x-www-form-urlencoded"}
     r = request_after("POST", "%s/oauth2/token" % API_ENDPOINT, data=data, headers=headers)
@@ -127,10 +127,19 @@ def refresh_token(refresh_token):
     return r.json()
 
 
-def set_user_cache(token):
-    ud = request_after("get", "%s/users/@me" % API_ENDPOINT, headers={"Authorization": "Bearer " + token})
+def set_user_cache(token_data):
+    access_token = token_data["access_token"]
+    token_hash = sha256(access_token.encode("utf-8")).hexdigest()
+    g.cookies["token"] = dict(value=token_hash, path="/", expires=time.time() + token_data["expires_in"])
+    g.cookies["refresh_token"] = dict(
+        value=token_data["refresh_token"],
+        path="/",
+        expires=datetime.datetime.now() + datetime.timedelta(days=30),
+    )
+
+    ud = request_after("get", "%s/users/@me" % API_ENDPOINT, headers={"Authorization": "Bearer " + access_token})
     guilds = request_after(
-        "get", "%s/users/@me/guilds" % API_ENDPOINT, headers={"Authorization": "Bearer " + token}
+        "get", "%s/users/@me/guilds" % API_ENDPOINT, headers={"Authorization": "Bearer " + access_token}
     ).json()
     for gu in guilds:
         if gu["icon"] is None:
@@ -142,16 +151,9 @@ def set_user_cache(token):
                 ext = ".webp"
             gu["icon_url"] = f"https://cdn.discordapp.com/icons/{gu['id']}/{gu['icon']}{ext}"
 
-    data = {"user": ud.json(), "guild": guilds, "time": time.time()}
-    current_app.config["dash_user_caches"][token] = data
+    data = {"user": ud.json(), "guild": guilds, "time": time.time(), "token": access_token}
+    current_app.config["dash_user_caches"][token_hash] = data
     return data
-
-
-def get_cache_token(token):
-    cc = current_app.config["dash_user_caches"].get(token)
-    if cc is None or time.time() - cc["time"] > 300:
-        set_user_cache(token)
-    return current_app.config["dash_user_caches"][token]
 
 
 def get_bot_guilds():
@@ -207,20 +209,25 @@ def load_logged_in_user():
         current_app.config["dash_user_caches"] = {}
     if current_app.config.get("dash_ratelimit") is None:
         current_app.config["dash_ratelimit"] = {}
-    token = request.cookies.get("token")
-    refresh_token = request.cookies.get("refresh_token")
     g.cookies = {}
+    g.user = None
+    if request.path.startswith("/static"):
+        return
+    if not (token := request.cookies.get("token")):
+        refresh_token = request.cookies.get("refresh_token")
+        if refresh_token is not None:
+            t = request_refresh_token(refresh_token)
+            g.user = set_user_cache(t)
+            return
+        if request.path.startswith("/manage"):
+            return redirect("/")
+        return
+    if not current_app.config["dash_user_caches"].get(token):
+        g.cookies["token"] = dict(value="", path="/", expires=0)
+        return
     if token is not None:
-        g.user = get_cache_token(token)
-    elif refresh_token is not None:
-        t = refresh_token(refresh_token)
-        g.cookies["access_token"] = dict(value=t["access_token"], path="/", expires=time.time() + t["expires_in"])
-        g.cookies["refresh_token"] = dict(
-            value=t["refresh_token"], path="/", expires=datetime.datetime.now() + datetime.timedelta(days=30)
-        )
-        g.user = set_user_cache(t)
-    else:
-        g.user = None
+        g.user = current_app.config["dash_user_caches"].get(token).get("user")
+        return
 
 
 @app.after_request
@@ -293,16 +300,7 @@ def callback():
     code_json = exchange_code(code)
     state = json.loads(request.args["state"])
     response = make_response(redirect(state["from"]))
-    response.set_cookie(
-        "token", value=code_json["access_token"], path="/", expires=time.time() + code_json["expires_in"]
-    )
-    response.set_cookie(
-        "refresh_token",
-        value=code_json["refresh_token"],
-        path="/",
-        expires=datetime.datetime.now() + datetime.timedelta(days=30),
-    )
-    set_user_cache(code_json["access_token"])
+    set_user_cache(code_json)
     return response
 
 
