@@ -120,7 +120,7 @@ aside ul {
 .sidebar-li {
   list-style: none;
   border-radius: 0.3rem;
-  --sidebar-color: var(--interactive-normal);
+  --sidebar-color: var(--text-muted);
 }
 
 .sidebar-li:hover {
@@ -140,7 +140,7 @@ aside ul {
   width: 1.8rem;
   position: relative;
   /*! top: 0.6rem; */
-  background: var(--interactive-normal);
+  background: var(--text-muted);
   mask-size: cover;
 }
 
