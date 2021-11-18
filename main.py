@@ -10,6 +10,7 @@ import mimetypes
 from api.main import app as api
 from captcha.main import app as captcha
 from general.main import app as general
+from dashboard.main import app as dashboard
 
 mimetypes.add_type("image/webp", ".webp")
 
@@ -33,6 +34,7 @@ app.register_blueprint(general)
 app.register_blueprint(general, subdomain="www", name="www_general")
 app.register_blueprint(api, subdomain="api")
 app.register_blueprint(captcha, subdomain="captcha")
+app.register_blueprint(dashboard, subdomain="dashboard")
 
 
 @app.errorhandler(404)
