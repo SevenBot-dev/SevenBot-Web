@@ -6,6 +6,7 @@ async function showGuilds() {
     })
     if (resp.status === 401) {
         document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        return location.reload();
     }
     console.debug("Fetched")
     data = await resp.json()
