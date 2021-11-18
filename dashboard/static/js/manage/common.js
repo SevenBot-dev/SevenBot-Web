@@ -14,7 +14,7 @@ async function fetchGuildData() {
       }
     })
     respJson = await resp.json()
-    if (resp.status === 403) {
+    if (resp.status === 403 || resp.status === 401) {
       location.href = "/"
       return
     }
