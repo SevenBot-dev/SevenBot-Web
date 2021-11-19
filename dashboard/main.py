@@ -219,7 +219,7 @@ def load_logged_in_user():
         current_app.config["dash_ratelimit"] = {}
     g.cookies = {}
     g.user = None
-    if request.path.startswith("/static") or request.path.startswith("/img"):
+    if request.path.startswith("/static") or request.path.startswith("/api"):
         return
     if not (token := request.cookies.get("token")):
         refresh_token = request.cookies.get("refresh_token")
