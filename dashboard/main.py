@@ -238,7 +238,10 @@ def load_logged_in_user():
         if not set_user_cache(request_refresh_token(request.cookies.get("refresh_token"))):
             return redirect("/?popup=ログインを確認出来ませんでした。")
     if token is not None:
-        g.user = current_app.config["dash_user_caches"].get(token).get("user")
+        token_data = current_app.config["dash_user_caches"].get(token)
+        if token_data is None:
+            return redirect("/?popup=ログインを確認出来ませんでした。")
+        g.user = token_data.get("user")
         return
 
 
