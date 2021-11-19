@@ -32,11 +32,29 @@ function showTooltip(text, target, color, length) {
 
 }
 
+function animatePopup(element) {
+    element.animate({
+        opacity: [1, 0]
+    }, {
+        delay: 5000,
+        duration: 100,
+        fill: "forwards"
+    }).finished.then(() => {
+        element.style.display = "none"
+    })
+}
 
 if (document.cookie.replace(/(?:(?:^|.*;\s*)google-show\s*\=\s*([^;]*).*$)|^.*$/, "$1") !== "true") {
     document.getElementById("google-alert").style.display = "block"
     document.cookie = "google-show=true; expires=Fri, 31 Dec 9999 23:59:59 GMT";
+    animatePopup(document.getElementById("google-alert"))
 }
 if (location.search.includes("tk-redirect")) {
     document.getElementById("tk-alert").style.display = "block"
+    animatePopup(document.getElementById("tk-alert"))
+}
+if (location.search.includes("popup")) {
+    document.getElementById("popup-alert").style.display = "block"
+    document.getElementById("popup-alert").innerHTML = decodeURI(location.search.replace("?popup=", ""))
+    animatePopup(document.getElementById("popup-alert"))
 }

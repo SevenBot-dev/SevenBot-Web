@@ -123,11 +123,19 @@ def request_refresh_token(refresh_token):
     }
     headers = {"Content-Type": "application/x-www-form-urlencoded"}
     r = request_after("POST", "%s/oauth2/token" % API_ENDPOINT, data=data, headers=headers)
-    r.raise_for_status()
-    return r.json()
+    try:
+        r.raise_for_status()
+    except requests.exceptions.HTTPError:
+        return None
+    else:
+        return r.json()
 
 
 def set_user_cache(token_data):
+    if token_data is None:
+        g.cookies["token"] = dict(value="", expires=0)
+        g.cookies["refresh_token"] = dict(value="", expires=0)
+        return None
     access_token = token_data["access_token"]
     token_hash = sha256(access_token.encode("utf-8")).hexdigest()
     g.cookies["token"] = dict(value=token_hash, path="/", expires=time.time() + token_data["expires_in"])
@@ -216,20 +224,19 @@ def load_logged_in_user():
     if not (token := request.cookies.get("token")):
         refresh_token = request.cookies.get("refresh_token")
         if refresh_token is not None:
-            try:
-                t = request_refresh_token(refresh_token)
-            except requests.exceptions.HTTPError:
-                g.cookies["refresh_token"] = dict(value="", path="/", expires=0)
-                return
-            else:
-                g.user = set_user_cache(t)
-                return
+            g.user = set_user_cache(request_refresh_token(refresh_token))
+            if g.user is None:
+                return redirect("/?popup=ログインを確認出来ませんでした。")
+            return
         if request.path.startswith("/manage"):
-            return redirect("/")
+            return redirect("/?popup=ログインしていません。")
         return
     if not current_app.config["dash_user_caches"].get(token):
-        g.cookies["token"] = dict(value="", path="/", expires=0)
-        return
+        if request.cookies.get("refresh_token") is None:
+            g.cookies["token"] = dict(value="", path="/", expires=0)
+            return redirect("/?popup=ログインしていません。")
+        if not set_user_cache(request_refresh_token(request.cookies.get("refresh_token"))):
+            return redirect("/?popup=ログインを確認出来ませんでした。")
     if token is not None:
         g.user = current_app.config["dash_user_caches"].get(token).get("user")
         return
@@ -256,7 +263,7 @@ def index():
 @app.route("/manage/<int:guild_id>")
 def manage(guild_id):
     if not (user_info := current_app.config["dash_user_caches"].get(request.cookies.get("token"))):
-        return redirect("/?error=not_logged_in")
+        return redirect("/?popup=ログインしていません。")
     guild_data = [gi for gi in user_info["guild"] if gi["id"] == str(guild_id)][0]
     data = {"guild": guild_data}
     return render_template(
@@ -272,7 +279,7 @@ def manage(guild_id):
 @app.route("/manage/<int:guild_id>/<string:feature>")
 def manage_feat(guild_id, feature):
     if not (user_info := current_app.config["dash_user_caches"].get(request.cookies.get("token"))):
-        return redirect("/?error=not_logged_in")
+        return redirect("/?popup=ログインしていません。")
     guild_data = [gi for gi in user_info["guild"] if gi["id"] == str(guild_id)][0]
     data = {"guild": guild_data}
     return render_template(
@@ -304,7 +311,7 @@ def login():
 def logout():
     g.cookies["token"] = dict(value="", path="/", expires=0)
     g.cookies["refresh_token"] = dict(value="", path="/", expires=0)
-    return redirect("/")
+    return redirect("/?popup=ログアウトしました。")
 
 
 @app.route("/callback")
