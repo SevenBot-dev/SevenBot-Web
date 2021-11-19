@@ -249,6 +249,8 @@ def load_logged_in_user():
 def set_g_cookie(response):
     for ck, cv in g.cookies.items():
         response.set_cookie(ck, **cv)
+    if request.path.startswith("/static"):
+        return response
     response.headers["Cache-Control"] = "no-store"
     response.headers["Pragma"] = "no-cache"
     response.headers["Expires"] = "0"
