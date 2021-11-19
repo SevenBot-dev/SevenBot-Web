@@ -6,10 +6,12 @@ async function showGuilds() {
     })
     if (resp.status === 401) {
         document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        return location.reload();
+        location.href = "/"
+        return
     }
     console.debug("Fetched")
-    data = await resp.json()
+    data = await resp.text()
+    data = JSON.parse(data)
     template = document.getElementById("server-list-content-template")
     serverList = document.getElementById("server-list-container")
     console.debug("Adding elements")
