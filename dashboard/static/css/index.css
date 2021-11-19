@@ -73,7 +73,6 @@
 .server-list-icon-logout {
     mask-image: url(/static/images/features/back.svg);
     background: var(--interactive-normal);
-    height: 50%;
     mask-size: contain;
     margin: auto;
 }
