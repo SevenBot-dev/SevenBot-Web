@@ -5,7 +5,7 @@ menuOpener = document.getElementById("header-menu-opener")
 
 function pretendJump() {
   for (e of document.getElementsByTagName("a")) {
-    if (e.getAttribute("target") != "blank" && e.getAttribute("href").match(/^\/(?:[^\/]|$)/)) {
+    if (e.getAttribute("target") != "blank" && e.getAttribute("href").match(/^\/(?:[^\/]|$)/) && !e.classList.contains("force-here")) {
       e.addEventListener("click", onAClick)
     }
   }

@@ -21,7 +21,7 @@
         <div class="server-list-name">切り換え</div>
         <img class="server-list-icon server-list-icon-logout" src="/static/images/dummy.png">
         <div class="server-list-logout server-list-button">
-          <a href="/logout">ログアウト</a>
+          <a href="/logout" class="force-here">ログアウト</a>
         </div>
       </div>
     </div>
@@ -30,7 +30,7 @@
         <div class="server-list-name"></div>
         <img class="server-list-icon">
         <div class="server-list-invite server-list-button">
-          <a href="/invite?guild_id={guild_id}">招待</a>
+          <a href="/invite?guild_id={guild_id}" class="force-here">招待</a>
         </div>
         <div class="server-list-move server-list-button">
           <a href="/manage/{guild_id}">開く</a>
@@ -38,7 +38,7 @@
       </div>
     </template>
     {% else %}
-    <a href="/login?from=/" target="blank" class="big-button">ログイン</a>
+    <a href="/login?from=/" target="blank" class="force-here big-button">ログイン</a>
     {% endif %}
   </div>
 </div>
