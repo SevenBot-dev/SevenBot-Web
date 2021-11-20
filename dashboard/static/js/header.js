@@ -9,9 +9,14 @@ menuOpener.addEventListener("click", () => {
   menuOpener.setAttribute("open", Boolean(menuOpener.getAttribute("open") != "true").toString())
 
   if (menuOpener.getAttribute("open") == "true") {
-    menuOpener.animate({
-      "transform": ["rotateX(0deg)", "rotateX(180deg)"]
-
+    menuOpenerOpen.animate({
+      opacity: [1, 0]
+    }, {
+      duration: 100,
+      fill: "forwards"
+    })
+    menuOpenerClose.animate({
+      opacity: [0, 1]
     }, {
       duration: 100,
       fill: "forwards"
@@ -19,9 +24,14 @@ menuOpener.addEventListener("click", () => {
     e3 = document.getElementById(`header-menu`)
     e3.style.display = "block"
   } else {
-    menuOpener.animate({
-      "transform": ["rotateX(180deg)", "rotateX(0deg)"]
-
+    menuOpenerOpen.animate({
+      opacity: [0, 1]
+    }, {
+      duration: 100,
+      fill: "forwards"
+    })
+    menuOpenerClose.animate({
+      opacity: [1, 0]
     }, {
       duration: 100,
       fill: "forwards"
