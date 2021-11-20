@@ -104,19 +104,19 @@ async function save() {
       data: rowData
     })
   })
-  resp_json = await resp.json()
-  showTooltip(resp_json.message, this, (resp.ok ? "green" : "red"))
+  respJson = await resp.json()
+  showTooltip(respJson.message, this, (resp.ok ? "green" : "red"))
   setTimeout(() => {
       this.classList.remove("disabled")
     },
-    resp_json.code === "ratelimited" ? resp_json.retry_after * 1000 : 5000)
-  if (resp_json.code === "invalid_data") {
+    respJson.code === "ratelimited" ? respJson.retry_after * 1000 : 5000)
+  if (respJson.code === "invalid_data") {
     arTable.querySelectorAll(".table-error").forEach(e => {
       e.classList.remove("table-error")
     })
     arTable.querySelectorAll(".autoreply-id span").forEach(e => {
-      if (resp_json.failures[e.innerHTML]) {
-        for (fail of resp_json.failures[e.innerHTML]) {
+      if (respJson.failures[e.innerHTML]) {
+        for (fail of respJson.failures[e.innerHTML]) {
           e.parentElement.parentElement.classList.add("table-error-bg")
           targetColumn = e.parentElement.parentElement.querySelector(`.autoreply-${fail[1]}`)
           targetColumn.classList.add("table-error")
