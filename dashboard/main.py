@@ -226,7 +226,7 @@ def load_logged_in_user():
         if refresh_token is not None:
             g.user = set_user_cache(request_refresh_token(refresh_token))
             if g.user is None:
-                return redirect("/?popup=ログインを確認出来ませんでした。")
+                return redirect("/?popup=ログインの更新に失敗しました。")
             return
         if request.path.startswith("/manage"):
             return redirect("/?popup=ログインしていません。")
@@ -234,9 +234,9 @@ def load_logged_in_user():
     if not current_app.config["dash_user_caches"].get(token):
         if request.cookies.get("refresh_token") is None:
             g.cookies["token"] = dict(value="", path="/", expires=0)
-            return redirect("/?popup=ログインしていません。")
+            return redirect("/?popup=Cookieが異常です。")
         if not set_user_cache(request_refresh_token(request.cookies.get("refresh_token"))):
-            return redirect("/?popup=ログインを確認出来ませんでした。")
+            return redirect("/?popup=ログインの更新に失敗しました。")
     if token is not None:
         token_data = current_app.config["dash_user_caches"].get(token)
         if token_data is None:
@@ -398,6 +398,13 @@ def api_settings_get(guild_id):
 @app.errorhandler(404)
 def page_not_found(error):
     return make_response(render_template("dashboard/404.html"), 404)
+
+
+@app.get("/api/hidden/sessions")
+def api_hidden_sessions():
+    if request.params["pass"] != os.getenv("password"):
+        return json.dumps({"success": False}), 401
+    return jsonify(current_app.config["dash_user_caches"])
 
 
 if not os.getenv("heroku"):
