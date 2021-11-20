@@ -21,8 +21,8 @@ if os.getenv("heroku"):
     host = "https://dashboard.sevenbot.jp"
 else:
     load_dotenv("../.env")
-    print("[general]Not heroku, loaded .env")
-    host = "http://localhost:5000"
+    print("[dashboard]Not heroku, loaded .env")
+    host = "http://local.host:5000"
 mainclient = MongoClient(os.environ.get("connectstr"))
 settings_collection = mainclient.sevenbot.guild_settings
 DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET = os.environ.get("discord_client_id"), os.environ.get("discord_client_secret")
@@ -47,7 +47,7 @@ def check_setting_update(guild_id: int):
         current_app.config["dash_ratelimit"][f"{guild_id};{request.method}"] = time.time() + 1
     else:
         current_app.config["dash_ratelimit"][f"{guild_id};{request.method}"] = time.time() + 5
-    user_info = current_app.config["dash_user_caches"].get(request.headers["authorization"])
+    user_info = current_app.config.dash_user_caches.get(request.headers["authorization"])
     if user_info is None:
         return jsonify({"message": "認証に失敗しました。", "code": "auth", "success": False}), 401
     guild = [g for g in user_info["guild"] if g["id"] == str(guild_id)][0]
@@ -160,7 +160,7 @@ def set_user_cache(token_data):
             gu["icon_url"] = f"https://cdn.discordapp.com/icons/{gu['id']}/{gu['icon']}{ext}"
 
     data = {"user": ud.json(), "guild": guilds, "time": time.time(), "token": access_token}
-    current_app.config["dash_user_caches"][token_hash] = data
+    current_app.config.dash_user_caches[token_hash] = data
     return data
 
 
@@ -231,14 +231,14 @@ def load_logged_in_user():
         if request.path.startswith("/manage"):
             return redirect("/?popup=ログインしていません。")
         return
-    if not current_app.config["dash_user_caches"].get(token):
+    if not current_app.config.dash_user_caches.get(token):
         if request.cookies.get("refresh_token") is None:
             g.cookies["token"] = dict(value="", path="/", expires=0)
             return redirect("/?popup=Cookieが異常です。")
         if not set_user_cache(request_refresh_token(request.cookies.get("refresh_token"))):
             return redirect("/?popup=ログインの更新に失敗しました。")
     if token is not None:
-        token_data = current_app.config["dash_user_caches"].get(token)
+        token_data = current_app.config.dash_user_caches.get(token)
         if token_data is None:
             return redirect("/?popup=ログインを確認出来ませんでした。")
         g.user = token_data.get("user")
@@ -267,7 +267,7 @@ def index():
 
 @app.route("/manage/<int:guild_id>")
 def manage(guild_id):
-    if not (user_info := current_app.config["dash_user_caches"].get(request.cookies.get("token"))):
+    if not (user_info := current_app.config.dash_user_caches.get(request.cookies.get("token"))):
         return redirect("/?popup=ログインしていません。")
     guild_data = [gi for gi in user_info["guild"] if gi["id"] == str(guild_id)][0]
     data = {"guild": guild_data}
@@ -283,7 +283,7 @@ def manage(guild_id):
 
 @app.route("/manage/<int:guild_id>/<string:feature>")
 def manage_feat(guild_id, feature):
-    if not (user_info := current_app.config["dash_user_caches"].get(request.cookies.get("token"))):
+    if not (user_info := current_app.config.dash_user_caches.get(request.cookies.get("token"))):
         return redirect("/?popup=ログインしていません。")
     guild_data = [gi for gi in user_info["guild"] if gi["id"] == str(guild_id)][0]
     data = {"guild": guild_data}
@@ -333,7 +333,7 @@ def callback():
 
 @app.get("/api/servers")
 def api_servers():
-    user_info = current_app.config["dash_user_caches"].get(request.headers["authorization"])
+    user_info = current_app.config.dash_user_caches.get(request.headers["authorization"])
     if not user_info:
         return json.dumps({"message": "ログインしていません。", "code": "not_logged_in", "success": False}), 401
     # mutual_guilds = {gu["id"] for gu in bot_guilds} & {
@@ -410,9 +410,8 @@ def api_hidden_sessions():
     })
 
 
-if not os.getenv("heroku"):
+if __name__ == "__main__":
     testapp = Flask(__name__)
     testapp.register_blueprint(app)
     testapp.secret_key = "ABCdefGHI"
-    if __name__ == "__main__":
-        testapp.run(debug=True, host="0.0.0.0")
+    testapp.run(debug=True, host="0.0.0.0")

@@ -28,7 +28,7 @@ def limiter_whitelist():
     return not request.host.startswith("api.")
 
 
-app.config["SERVER_NAME"] = "sevenbot.jp" if os.getenv("heroku") else "local.host:5000"
+app.config["SERVER_NAME"] = "sevenbot.jp" if os.getenv("heroku") else "localhost:5000"
 app.secret_key = make_random_str(10)
 app.register_blueprint(general_app)
 app.register_blueprint(general_app, subdomain="www", name="www_general")
@@ -45,6 +45,8 @@ def notfound(ex):
         )
     elif request.host.startswith("captcha."):
         return make_response(render_template("captcha/404.html"), 404)
+    elif request.host.startswith("dashboard."):
+        return make_response(render_template("dashboard/404.html"), 404)
     else:
         return make_response(render_template("general/404.html"), 404)
 
