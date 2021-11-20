@@ -134,7 +134,13 @@ def request_refresh_token(refresh_token):
 
 
 def get_user_cache(token):
-    return json.loads(redis_client.get("user_" + token))
+    if token is None:
+        return None
+    val = redis_client.get("user_" + token)
+
+    if val is None:
+        return None
+    return json.loads(val)
 
 
 def set_user_cache(token_data):
