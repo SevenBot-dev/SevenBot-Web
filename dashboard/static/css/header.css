@@ -145,7 +145,6 @@ header {
     display: none;
     position: absolute;
     top: 64px;
-    min-height: calc(100vh - var(--header-height) - 50vh);
     height: calc((2rem + 4px) * 8 + 2px);
     left: 0;
     right: 0;
@@ -202,4 +201,12 @@ header {
   #header-sb-icon {
     filter: brightness(1.15)
   }
+}
+
+.header-menu-opener-svg {
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
