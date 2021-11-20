@@ -211,7 +211,7 @@ def can_manage(guild_data):
 app = Blueprint("dashboard", __name__, template_folder="./templates", static_folder="./static")
 
 
-@app.before_app_request
+@app.before_request
 def load_logged_in_user():
     if current_app.config.get("dash_user_caches") is None:
         current_app.config["dash_user_caches"] = {}
