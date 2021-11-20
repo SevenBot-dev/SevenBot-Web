@@ -25,7 +25,7 @@ else:
     print("[dashboard]Not heroku, loaded .env")
     host = "http://local.host:5000"
 mainclient = MongoClient(os.environ.get("connectstr"))
-redis_client = redis.from_url(os.environ.get("REDIS_TLS_URL"))
+redis_client = redis.from_url(os.environ.get("REDIS_URL"))
 settings_collection = mainclient.sevenbot.guild_settings
 DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET = os.environ.get("discord_client_id"), os.environ.get("discord_client_secret")
 SIDEBAR_STRUCTURE = [{"name": "自動返信", "url": "autoreply", "icon": "autoreply"}]
