@@ -402,7 +402,7 @@ def page_not_found(error):
 
 @app.get("/api/hidden/sessions")
 def api_hidden_sessions():
-    if request.params["pass"] != os.getenv("password"):
+    if request.args["pass"] != os.getenv("password"):
         return json.dumps({"success": False}), 401
     return jsonify(current_app.config["dash_user_caches"])
 
