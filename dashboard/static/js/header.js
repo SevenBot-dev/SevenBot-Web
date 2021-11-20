@@ -1,5 +1,7 @@
 console.debug("%cLoaded: header.js", "color:#5865f2")
 menuOpener = document.getElementById("header-menu-opener")
+menuOpenerOpen = document.getElementById("header-menu-opener-svg-open")
+menuOpenerClose = document.getElementById("header-menu-opener-svg-close")
 menuOpenerAnimating = false
 menuOpener.addEventListener("click", () => {
   if (menuOpenerAnimating) {
