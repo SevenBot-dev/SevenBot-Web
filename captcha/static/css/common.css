@@ -200,11 +200,16 @@ a {
     line-height: 48px;
     font-size: 24px;
     background-color: var(--discord-theme);
-    transition: background-color ease-out .25s
+    transition: background-color ease-out .25s;
+    cursor: pointer;
 }
 
 .big-button:hover {
     background-color: var(--discord-theme-dark)
+}
+
+.big-button[disabled] {
+    opacity: 0.5;
 }
 
 .big-button a {
@@ -286,7 +291,8 @@ a {
     margin: 10px;
 }
 
-.tooltip-main {
+
+.tooltip-main, .tooltip {
     border-radius: 5px;
     font-weight: 500;
     font-size: 14px;
@@ -301,7 +307,16 @@ a {
 
 .tooltip {
     position: absolute;
-    transform: translate(-50%, calc(-100% - 5px))
+    transform: translate(-50%, calc(-100% - 5px));
+    box-shadow: var(--elevation-high);
+    --tooltip-bg-green: var(--status-positive-background);
+    --tooltip-bg-yellow: var(--status-warning-background);
+    --tooltip-bg-red: var(--status-danger-background);
+    --tooltip-bg-white: var(--background-primary);
+    --tooltip-text-green: #fff;
+    --tooltip-text-yellow: #fff;
+    --tooltip-text-red: #fff;
+    --tooltip-text-white: var(--text-normal);
 }
 
 .tooltip-bottom {
@@ -315,16 +330,9 @@ a {
 
 .tooltip-main {
     padding: 8px 12px;
-    overflow: hidden
-}
-
-.tooltip-main {
+    overflow: hidden;
     -webkit-transform-origin: 50% 100%;
-    transform-origin: 50% 100%
-}
-
-.green {
-    --tooltip-bg-color: #3ba55c
+    transform-origin: 50% 100%;
 }
 
 .tooltip-main {
@@ -332,9 +340,14 @@ a {
 }
 
 .tooltip-main div {
-    color: #fff
+    color: var(--tooltip-text-color)
 }
 
 .tooltip-bottom {
+    margin-left: -5px;
     border-top-color: var(--tooltip-bg-color)
+}
+
+.loading {
+    color: var(--discord-theme);
 }
