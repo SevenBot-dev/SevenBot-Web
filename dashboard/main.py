@@ -3,6 +3,7 @@ from hashlib import sha256
 import itertools
 import json
 import os
+import redis
 import sys
 import time
 import urllib.parse
@@ -24,6 +25,7 @@ else:
     print("[dashboard]Not heroku, loaded .env")
     host = "http://local.host:5000"
 mainclient = MongoClient(os.environ.get("connectstr"))
+redis_client = redis.Redis(host=os.environ.get("redis_host"), port=6379, db=0)
 settings_collection = mainclient.sevenbot.guild_settings
 DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET = os.environ.get("discord_client_id"), os.environ.get("discord_client_secret")
 SIDEBAR_STRUCTURE = [{"name": "自動返信", "url": "autoreply", "icon": "autoreply"}]
@@ -47,7 +49,7 @@ def check_setting_update(guild_id: int):
         current_app.config["dash_ratelimit"][f"{guild_id};{request.method}"] = time.time() + 1
     else:
         current_app.config["dash_ratelimit"][f"{guild_id};{request.method}"] = time.time() + 5
-    user_info = current_app.config["dash_user_caches"].get(request.headers["authorization"])
+    user_info = get_user_cache(request.headers["authorization"])
     if user_info is None:
         return jsonify({"message": "認証に失敗しました。", "code": "auth", "success": False}), 401
     guild = [g for g in user_info["guild"] if g["id"] == str(guild_id)][0]
@@ -131,6 +133,10 @@ def request_refresh_token(refresh_token):
         return r.json()
 
 
+def get_user_cache(token):
+    return json.loads(redis_client.get("user_" + token))
+
+
 def set_user_cache(token_data):
     if token_data is None:
         g.cookies["token"] = dict(value="", expires=0)
@@ -160,7 +166,7 @@ def set_user_cache(token_data):
             gu["icon_url"] = f"https://cdn.discordapp.com/icons/{gu['id']}/{gu['icon']}{ext}"
 
     data = {"user": ud.json(), "guild": guilds, "time": time.time(), "token": access_token}
-    current_app.config["dash_user_caches"][token_hash] = data
+    redis_client.set("user_" + token_hash, json.dumps(data))
     return data
 
 
@@ -231,14 +237,14 @@ def load_logged_in_user():
         if request.path.startswith("/manage"):
             return redirect("/?popup=ログインしていません。")
         return
-    if not current_app.config["dash_user_caches"].get(token):
+    if not get_user_cache(token):
         if request.cookies.get("refresh_token") is None:
             g.cookies["token"] = dict(value="", path="/", expires=0)
             return redirect("/?popup=Cookieが異常です。")
         if not set_user_cache(request_refresh_token(request.cookies.get("refresh_token"))):
             return redirect("/?popup=ログインの更新に失敗しました。")
     if token is not None:
-        token_data = current_app.config["dash_user_caches"].get(token)
+        token_data = get_user_cache(token)
         if token_data is None:
             return redirect("/?popup=ログインを確認出来ませんでした。")
         g.user = token_data.get("user")
@@ -267,7 +273,7 @@ def index():
 
 @app.route("/manage/<int:guild_id>")
 def manage(guild_id):
-    if not (user_info := current_app.config["dash_user_caches"].get(request.cookies.get("token"))):
+    if not (user_info := get_user_cache(request.cookies.get("token"))):
         return redirect("/?popup=ログインしていません。")
     guild_data = [gi for gi in user_info["guild"] if gi["id"] == str(guild_id)][0]
     data = {"guild": guild_data}
@@ -283,7 +289,7 @@ def manage(guild_id):
 
 @app.route("/manage/<int:guild_id>/<string:feature>")
 def manage_feat(guild_id, feature):
-    if not (user_info := current_app.config["dash_user_caches"].get(request.cookies.get("token"))):
+    if not (user_info := get_user_cache(request.cookies.get("token"))):
         return redirect("/?popup=ログインしていません。")
     guild_data = [gi for gi in user_info["guild"] if gi["id"] == str(guild_id)][0]
     data = {"guild": guild_data}
@@ -333,7 +339,7 @@ def callback():
 
 @app.get("/api/servers")
 def api_servers():
-    user_info = current_app.config["dash_user_caches"].get(request.headers["authorization"])
+    user_info = get_user_cache(request.headers["authorization"])
     if not user_info:
         return json.dumps({"message": "ログインしていません。", "code": "not_logged_in", "success": False}), 401
     # mutual_guilds = {gu["id"] for gu in bot_guilds} & {
@@ -404,10 +410,12 @@ def page_not_found(error):
 def api_hidden_sessions():
     if request.args["pass"] != os.getenv("password"):
         return json.dumps({"success": False}), 401
-    return jsonify({
-        "config": current_app.config["dash_user_caches"],
-        "objid": id(current_app.config["dash_user_caches"]),
-    })
+    return jsonify(
+        {
+            "config": current_app.config["dash_user_caches"],
+            "objid": id(current_app.config["dash_user_caches"]),
+        }
+    )
 
 
 if __name__ == "__main__":
