@@ -2,6 +2,7 @@ import os
 import random
 import string
 
+from dotenv import load_dotenv
 from flask import Flask, request, jsonify, make_response, render_template
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
@@ -13,7 +14,7 @@ from general.main import app as general_app
 from dashboard.main import app as dashboard_app
 
 mimetypes.add_type("image/webp", ".webp")
-
+load_dotenv()
 
 def make_random_str(length):
     return "".join(random.choices(string.ascii_letters, k=length))
