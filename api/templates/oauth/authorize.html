@@ -7,18 +7,18 @@
 <h1 class="page-title">アクセス許可</h1>
 
 <div id="app-name"><img src="{{app_icon}}">
-    <p>{{app_name}}にアクセスを許可しますか？</p>
+  <p>{{app_name}}にアクセスを許可しますか？</p>
 </div>
 <div class="centerp">アクセスを許可すると、{{app_name}}は…
 
-    <ul id="scopes">
-        {% for scope in app_scopes %}
-        <li>{{ scope }}</li>
-        {% endfor %}
-    </ul>
+  <ul id="scopes">
+    {% for scope in app_scopes %}
+    <li>{{ scope }}</li>
+    {% endfor %}
+  </ul>
 </div>
 <div id="confirm">
-    <div id="confirm-yes"><a href="/oauth2/accept">許可</a></div>
-    <div id="confirm-no"><a href="/oauth2/deny">拒否</a></div>
+  <div id="confirm-yes"><a href="/oauth2/accept">許可</a></div>
+  <div id="confirm-no"><a href="/oauth2/deny">拒否</a></div>
 </div>
 {%endblock%}

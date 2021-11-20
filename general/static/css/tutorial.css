@@ -4,44 +4,44 @@ h3,
 h4,
 h5,
 h6 {
-    text-align: center;
+  text-align: center;
 }
 
 .syntax-command-name {
-    color: #b58900;
+  color: #b58900;
 }
 
 .syntax-arg-required {
-    color: #268bd2;
+  color: #268bd2;
 }
 
 .syntax-arg-optional {
-    color: #2aa198;
+  color: #2aa198;
 }
 
 .tutorial-image {
-    max-width: 100%;
-    display: block;
-    margin: auto;
-    margin-top: 1.5rem;
-    margin-bottom: 1rem;
+  max-width: 100%;
+  display: block;
+  margin: auto;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .syntax-arg-type {
-    display: none;
+  display: none;
 }
 
 .command-syntax:hover .syntax-arg-type {
-    display: inline;
+  display: inline;
 }
 
 #main-content {
-    width: 60%;
-    margin: auto;
+  width: 60%;
+  margin: auto;
 }
 
 @media(max-width: 850px) {
-    #main-content {
-        width: 80%;
-    }
+  #main-content {
+    width: 80%;
+  }
 }

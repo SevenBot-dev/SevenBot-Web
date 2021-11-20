@@ -1,3 +1,3 @@
 if (window == window.parent) {
-    location.href = "https://sevenbo.tk";
+  location.href = "https://sevenbo.tk";
 }

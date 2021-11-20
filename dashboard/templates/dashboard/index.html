@@ -8,38 +8,38 @@
 {% block sidebar %}{% endblock %}
 {% block main %}
 <div class="--fade --onload">
-    <h1 class="page-title">SevenBot Dashboard</h1>
-    <div class="big-button-container">
-        <p class="centerp">
-            SevenBot Dashboardへようこそ！
-            ダッシュボードはまだβのため注意して下さい。
-        </p>
-        {%if logged_in %}
-        <p id="server-list-loading" class="loading">サーバーリストをロード中...</p>
-        <div id="server-list-container">
-            <div class="server-list-content">
-                <div class="server-list-name">切り換え</div>
-                <img class="server-list-icon server-list-icon-logout" src="/static/images/dummy.png">
-                <div class="server-list-logout server-list-button">
-                    <a href="/logout">ログアウト</a>
-                </div>
-            </div>
+  <h1 class="page-title">SevenBot Dashboard</h1>
+  <div class="big-button-container">
+    <p class="centerp">
+      SevenBot Dashboardへようこそ！
+      ダッシュボードはまだβのため注意して下さい。
+    </p>
+    {%if logged_in %}
+    <p id="server-list-loading" class="loading">サーバーリストをロード中...</p>
+    <div id="server-list-container">
+      <div class="server-list-content">
+        <div class="server-list-name">切り換え</div>
+        <img class="server-list-icon server-list-icon-logout" src="/static/images/dummy.png">
+        <div class="server-list-logout server-list-button">
+          <a href="/logout">ログアウト</a>
         </div>
-        <template id="server-list-content-template">
-            <div class="server-list-content">
-                <div class="server-list-name"></div>
-                <img class="server-list-icon">
-                <div class="server-list-invite server-list-button">
-                    <a href="/invite?guild_id={guild_id}">招待</a>
-                </div>
-                <div class="server-list-move server-list-button">
-                    <a href="/manage/{guild_id}">開く</a>
-                </div>
-            </div>
-        </template>
-        {% else %}
-        <a href="/login?from=/" target="blank" class="big-button">ログイン</a>
-        {% endif %}
+      </div>
     </div>
+    <template id="server-list-content-template">
+      <div class="server-list-content">
+        <div class="server-list-name"></div>
+        <img class="server-list-icon">
+        <div class="server-list-invite server-list-button">
+          <a href="/invite?guild_id={guild_id}">招待</a>
+        </div>
+        <div class="server-list-move server-list-button">
+          <a href="/manage/{guild_id}">開く</a>
+        </div>
+      </div>
+    </template>
+    {% else %}
+    <a href="/login?from=/" target="blank" class="big-button">ログイン</a>
+    {% endif %}
+  </div>
 </div>
 {% endblock %}

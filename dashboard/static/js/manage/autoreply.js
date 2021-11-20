@@ -52,7 +52,7 @@ function addAutoreply(ari, arb, arr) {
   newContent.querySelector(".autoreply-id span").innerHTML = ari
   newContent.querySelector(".autoreply-target textarea").value = arb
   newContent.querySelector(".autoreply-reply textarea").value = arr
-  newContent.querySelector(".autoreply-delete").addEventListener("click", async function () {
+  newContent.querySelector(".autoreply-delete").addEventListener("click", async function() {
     this.parentElement.remove()
     if (arTable.querySelectorAll("tr").length == 0) {
       arTable.innerHTML = `

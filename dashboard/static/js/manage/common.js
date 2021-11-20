@@ -32,7 +32,7 @@ async function fetchGuildData() {
 
 saveButton = document.querySelector("#save-container > .save-button")
 if (saveButton) {
-  saveButton.addEventListener("click", async function () {
+  saveButton.addEventListener("click", async function() {
     return save.bind(this)()
   })
 }

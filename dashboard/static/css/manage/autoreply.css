@@ -1,35 +1,34 @@
-
 .autoreply-id {
-    width: 10%;
+  width: 10%;
 
 }
 
 .autoreply-target {
-    width: 40%;
+  width: 40%;
 }
 
 .autoreply-reply {
-    width: 40%;
+  width: 40%;
 }
 
 .autoreply-delete,
 .autoreply-action {
-    width: 10%;
+  width: 10%;
 }
 
 .autoreply-delete {
-    cursor: pointer;
-    background: var(--info-danger-background);
-    text-align: center;
+  cursor: pointer;
+  background: var(--info-danger-background);
+  text-align: center;
 }
 
 #autoreply-add td {
-    background: var(--info-positive-background);
-    text-align: center;
-    cursor: pointer;
+  background: var(--info-positive-background);
+  text-align: center;
+  cursor: pointer;
 }
 
 
 #autoreply-add-message td {
-    background: var(--info-help-background);
+  background: var(--info-help-background);
 }

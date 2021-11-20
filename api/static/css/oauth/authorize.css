@@ -1,68 +1,68 @@
 #app-name {
-    text-align: center
+  text-align: center
 }
 
 #app-name img {
-    border-radius: 50%;
-    display: inline;
-    height: 128px;
+  border-radius: 50%;
+  display: inline;
+  height: 128px;
 }
 
 #app-name p {
-    font-size: 2em;
+  font-size: 2em;
 }
 
 #scopes {
-    list-style: none;
-    width: 70%;
-    margin: auto;
+  list-style: none;
+  width: 70%;
+  margin: auto;
 }
 
 #scopes li {
-    padding-left: 2em;
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
-    background: url(https://cdn.discordapp.com/emojis/780176210654134314.png?v=1) no-repeat left 0 top 0em;
-    background-size: 2em;
+  padding-left: 2em;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  background: url(https://cdn.discordapp.com/emojis/780176210654134314.png?v=1) no-repeat left 0 top 0em;
+  background-size: 2em;
 }
 
 #confirm {
-    width: 60%;
-    margin: auto;
+  width: 60%;
+  margin: auto;
 }
 
 #confirm div {
-    width: 40%;
-    text-align: center;
-    /*   padding-left: 2em; */
-    padding-top: 0.3em;
-    padding-bottom: 0.3em;
-    display: inline-block;
-    background-size: 2em;
-    border-radius: 2px;
-    margin: 0.2em;
-    transition: background-color linear 0.1s;
+  width: 40%;
+  text-align: center;
+  /*   padding-left: 2em; */
+  padding-top: 0.3em;
+  padding-bottom: 0.3em;
+  display: inline-block;
+  background-size: 2em;
+  border-radius: 2px;
+  margin: 0.2em;
+  transition: background-color linear 0.1s;
 }
 
 #confirm a {
-    color: #fff;
-    display: block;
+  color: #fff;
+  display: block;
 }
 
 #confirm-yes {
-    background-color: #7289da;
-    float: left;
+  background-color: #7289da;
+  float: left;
 }
 
 #confirm-yes:hover {
-    background-color: #677bc4;
+  background-color: #677bc4;
 }
 
 #confirm-no {
-    background-color: #747f8d;
-    float: right;
+  background-color: #747f8d;
+  float: right;
 }
 
 #confirm-no:hover {
-    background-color: #68727f;
+  background-color: #68727f;
 }

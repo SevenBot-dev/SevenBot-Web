@@ -1,167 +1,168 @@
 thead tr td {
-    background-color: var(--background-tertiary);
-    text-align: center
+  background-color: var(--background-tertiary);
+  text-align: center
 }
 
 thead tr td:nth-child(1) {
-    border-top-left-radius: 3px
+  border-top-left-radius: 3px
 }
 
 thead tr td:nth-child(6) {
-    border-top-right-radius: 3px
+  border-top-right-radius: 3px
 }
 
 tbody tr td {
-    background-color: var(--background-secondary);
-    padding: 4px;
-    position: relative
+  background-color: var(--background-secondary);
+  padding: 4px;
+  position: relative
 }
 
 tbody tr td:nth-child(1) {
-    width: 15%
+  width: 15%
 }
 
 tbody tr td:nth-child(2) {
-    width: 10%
+  width: 10%
 }
 
 tbody tr td:nth-child(3) {
-    width: 25%;
-    word-break: keep-all
+  width: 25%;
+  word-break: keep-all
 }
 
 tbody tr td:nth-child(4) {
-    width: 10%
+  width: 10%
 }
 
 tbody tr td:nth-child(5) {
-    width: 25%
+  width: 25%
 }
 
 tbody tr:last-child td:nth-child(1) {
-    border-bottom-left-radius: 3px
+  border-bottom-left-radius: 3px
 }
 
 tbody tr:last-child td:nth-child(4) {
-    border-bottom-right-radius: 3px
+  border-bottom-right-radius: 3px
 }
 
 .more {
-    position: absolute;
-    right: .5rem;
-    bottom: .25rem;
-    user-select: none;
-    cursor: pointer
+  position: absolute;
+  right: .5rem;
+  bottom: .25rem;
+  user-select: none;
+  cursor: pointer
 }
 
 .datail {
-    display: none
+  display: none
 }
 
 h1 {
-    text-align: center
+  text-align: center
 }
 
 .empty-td {
-    text-align: center
+  text-align: center
 }
 
 .empty {
-    color: var(--text-muted);
-    pointer-events: none;
-    transform: scaleX(400%)
+  color: var(--text-muted);
+  pointer-events: none;
+  transform: scaleX(400%)
 }
 
 .request-type {
-    font-weight: 700
+  font-weight: 700
 }
 
-h1,h2,h3 {
-    text-align: center
+h1,
+h2,
+h3 {
+  text-align: center
 }
 
 .content-p {
-    width: 40%;
-    margin: auto
+  width: 40%;
+  margin: auto
 }
 
 table {
-    width: 60%;
-    margin: auto
+  width: 60%;
+  margin: auto
 }
 
 .request {
-    font-size: 80%;
-    position: relative;
-    display: inline-block;
-    vertical-align: middle
+  font-size: 80%;
+  position: relative;
+  display: inline-block;
+  vertical-align: middle
 }
 
 .request-type {
-    color: var(--text-warning)
+  color: var(--text-warning)
 }
 
 .request-type-container {
-    position: relative;
-    display: inline-block;
-    transform: translateY(-5%)
+  position: relative;
+  display: inline-block;
+  transform: translateY(-5%)
 }
 
 .request-type-slash {
-    color: var(--text-warning);
-    position: relative;
-    font-weight: 300;
-    display: inline-block;
-    transform: translateY(-5%)
+  color: var(--text-warning);
+  position: relative;
+  font-weight: 300;
+  display: inline-block;
+  transform: translateY(-5%)
 }
 
 .request-separator {
-    font-weight: 400;
-    color: var(--interactive-normal);
-    font-size: 70%;
-    display: inline-block;
-    vertical-align: middle;
-    padding: 0 8px
+  font-weight: 400;
+  color: var(--interactive-normal);
+  font-size: 70%;
+  display: inline-block;
+  vertical-align: middle;
+  padding: 0 8px
 }
 
 @media(max-width: 850px) {
-    thead {
-        display:none
-    }
+  thead {
+    display: none
+  }
 
-    table {
-        width: 80%;
-        overflow: hidden;
-    }
+  table {
+    width: 80%;
+    overflow: hidden;
+  }
 
-    tr {
-        border-bottom: 8px solid transparent
-    }
+  tr {
+    border-bottom: 8px solid transparent
+  }
 
-    td {
-        display: block;
-        width: 100% !important;
-        margin-bottom: 3px;
-        border-radius: 0
-    }
+  td {
+    display: block;
+    width: 100% !important;
+    margin-bottom: 3px;
+    border-radius: 0
+  }
 
-    td:nth-child(1) {
-        background-color: var(--background-tertiary);
-        border-top-left-radius: 3px;
-        border-top-right-radius: 3px
-    }
+  td:nth-child(1) {
+    background-color: var(--background-tertiary);
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px
+  }
 
-    tr.has-parent td:nth-child(1) {
-        background-color: var(--background-secondary)
-    }
+  tr.has-parent td:nth-child(1) {
+    background-color: var(--background-secondary)
+  }
 
-    td:last-child {
-        border-bottom-left-radius: 3px;
-        border-bottom-right-radius: 3px
-    }
+  td:last-child {
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px
+  }
 
-    .content-p {
-        width: 80%
-    }
+  .content-p {
+    width: 80%
+  }
 }
-

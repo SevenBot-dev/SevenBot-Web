@@ -11,24 +11,24 @@
 <div id="server-title">{{raw_data.guild.name}} を管理</div>
 
 <div id="main">
-    {% for item in sidebar_items %}
-    <div class="setting-list-content">
-        <div class="setting-list-name">{{item.name}}</div>
-        <div class="setting-list-icon" style="mask-image: url('/static/images/features/{{item.icon}}.svg')"></div>
-        <div class="setting-list-move setting-list-button">
-            <a href="/manage/{{guild_id}}/{{item.url}}">設定へ移動</a>
-        </div>
+  {% for item in sidebar_items %}
+  <div class="setting-list-content">
+    <div class="setting-list-name">{{item.name}}</div>
+    <div class="setting-list-icon" style="mask-image: url('/static/images/features/{{item.icon}}.svg')"></div>
+    <div class="setting-list-move setting-list-button">
+      <a href="/manage/{{guild_id}}/{{item.url}}">設定へ移動</a>
     </div>
-    {% endfor %}
-    <div class="setting-list-content">
-        <div class="setting-list-name">サーバー選択</div>
-        <div class="setting-list-icon" style="mask-image: url('/static/images/features/back.svg')"></div>
-        <div class="setting-list-back setting-list-button">
-            <a href="/">戻る</a>
-        </div>
+  </div>
+  {% endfor %}
+  <div class="setting-list-content">
+    <div class="setting-list-name">サーバー選択</div>
+    <div class="setting-list-icon" style="mask-image: url('/static/images/features/back.svg')"></div>
+    <div class="setting-list-back setting-list-button">
+      <a href="/">戻る</a>
     </div>
-    {% for _ in range(0, sidebar_items|length + 10) %}
-        <div class="setting-list-dummy"></div>
-    {% endfor %}
+  </div>
+  {% for _ in range(0, sidebar_items|length + 10) %}
+  <div class="setting-list-dummy"></div>
+  {% endfor %}
 </div>
 {% endblock %}

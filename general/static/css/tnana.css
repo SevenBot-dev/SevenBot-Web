@@ -1,21 +1,21 @@
-#tnana-main{
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    height: calc(60vh - var(--header-height))
+#tnana-main {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  height: calc(60vh - var(--header-height))
 }
 
-#license{
-    position: relative;
-    width: 100%;
+#license {
+  position: relative;
+  width: 100%;
 }
 
-.license-header{
-    text-align: center;
+.license-header {
+  text-align: center;
 }
 
-.quote{
-    border-left: 4px solid var(--interactive-muted);
-    padding-left: 8px;
-    color: var(--interative-muted);
+.quote {
+  border-left: 4px solid var(--interactive-muted);
+  padding-left: 8px;
+  color: var(--interative-muted);
 }

@@ -1,78 +1,78 @@
 .big-button-container {
-    text-align: center;
+  text-align: center;
 }
 
 .server-list-loading {
-    text-align: center;
+  text-align: center;
 }
 
 #server-list-container {
-    justify-content: space-between;
-    padding: 3rem;
-    width: 100%;
-    margin: auto;
-    flex-wrap: wrap;
-    box-sizing: border-box;
-    display: none;
+  justify-content: space-between;
+  padding: 3rem;
+  width: 100%;
+  margin: auto;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  display: none;
 }
 
 .server-list-content {
-    background: var(--background-secondary);
-    width: 15%;
-    border-radius: 1rem;
-    margin: 1rem 0.1rem;
+  background: var(--background-secondary);
+  width: 15%;
+  border-radius: 1rem;
+  margin: 1rem 0.1rem;
 }
 
 .server-list-name {
-    margin: 0.25rem;
-    font-size: 1.1rem;
-    height: calc(1.5rem);
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
+  margin: 0.25rem;
+  font-size: 1.1rem;
+  height: calc(1.5rem);
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .server-list-icon {
-    width: 50%;
-    border-radius: 100%;
+  width: 50%;
+  border-radius: 100%;
 }
 
 .server-list-button {
-    margin: 0.5rem;
-    padding: 0.25rem;
-    border-radius: 0.5rem;
+  margin: 0.5rem;
+  padding: 0.25rem;
+  border-radius: 0.5rem;
 }
 
 .server-list-button a {
-    color: var(--status-positive-text);
-    display: block;
+  color: var(--status-positive-text);
+  display: block;
 }
 
 .server-list-move {
-    background: var(--info-positive-foreground);
+  background: var(--info-positive-foreground);
 }
 
 .server-list-invite {
-    background: var(--discord-theme);
+  background: var(--discord-theme);
 }
 
 .server-list-dummy {
-    width: 15%;
-    height: 0;
-    margin: 0 0.5rem;
+  width: 15%;
+  height: 0;
+  margin: 0 0.5rem;
 }
 
 #sidebar {
-    display: none;
+  display: none;
 }
 
 .server-list-icon-logout {
-    mask-image: url(/static/images/features/back.svg);
-    background: var(--interactive-normal);
-    mask-size: contain;
-    margin: auto;
+  mask-image: url(/static/images/features/back.svg);
+  background: var(--interactive-normal);
+  mask-size: contain;
+  margin: auto;
 }
 
 .server-list-logout {
-    background: var(--info-danger-foreground);
+  background: var(--info-danger-foreground);
 }

@@ -12,54 +12,70 @@ rights = Array.from(document.getElementsByClassName('--slideright'));
 fades = Array.from(document.getElementsByClassName('--fade'));
 
 function inWindow(e) {
-    rc = e.getBoundingClientRect();
-    return window.scrollY < (rc.top) && (rc.top) < window.scrollY + window.innerHeight;
+  rc = e.getBoundingClientRect();
+  return window.scrollY < (rc.top) && (rc.top) < window.scrollY + window.innerHeight;
 }
 var CheckVisibility = function() {
 
-    var bottom = document.documentElement.scrollTop + document.documentElement.clientHeight;
+  var bottom = document.documentElement.scrollTop + document.documentElement.clientHeight;
 
-    function doSlide(l) {
-        return (inWindow(l) || l.classList.contains("--onload")) && !l.classList.contains("--animated");
-    };
-    lefts.forEach(function(l) {
-        if (doSlide(l)) {
-            l.classList.add('--animated');
-            l.animate({
-                transform: ["translateX(-100%)", "translateX(0%)"]
-            }, { duration: ANIME_LENGTH, easing: "ease-out", fill: "forwards" });
-        }
-    });
-    ups.forEach(function(l) {
+  function doSlide(l) {
+    return (inWindow(l) || l.classList.contains("--onload")) && !l.classList.contains("--animated");
+  };
+  lefts.forEach(function(l) {
+    if (doSlide(l)) {
+      l.classList.add('--animated');
+      l.animate({
+        transform: ["translateX(-100%)", "translateX(0%)"]
+      }, {
+        duration: ANIME_LENGTH,
+        easing: "ease-out",
+        fill: "forwards"
+      });
+    }
+  });
+  ups.forEach(function(l) {
 
 
-        if (doSlide(l)) {
-            l.classList.add('--animated');
-            l.animate({
-                transform: ["translateY(100%)", "translateY(0%)"],
-                opacity: [0, 1]
-            }, { duration: ANIME_LENGTH, easing: "ease-out", fill: "forwards" });
-        }
-    });
-    rights.forEach(function(l) {
+    if (doSlide(l)) {
+      l.classList.add('--animated');
+      l.animate({
+        transform: ["translateY(100%)", "translateY(0%)"],
+        opacity: [0, 1]
+      }, {
+        duration: ANIME_LENGTH,
+        easing: "ease-out",
+        fill: "forwards"
+      });
+    }
+  });
+  rights.forEach(function(l) {
 
-        if (doSlide(l)) {
-            l.classList.add('--animated');
-            l.animate({
-                transform: ["translateX(100%)", "translateX(0%)"]
-            }, { duration: ANIME_LENGTH, easing: "ease-out", fill: "forwards" });
-        }
-    });
-    fades.forEach(function(l) {
+    if (doSlide(l)) {
+      l.classList.add('--animated');
+      l.animate({
+        transform: ["translateX(100%)", "translateX(0%)"]
+      }, {
+        duration: ANIME_LENGTH,
+        easing: "ease-out",
+        fill: "forwards"
+      });
+    }
+  });
+  fades.forEach(function(l) {
 
-        if (doSlide(l)) {
-            l.classList.add('--animated');
+    if (doSlide(l)) {
+      l.classList.add('--animated');
 
-            l.animate({
-                opacity: [0, 1]
-            }, { duration: ANIME_LENGTH, easing: "ease-out", fill: "forwards" });
-        }
-    });
+      l.animate({
+        opacity: [0, 1]
+      }, {
+        duration: ANIME_LENGTH,
+        easing: "ease-out",
+        fill: "forwards"
+      });
+    }
+  });
 };
 
 
@@ -68,15 +84,15 @@ window.setTimeout(CheckVisibility, 0);
 document.addEventListener("scroll", CheckVisibility);
 
 lefts.forEach(function(l) {
-    l.style.transform = "translateX(-100%)";
+  l.style.transform = "translateX(-100%)";
 });
 rights.forEach(function(l) {
-    l.style.transform = "translateX(100%)";
+  l.style.transform = "translateX(100%)";
 });
 ups.forEach(function(l) {
-    l.style.transform = "translateY(100%)";
+  l.style.transform = "translateY(100%)";
 });
 fades.forEach(function(l) {
-    l.style.opacity = 0;
+  l.style.opacity = 0;
 
 });

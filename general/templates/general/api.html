@@ -12,99 +12,99 @@
 {% endblock %}
 {% block main %}
 <div class="--fade">
-    <h1 class="page-title">APIリファレンス</h1>
-    <p class="content-p">
-        SevenBot Web APIの説明です。 <a href="/api-example">例（PythonとRubyが載っています）</a><br> ベースURL：
-        <a href="https://api.sevenbot.jp">https://api.sevenbot.jp</a>
-    </p>
+  <h1 class="page-title">APIリファレンス</h1>
+  <p class="content-p">
+    SevenBot Web APIの説明です。 <a href="/api-example">例（PythonとRubyが載っています）</a><br> ベースURL：
+    <a href="https://api.sevenbot.jp">https://api.sevenbot.jp</a>
+  </p>
 </div>
 <div>
-    {% for c in endpoints%}
-    <article class="category-container">
-        <h1>{{c["name"]}}</h1>
-        <p class="content-p">
-            {{c["description"]}}<br> 認証：
-            <span class="inline-code">{{auths[c["authorization"]]}}</span><br> スコープ：
-            <span class="inline-code">{{c["scope"]}}</span>
-        </p>
-        {%for e in c["endpoints"]%}
-        <section class="endpoint-container">
-            <h2>{{e["name"]}}<span class="request-type-container">
-                <span class="request-type-container"><span class="request-separator"> - </span><span class="request">{%for t in e["type"]%}{%if loop.index > 1%}<span class="request-type-slash">/</span>{%endif%}<span class="request-type">{{t.upper()}}</span>{%endfor%}
-                {{e["endpoint"]}}
-                </span>
-                </span>
-                </span>
-            </h2>
-            <p class="content-p"></p>
-            <h3>パラメータ</h3>
-            {%if e["arguments"]%}
-            <table>
-                <thead>
-                    <tr>
-                        <td>名前</td>
-                        <td>タイプ</td>
-                        <td>説明</td>
-                        <td>省略</td>
-                        <td>デフォルト</td>
-                        <td>例</td>
-                    </tr>
-                </thead>
-                <tbody>
+  {% for c in endpoints%}
+  <article class="category-container">
+    <h1>{{c["name"]}}</h1>
+    <p class="content-p">
+      {{c["description"]}}<br> 認証：
+      <span class="inline-code">{{auths[c["authorization"]]}}</span><br> スコープ：
+      <span class="inline-code">{{c["scope"]}}</span>
+    </p>
+    {%for e in c["endpoints"]%}
+    <section class="endpoint-container">
+      <h2>{{e["name"]}}<span class="request-type-container">
+          <span class="request-type-container"><span class="request-separator"> - </span><span class="request">{%for t in e["type"]%}{%if loop.index > 1%}<span class="request-type-slash">/</span>{%endif%}<span class="request-type">{{t.upper()}}</span>{%endfor%}
+              {{e["endpoint"]}}
+            </span>
+          </span>
+        </span>
+      </h2>
+      <p class="content-p"></p>
+      <h3>パラメータ</h3>
+      {%if e["arguments"]%}
+      <table>
+        <thead>
+          <tr>
+            <td>名前</td>
+            <td>タイプ</td>
+            <td>説明</td>
+            <td>省略</td>
+            <td>デフォルト</td>
+            <td>例</td>
+          </tr>
+        </thead>
+        <tbody>
 
-                    {%for an, ai in e["arguments"].items() %}
-                    <tr>
-                        <td><span class="inline-code inline-code2">{{an}}</span></td>
-                        <td>{{ai["type"]}}</td>
-                        <td>{{ai["description"]}}</td>
-                        <td>{{"可能" if ai["optional"] else "不可"}}</td>
-                        {%if ai["optional"]%}
-                        <td>{{ai["default"]}}</td>
-                        {%else%}
-                        <td class="empty-td">
-                            <div class="empty">-</div>
-                        </td>
-                        {%endif%}
-                        <td>{{ai["example"]}}</td>
-                    </tr>
-                    {%endfor%}
-                </tbody>
-            </table>
+          {%for an, ai in e["arguments"].items() %}
+          <tr>
+            <td><span class="inline-code inline-code2">{{an}}</span></td>
+            <td>{{ai["type"]}}</td>
+            <td>{{ai["description"]}}</td>
+            <td>{{"可能" if ai["optional"] else "不可"}}</td>
+            {%if ai["optional"]%}
+            <td>{{ai["default"]}}</td>
             {%else%}
-            <p class="centerp">（パラメータなし）</p>
+            <td class="empty-td">
+              <div class="empty">-</div>
+            </td>
             {%endif%}
-            <h3>戻り値</h3>
-            {%if e["response"]%}
-            <table>
-                <thead>
-                    <tr>
-                        <td>名前</td>
-                        <td>タイプ</td>
-                        <td>説明</td>
-                        <td>例</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {%for rn, ri in e["response"].items() %}
-                    <tr>
-                        {%if ri['optional']%}
-                        <td><span class="inline-code inline-code2 response-optional">{{rn}}?</span></td>
-                        {%else%}
-                        <td><span class="inline-code inline-code2">{{rn}}</span></td>
-                        {%endif%}
-                        <td>{{ri["type"]}}</td>
-                        <td>{{ri["description"]}}</td>
-                        <td>{{ri["example"]}}</td>
-                    </tr>
-                    {%endfor%}
-                </tbody>
-            </table>
+            <td>{{ai["example"]}}</td>
+          </tr>
+          {%endfor%}
+        </tbody>
+      </table>
+      {%else%}
+      <p class="centerp">（パラメータなし）</p>
+      {%endif%}
+      <h3>戻り値</h3>
+      {%if e["response"]%}
+      <table>
+        <thead>
+          <tr>
+            <td>名前</td>
+            <td>タイプ</td>
+            <td>説明</td>
+            <td>例</td>
+          </tr>
+        </thead>
+        <tbody>
+          {%for rn, ri in e["response"].items() %}
+          <tr>
+            {%if ri['optional']%}
+            <td><span class="inline-code inline-code2 response-optional">{{rn}}?</span></td>
             {%else%}
-            <p class="centerp">（戻り値なし）</p>
+            <td><span class="inline-code inline-code2">{{rn}}</span></td>
             {%endif%}
-        </section>
-        {%endfor%}
-    </article>
+            <td>{{ri["type"]}}</td>
+            <td>{{ri["description"]}}</td>
+            <td>{{ri["example"]}}</td>
+          </tr>
+          {%endfor%}
+        </tbody>
+      </table>
+      {%else%}
+      <p class="centerp">（戻り値なし）</p>
+      {%endif%}
+    </section>
     {%endfor%}
+  </article>
+  {%endfor%}
 </div>
 {% endblock %}

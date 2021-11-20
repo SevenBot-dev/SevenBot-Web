@@ -2,151 +2,151 @@
 <html>
 
 <head is="x-head">
-    <title>{% block title %}{% endblock %}{% if self.title().strip() %} - {% endif %}SevenBot</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" href="/static/images/favicon.ico">
-    <link rel="icon" href="/static/images/favicon.ico">
-    <link rel="stylesheet" href="/static/css/common.css">
-    <link rel="stylesheet" href="/static/css/header.css">
-    <link rel="stylesheet" href="/static/css/footer.css">
-    <script defer src="/static/js/header.js"></script>
-    <script defer src="/static/js/common.js"></script>
-    <script defer src="/static/js/loadless.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/solarized-light.min.css"  media="print" onload="this.media='all'">
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RV0BBT9CCF"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
+  <title>{% block title %}{% endblock %}{% if self.title().strip() %} - {% endif %}SevenBot</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="/static/images/favicon.ico">
+  <link rel="icon" href="/static/images/favicon.ico">
+  <link rel="stylesheet" href="/static/css/common.css">
+  <link rel="stylesheet" href="/static/css/header.css">
+  <link rel="stylesheet" href="/static/css/footer.css">
+  <script defer src="/static/js/header.js"></script>
+  <script defer src="/static/js/common.js"></script>
+  <script defer src="/static/js/loadless.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/solarized-light.min.css" media="print" onload="this.media='all'">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-RV0BBT9CCF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
 
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-        gtag('js', new Date());
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
 
-        gtag('config', 'G-RV0BBT9CCF');
-    </script>
-    <!-- reload-area -->
-    <!-- block singlehead -->
-    {% block singlehead %} {% endblock %}
-    <!-- endblock singlehead -->
-    <!-- block head -->
-    {% block head %} {% endblock %}
-    <!-- endblock head -->
+    gtag('config', 'G-RV0BBT9CCF');
+  </script>
+  <!-- reload-area -->
+  <!-- block singlehead -->
+  {% block singlehead %} {% endblock %}
+  <!-- endblock singlehead -->
+  <!-- block head -->
+  {% block head %} {% endblock %}
+  <!-- endblock head -->
 
 </head>
 
 <body>
-    <header>
-        <div id="header-top">
-            <a href="/">
-                <picture>
-                    <source srcset="/static/images/header-icon.webp" type="image/webp">
-                    <img src="/static/images/header-icon.png" id="header-sb-icon">
-                </picture>
-                <span id="site-name">SevenBot</span>
-            </a>
+  <header>
+    <div id="header-top">
+      <a href="/">
+        <picture>
+          <source srcset="/static/images/header-icon.webp" type="image/webp">
+          <img src="/static/images/header-icon.png" id="header-sb-icon">
+        </picture>
+        <span id="site-name">SevenBot</span>
+      </a>
 
-            <ul id="menu">
-                <li class="menu-content">
-                    <a href="/support" target="blank">サポートサーバー</a>
-                </li>
-                <li class="menu-content menu-important">
-                    <a href="/invite" target="blank">導入する</a>
-                </li>
-            </ul>
-            <div id="header-menu-opener">
-                <svg width="54" height="30" viewBox="-2 -2 34 18">
-                    <polyline points="0,0 16,16 32,0" fill="none" stroke-width="1" stroke="#fff"></polyline>
-                </svg>
-            </div>
-        </div>
-        <div id="header-menu">
-            <ul id="header-menu-container">
-                <li class="header-menu-content">
-                    <a href="/about">概要</a>
-                </li>
-                <li class="header-menu-content">
-                    <a href="/status">ステータス</a>
-                </li>
-                <li class="header-menu-content">
-                    <a href="/tutorial">チュートリアル</a>
-                </li>
-                <li class="header-menu-content">
-                    <a href="/commands">コマンド</a>
-                </li>
-                <li class="header-menu-content">
-                    <a href="/api">Web API</a>
-                </li>
-
-                <li class="header-menu-content">
-                    <a href="/contact">お問い合わせ</a>
-                </li>
-            </ul>
-            <ul id="header-menu-bottom">
-                <li class="header-menu-content" style="background: #fff;"><a href="/invite" style="color: var(--sb-theme)" target="blank">招待</a></li>
-                <li class="header-menu-content" style="color: #fff;border: 1px solid #fff;box-sizing: border-box;background:transpant;"><a href="/support" target="blank">サポート</a></li>
-            </ul>
-        </div>
-    </header>
-
-    <div id="content">
-        <!--main-->
-        <block block-name="main">
-            {% block main %} {% endblock %} {% if not self.main().strip() %}
-            <div class="--fade --onload">
-                <h1 class="page-title">お前は知りすぎた</h1>
-                <p class="centerp">
-                    君は見てはいけないものを見てしまった。<br><br> っていう冗談はおいといて、これはサーバーの内部ページだ。
-                    <br> ヘッダーとかの共通する部分をここに置いてる。
-                    <br> だからここには何もないよ。
-                    <br>
-                    <a href="/">トップに戻る</a>
-                </p>
-            </div>
-            {% endif %}
-        </block>
-        <!--endmain-->
-        <div class="tooltip green" style="display:none;">
-            <div class="tooltip-opacity" style="opacity: 1; transform: none;">
-                <div class="tooltip-bottom"></div>
-                <div class="tooltip-main">
-                    <div>コピーした！</div>
-                </div>
-            </div>
-        </div>
-        <footer>
-            <small style="top: 1rem;position: relative;">SevenBot - &copy; 2020 <a href="https://github.com/sevenc-nanashi">名無し。<span id="footer-copyright-pc">（@sevenc-nanashi）</span></a></small>
-            <ul id="footer-bottom">
-                <li>
-                    <a href="https://top.gg/bot/718760319207473152" target="blank">
-                        <img src="https://top.gg/api/widget/status/718760319207473152.svg" alt="SevenBot">
-                    </a>
-                </li>
-                <li>
-                    <a href="https://discord.gg/YpgHwz8" target="blank"><img src="https://discordapp.com/api/guilds/715540925081714788/widget.png?style=shield" alt="Discord Shield"></a>
-                </li>
-                <li>
-                    <a href="/github" target="blank"><img src="https://img.shields.io/github/stars/SevenBot-dev?logo=github&style=flat&color=00ccff&label=Stars" alt="SevenBot-dev stars"></a>
-                </li>
-
-            </ul>
-        </footer>
-        <div id="alert-container">
-            <div id="google-alert" class="alert">
-                当サイトではGoogleアナリティクスを使用しています。<br> これを無効化するには、Cookieを無効にして下さい。
-                <br>
-                <a href="https://policies.google.com/technologies/ads?hl=ja" target="-blank">詳細はこちら</a><br>
-            </div>
-            <div id="tk-alert" class="alert">
-                SevenBotのサイトはsevenbo.tkからsevenbot.jpへ移行しました。
-            </div>
-        </div>
+      <ul id="menu">
+        <li class="menu-content">
+          <a href="/support" target="blank">サポートサーバー</a>
+        </li>
+        <li class="menu-content menu-important">
+          <a href="/invite" target="blank">導入する</a>
+        </li>
+      </ul>
+      <div id="header-menu-opener">
+        <svg width="54" height="30" viewBox="-2 -2 34 18">
+          <polyline points="0,0 16,16 32,0" fill="none" stroke-width="1" stroke="#fff"></polyline>
+        </svg>
+      </div>
     </div>
-    <!-- Cloudflare Web Analytics -->
-    <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6d2277dad830449480def73731713d5a"}'></script>
-    <!-- End Cloudflare Web Analytics -->
+    <div id="header-menu">
+      <ul id="header-menu-container">
+        <li class="header-menu-content">
+          <a href="/about">概要</a>
+        </li>
+        <li class="header-menu-content">
+          <a href="/status">ステータス</a>
+        </li>
+        <li class="header-menu-content">
+          <a href="/tutorial">チュートリアル</a>
+        </li>
+        <li class="header-menu-content">
+          <a href="/commands">コマンド</a>
+        </li>
+        <li class="header-menu-content">
+          <a href="/api">Web API</a>
+        </li>
+
+        <li class="header-menu-content">
+          <a href="/contact">お問い合わせ</a>
+        </li>
+      </ul>
+      <ul id="header-menu-bottom">
+        <li class="header-menu-content" style="background: #fff;"><a href="/invite" style="color: var(--sb-theme)" target="blank">招待</a></li>
+        <li class="header-menu-content" style="color: #fff;border: 1px solid #fff;box-sizing: border-box;background:transpant;"><a href="/support" target="blank">サポート</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <div id="content">
+    <!--main-->
+    <block block-name="main">
+      {% block main %} {% endblock %} {% if not self.main().strip() %}
+      <div class="--fade --onload">
+        <h1 class="page-title">お前は知りすぎた</h1>
+        <p class="centerp">
+          君は見てはいけないものを見てしまった。<br><br> っていう冗談はおいといて、これはサーバーの内部ページだ。
+          <br> ヘッダーとかの共通する部分をここに置いてる。
+          <br> だからここには何もないよ。
+          <br>
+          <a href="/">トップに戻る</a>
+        </p>
+      </div>
+      {% endif %}
+    </block>
+    <!--endmain-->
+    <div class="tooltip green" style="display:none;">
+      <div class="tooltip-opacity" style="opacity: 1; transform: none;">
+        <div class="tooltip-bottom"></div>
+        <div class="tooltip-main">
+          <div>コピーした！</div>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <small style="top: 1rem;position: relative;">SevenBot - &copy; 2020 <a href="https://github.com/sevenc-nanashi">名無し。<span id="footer-copyright-pc">（@sevenc-nanashi）</span></a></small>
+      <ul id="footer-bottom">
+        <li>
+          <a href="https://top.gg/bot/718760319207473152" target="blank">
+            <img src="https://top.gg/api/widget/status/718760319207473152.svg" alt="SevenBot">
+          </a>
+        </li>
+        <li>
+          <a href="https://discord.gg/YpgHwz8" target="blank"><img src="https://discordapp.com/api/guilds/715540925081714788/widget.png?style=shield" alt="Discord Shield"></a>
+        </li>
+        <li>
+          <a href="/github" target="blank"><img src="https://img.shields.io/github/stars/SevenBot-dev?logo=github&style=flat&color=00ccff&label=Stars" alt="SevenBot-dev stars"></a>
+        </li>
+
+      </ul>
+    </footer>
+    <div id="alert-container">
+      <div id="google-alert" class="alert">
+        当サイトではGoogleアナリティクスを使用しています。<br> これを無効化するには、Cookieを無効にして下さい。
+        <br>
+        <a href="https://policies.google.com/technologies/ads?hl=ja" target="-blank">詳細はこちら</a><br>
+      </div>
+      <div id="tk-alert" class="alert">
+        SevenBotのサイトはsevenbo.tkからsevenbot.jpへ移行しました。
+      </div>
+    </div>
+  </div>
+  <!-- Cloudflare Web Analytics -->
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6d2277dad830449480def73731713d5a"}'></script>
+  <!-- End Cloudflare Web Analytics -->
 </body>
 
 </html>

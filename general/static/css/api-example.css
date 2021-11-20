@@ -1,17 +1,17 @@
 .sample-code-container {
-    display: flex;
-    width: 80%;
-    margin: auto;
+  display: flex;
+  width: 80%;
+  margin: auto;
 }
 
 .sample-code {
-    width: 50%;
-    margin: 16px;
+  width: 50%;
+  margin: 16px;
 }
 
 @media(max-width: 850px) {
-    .sample-code {
-        width: 100%;
-        margin: 16px;
-    }
+  .sample-code {
+    width: 100%;
+    margin: 16px;
+  }
 }

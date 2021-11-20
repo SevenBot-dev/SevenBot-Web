@@ -1,81 +1,81 @@
 .syntax-title {
-    font-size: 1.5rem;
-    padding-bottom: 0.5rem;
-    text-align: center;
+  font-size: 1.5rem;
+  padding-bottom: 0.5rem;
+  text-align: center;
 }
 
 .example-syntax {
-    width: 50%;
+  width: 50%;
 }
 
 .example-input {
-    width: 40%;
-    word-break: space;
+  width: 40%;
+  word-break: space;
 }
 
 .example-result {
-    width: 10%;
+  width: 10%;
 }
 
 .example-ok {
-    color: var(--info-positive-foreground)
+  color: var(--info-positive-foreground)
 }
 
 .example-ng {
-    color: var(--status-danger-background)
+  color: var(--status-danger-background)
 }
 
 .syntax-section {
-    padding-top: 2rem;
-    width: 100%;
+  padding-top: 2rem;
+  width: 100%;
 }
 
 .syntax-section table {
-    width: 100%;
+  width: 100%;
 }
 
 table {
-    padding-top: 1rem;
-    padding-bottom: 2rem;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
 }
 
 .divider-tr {
-    position: relative;
+  position: relative;
 }
 
 .divider-tr td {
-    position: relative;
-    text-align: center;
+  position: relative;
+  text-align: center;
 }
 
 #syntax-param-table td:nth-child(1) {
-    width: 15%;
+  width: 15%;
 }
 
 #syntax-param-table td:nth-child(3) {
-    width: 15%;
+  width: 15%;
 }
 
 #syntax-param-table td:nth-child(4) {
-    width: 10%;
+  width: 10%;
 }
 
 @media(max-width: 850px) {
-    td:nth-child(1):not(.param-title, .syntax-example, .divider-tr td) {
-        background-color: var(--background-secondary-alt)
-    }
+  td:nth-child(1):not(.param-title, .syntax-example, .divider-tr td) {
+    background-color: var(--background-secondary-alt)
+  }
 
-    .param-description {
-        background-color: var(--background-secondary);
-    }
+  .param-description {
+    background-color: var(--background-secondary);
+  }
 
-    .syntax-example,
-    .divider-tr td {
-        background-color: var(--interactive-muted)
-    }
+  .syntax-example,
+  .divider-tr td {
+    background-color: var(--interactive-muted)
+  }
 
-    table {
-        width: 100% !important;
-        overflow: hidden;
-    }
+  table {
+    width: 100% !important;
+    overflow: hidden;
+  }
 }

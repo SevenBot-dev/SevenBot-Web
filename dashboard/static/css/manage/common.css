@@ -127,7 +127,7 @@ aside ul {
   background-color: var(--background-modifier-hover);
 }
 
-.sidebar-li.current{
+.sidebar-li.current {
   background-color: var(--background-modifier-active);
   --sidebar-color: var(--interactive-active);
 }
@@ -187,7 +187,7 @@ aside ul {
   margin: 2rem auto;
 }
 
-.save-button{
+.save-button {
   width: 50%;
   background: var(--background-accent);
   padding: 0.5rem;
@@ -202,7 +202,7 @@ aside ul {
   opacity: 0.5;
 }
 
-.table-error-bg td{
+.table-error-bg td {
   background-color: var(--info-danger-background);
 }
 
@@ -211,6 +211,6 @@ aside ul {
   border: var(--info-danger-foreground) 1px solid;
 }
 
-#sidebar-top div{
+#sidebar-top div {
   color: var(--text-normal)
 }
