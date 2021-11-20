@@ -6,18 +6,14 @@
     text-align: center;
 }
 
-.server-list-container {
-    display: hidden;
-}
-
 #server-list-container {
-    display: flex;
     justify-content: space-between;
     padding: 3rem;
     width: 100%;
     margin: auto;
     flex-wrap: wrap;
     box-sizing: border-box;
+    display: none;
 }
 
 .server-list-content {

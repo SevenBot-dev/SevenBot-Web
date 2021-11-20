@@ -35,6 +35,7 @@ async function showGuilds() {
         serverList.innerHTML += `<div class="server-list-dummy"></div>`
     })
     document.getElementById("server-list-loading").style.display = "none"
+    document.getElementById("server-list-container").style.display = "flex"
 }
 
 function main() {
