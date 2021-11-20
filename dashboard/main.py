@@ -404,7 +404,10 @@ def page_not_found(error):
 def api_hidden_sessions():
     if request.args["pass"] != os.getenv("password"):
         return json.dumps({"success": False}), 401
-    return jsonify(current_app.config["dash_user_caches"])
+    return jsonify({
+        "config": current_app.config["dash_user_caches"],
+        "objid": id(current_app.config["dash_user_caches"]),
+    })
 
 
 if not os.getenv("heroku"):
