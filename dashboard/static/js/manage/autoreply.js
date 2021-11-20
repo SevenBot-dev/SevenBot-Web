@@ -93,6 +93,7 @@ async function save() {
       ]
     ]
   })
+  this.classList.add("disabled")
   resp = await fetch(`/api/guilds/${flaskData.guild.id}/settings/autoreply`, {
     method: "POST",
     headers: {
@@ -105,12 +106,10 @@ async function save() {
   })
   resp_json = await resp.json()
   showTooltip(resp_json.message, this, (resp.ok ? "green" : "red"))
-  if (resp_json.code !== "ratelimited") {
-    this.classList.add("disabled")
-    setTimeout(() => {
+  setTimeout(() => {
       this.classList.remove("disabled")
-    }, 5000)
-  }
+    },
+    resp_json.code === "ratelimited" ? resp_json.retry_after * 1000 : 5000)
   if (resp_json.code === "invalid_data") {
     arTable.querySelectorAll(".table-error").forEach(e => {
       e.classList.remove("table-error")
