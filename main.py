@@ -16,6 +16,7 @@ from dashboard.main import app as dashboard_app
 mimetypes.add_type("image/webp", ".webp")
 load_dotenv()
 
+
 def make_random_str(length):
     return "".join(random.choices(string.ascii_letters, k=length))
 
