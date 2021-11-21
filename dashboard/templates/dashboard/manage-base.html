@@ -1,12 +1,14 @@
 {% extends 'dashboard/base.html' %}
-{% block title %}管理{% endblock %}
+{% set is_manage = true %}
+
+{% block title %}{% block name %}{% endblock %}{% endblock %}
 {% block head %}
 <link rel="stylesheet" href="/static/css/manage/common.css">
 <script src="/static/js/manage/common.js" defer></script>
 <meta id="flask-passer" content="{{data}}">
 {% endblock %}
 {% block main %}
-<div id="server-title">{% block name %}{% endblock %}を編集</div>
+<div id="server-title">{{ self.name() }}を編集</div>
 <div id="loading" class="loading">読み込み中...</div>
 <div id="main">
   {% block content %}

@@ -1,5 +1,6 @@
 {% extends 'dashboard/base.html' %}
 
+{% set is_manage = false %}
 {% block title %}トップ{% endblock %}
 {% block head %}
 <link rel="stylesheet" href="/static/css/index.css">
@@ -33,7 +34,7 @@
           <a href="/invite?guild_id={guild_id}" class="force-here">招待</a>
         </div>
         <div class="server-list-move server-list-button">
-          <a href="/manage/{guild_id}">開く</a>
+          <a href="/manage/{guild_id}" class="force-here">開く</a>
         </div>
       </div>
     </template>

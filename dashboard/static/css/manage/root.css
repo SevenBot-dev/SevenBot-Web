@@ -80,3 +80,9 @@
   text-align: center;
   height: 0;
 }
+
+@media(max-width:850px) {
+  .setting-list-content {
+    width: 100%;
+  }
+}

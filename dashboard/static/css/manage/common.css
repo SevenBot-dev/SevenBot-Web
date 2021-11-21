@@ -72,6 +72,7 @@ tfoot tr td {
   font-size: 2rem;
   text-align: center;
   font-weight: bold;
+  word-break: keep-all;
 }
 
 section {
@@ -154,18 +155,20 @@ aside ul {
 
 
 #sidebar-top {
-  position: fixed;
+  position: absolute;
   top: var(--header-height);
   left: 0;
-  width: 20%;
+  width: 100%;
   height: var(--top-bar-height);
   z-index: 2;
   border-bottom: var(--interactive-muted) 1px solid;
+  box-sizing: border-box;
+  padding: 0.5rem;
 }
 
 #sidebar-top img {
-  height: calc(var(--top-bar-height) - 1rem);
-  margin: 0.5rem;
+  height: 100%;
+  /*! margin: 0.5rem; */
   border-radius: 2rem;
 }
 
@@ -213,4 +216,71 @@ aside ul {
 
 #sidebar-top div {
   color: var(--text-normal)
+}
+
+#sidebar-menu-bottom {
+  display: none;
+}
+
+@media(max-width:850px) {
+  aside {
+    width: 100%;
+    position: fixed;
+    top: 0%;
+    display: none;
+    z-index: 10;
+  }
+
+  block[block-name="main"] {
+    width: 100%;
+    left: 0;
+  }
+
+  .setting-list-content {
+    width: 100%;
+  }
+
+  #sidebar-menu-bottom {
+    list-style: none;
+    position: absolute;
+    /*! display: block; */
+    width: 100%;
+    margin: 0;
+    padding: 0.5rem;
+    --menu-margin: 2px;
+    box-sizing: border-box;
+    display: flex;
+    bottom: 2px;
+    flex-direction: column-reverse
+  }
+
+  .sidebar-menu-content {
+    height: calc(32px - var(--menu-margin)*2);
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: var(--menu-margin);
+    background-color: #fff2;
+    border-radius: 2px;
+    transition: background-color ease-out .25s
+  }
+
+  .sidebar-menu-content:hover,
+  .sidebar-menu-content:focus {
+    background-color: #fff4
+  }
+
+  .sidebar-menu-content>a {
+    color: var(--sb-theme);
+    width: 100%
+  }
+
+  tbody tr td {
+    display: block;
+  }
+
 }

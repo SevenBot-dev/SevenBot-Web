@@ -3,7 +3,7 @@ async function showGuilds() {
   console.debug("Fetching /api/servers")
   resp = await fetch("/api/servers", {
     headers: {
-      "authorization": document.cookie.match(/ token=(.+?);/)[1]
+      "authorization": document.cookie.match(/(?: |^)token=(.+?);/)[1]
     }
   })
   if (resp.status === 401) {

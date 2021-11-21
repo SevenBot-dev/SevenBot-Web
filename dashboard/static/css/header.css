@@ -145,7 +145,7 @@ header {
     display: none;
     position: absolute;
     top: 64px;
-    height: calc((2rem + 4px) * 8 + 2px);
+    height: calc((2rem + 4px) * 2 + 2px);
     left: 0;
     right: 0;
     background: var(--sb-theme)

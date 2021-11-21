@@ -20,7 +20,8 @@
   background: var(--background-secondary);
   width: 15%;
   border-radius: 1rem;
-  margin: 1rem 0.1rem;
+  margin: 1rem 0.5rem;
+  min-width: 8rem;
 }
 
 .server-list-name {
@@ -69,10 +70,18 @@
 .server-list-icon-logout {
   mask-image: url(/static/images/features/back.svg);
   background: var(--interactive-normal);
-  mask-size: contain;
+  mask-size: cover;
   margin: auto;
 }
 
 .server-list-logout {
   background: var(--info-danger-foreground);
+}
+
+@media(max-width:850px) {
+  .server-list-content {
+    width: calc(50% - 1rem);
+    min-width: auto;
+    box-sizing: border-box;
+  }
 }

@@ -10,7 +10,11 @@
   <link rel="stylesheet" href="/static/css/common.css">
   <link rel="stylesheet" href="/static/css/header.css">
   <link rel="stylesheet" href="/static/css/footer.css">
+  {% if is_manage %}
+  <script defer src="/static/js/header-manage.js"></script>
+  {% else %}
   <script defer src="/static/js/header.js"></script>
+  {% endif %}
   <script defer src="/static/js/common.js"></script>
   <script defer src="/static/js/loadless.js"></script>
   <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -38,7 +42,7 @@
 <body>
   <header>
     <div id="header-top">
-      <a href="/">
+      <a href="/" class="force-here">
         <picture>
           <source srcset="/static/images/header-icon.webp" type="image/webp">
           <img src="/static/images/header-icon.png" id="header-sb-icon">
@@ -63,10 +67,16 @@
         </svg>
       </div>
     </div>
+    <div id="header-menu">
+      <ul id="header-menu-bottom">
+        <li class="header-menu-content" style="background: #fff;"><a href="https://sevenbot.jp/invite" style="color: var(--sb-theme);">招待</a></li>
+        <li class="header-menu-content" style="color: #fff;border: 1px solid #fff;box-sizing: border-box;background:transpant;"><a href="https://sevenbot.jp/support">サポート</a></li>
+      </ul>
+    </div>
   </header>
 
   <div id="content">
-    {% block sidebar %}
+    {% if is_manage %}
     <aside id="sidebar">
       <a href="/manage/{{guild_id}}" id="sidebar-top-link">
         <div id="sidebar-top">
@@ -81,8 +91,13 @@
         </a>
       </ul>
       {% endfor %}
+
+      <ul id="sidebar-menu-bottom">
+        <li class="sidebar-menu-content" style="background: var(--sb-theme);"><a href="https://sevenbot.jp/invite" style="color: #fff;">招待</a></li>
+        <li class="sidebar-menu-content" style="color: var(--sb-theme);border: 1px solid var(--sb-theme);box-sizing: border-box;background:transpant;"><a href="https://sevenbot.jp/support">サポート</a></li>
+      </ul>
     </aside>
-    {% endblock %}
+    {% endif %}
     <!--main-->
     <block block-name="main">
       {% block main %} {% endblock %} {% if not self.main().strip() %}
