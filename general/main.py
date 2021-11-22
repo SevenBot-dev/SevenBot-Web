@@ -3,6 +3,7 @@ from glob import glob
 import json
 import os
 import re
+import struct
 import sys
 import time
 
@@ -73,15 +74,27 @@ SYNTAX_PATTERN_INPUT = [
 ]
 MD_MASTER_PATTERN = re.compile(r"---\n([\s\S]+)\n---([\s\S]+)$")
 DARK_SWITCH_TAG = r"""<picture>
-    <source srcset="/static/tutorial-imgs/!image-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)">
-    <source srcset="/static/tutorial-imgs/!image-dark.png" type="image/png" media="(prefers-color-scheme: dark)">
-    <source srcset="/static/tutorial-imgs/!image.webp" type="image/webp">
-    <img src="/static/tutorial-imgs/!image.png" class="tutorial-image">
+    <source srcset="/static/tutorial-imgs/{image}-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)">
+    <source srcset="/static/tutorial-imgs/{image}-dark.png" type="image/png" media="(prefers-color-scheme: dark)">
+    <source srcset="/static/tutorial-imgs/{image}.webp" type="image/webp">
+    <img src="/static/tutorial-imgs/{image}.png" class="tutorial-image" width="{width}" height="{height}">
 </picture>"""
 WEBP_SWITCH_TAG = r"""<picture>
-    <source srcset="/static/tutorial-imgs/!image.webp" type="image/webp">
-    <img src="/static/tutorial-imgs/!image.png" class="tutorial-image">
+    <source srcset="/static/tutorial-imgs/{image}.webp" type="image/webp">
+    <img src="/static/tutorial-imgs/{image}.png" class="tutorial-image" width="{width}" height="{height}">
 </picture>"""
+def get_img_size(image):
+    if not current_app.config.get("image_size_cache"):
+        current_app.config["image_size_cache"] = {}
+    if size := current_app.config["image_size_cache"].get(image):
+        print(f"[get_img_size] cache for {image} found")
+        return size
+    print(f"[get_img_size] cache for {image} not found, calculating")
+    with open(os.path.join(os.path.dirname(__file__), "static/tutorial-imgs", image + ".png"), "rb") as f:
+        f.seek(16)
+        width, height = struct.unpack(">LL", f.read(8))
+    current_app.config["image_size_cache"][image] = (width, height)
+    return (width, height)
 
 
 def convert_sbmd(match):
@@ -96,9 +109,11 @@ def convert_sbmd(match):
             content = pattern.sub(sub, content)
         content = '<span class="inline-code">{}</span>'.format(content)
     elif cmd == "asset-image":
-        content = WEBP_SWITCH_TAG.replace("!image", content)
+        width, height = get_img_size(content)
+        content = WEBP_SWITCH_TAG.format(image=content, width=width, height=height)
     elif cmd == "dark-asset-image":
-        content = DARK_SWITCH_TAG.replace("!image", content)
+        width, height = get_img_size(content)
+        content = DARK_SWITCH_TAG.format(image=content, width=width, height=height)
     elif cmd == "command-ref":
         command = convert_commands(
             next((c for c in current_app.config["commands_cache"] if c["name"] == content), None)

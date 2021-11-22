@@ -20,7 +20,10 @@ async function showGuilds() {
   for (server of data.manage) {
     newContent = template.content.cloneNode(true)
     newContent.querySelector(".server-list-name").innerHTML = server.name
-    newContent.querySelector(".server-list-icon").src = (server.icon == null ? `https://cdn.discordapp.com/embed/avatars/${parseInt(server.id) % 6}.png` : `https://cdn.discordapp.com/icons/${server.id}/${server.icon}.${server.features.includes("ANIMATED_ICON") && server.icon.startsWith("a_") ? "gif" : "webp"}`)
+    newContent.querySelector(".server-list-icon").src = (
+      server.icon == null ?
+      `https://cdn.discordapp.com/embed/avatars/${parseInt(server.id) % 6}.png?size=512` :
+      `https://cdn.discordapp.com/icons/${server.id}/${server.icon}.${server.features.includes("ANIMATED_ICON") && server.icon.startsWith("a_") ? "gif" : "webp"}?size=512`)
     newContent.querySelector(".server-list-move a").href = "/manage/" + server.id
     newContent.querySelector(".server-list-invite").remove()
     serverList.insertBefore(newContent, serverList.childNodes[serverList.childNodes.length - 2])
@@ -28,7 +31,10 @@ async function showGuilds() {
   for (server of data.invite) {
     newContent = template.content.cloneNode(true)
     newContent.querySelector(".server-list-name").innerHTML = server.name
-    newContent.querySelector(".server-list-icon").src = (server.icon == null ? `https://cdn.discordapp.com/embed/avatars/${parseInt(server.id) % 6}.png` : `https://cdn.discordapp.com/icons/${server.id}/${server.icon}.${server.features.includes("ANIMATED_ICON") && server.icon.startsWith("a_") ? "gif" : "webp"}`)
+    newContent.querySelector(".server-list-icon").src = (
+      server.icon == null ?
+      `https://cdn.discordapp.com/embed/avatars/${parseInt(server.id) % 6}.png?size=512` :
+      `https://cdn.discordapp.com/icons/${server.id}/${server.icon}.${server.features.includes("ANIMATED_ICON") && server.icon.startsWith("a_") ? "gif" : "webp"}?size=512`)
     newContent.querySelector(".server-list-invite a").href = "/invite?guild_id=" + server.id
     newContent.querySelector(".server-list-move").remove()
     serverList.insertBefore(newContent, serverList.childNodes[serverList.childNodes.length - 2])

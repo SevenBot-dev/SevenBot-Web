@@ -27,6 +27,7 @@
 
 .tutorial-thumbnail {
   width: 100%;
+  height: auto;
 }
 
 @media(max-width: 850px) {

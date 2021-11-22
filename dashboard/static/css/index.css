@@ -35,6 +35,7 @@
 
 .server-list-icon {
   width: 50%;
+  height: auto;
   border-radius: 100%;
 }
 

@@ -29,6 +29,7 @@ header {
 
 #header-sb-icon {
   height: 100%;
+  width: auto;
   vertical-align: middle
 }
 
