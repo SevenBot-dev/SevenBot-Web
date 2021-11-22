@@ -23,6 +23,12 @@
   left: 12px;
 }
 
+#charts-container.hidden{
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+}
+
 .chart-container {
   background: var(--background-secondary);
   padding: 12px;
@@ -39,3 +45,9 @@
 /* .highcharts-background {
     fill: #f2f3f5;
 } */
+
+.loading {
+  text-align: center;
+  color: var(--discord-theme);
+  margin-top: 2rem;
+}

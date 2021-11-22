@@ -3,7 +3,7 @@ import random
 import string
 
 from dotenv import load_dotenv
-from flask import Flask, request, jsonify, make_response, render_template
+from quart import Quart, request, jsonify, make_response, render_template
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 import mimetypes
@@ -21,7 +21,7 @@ def make_random_str(length):
     return "".join(random.choices(string.ascii_letters, k=length))
 
 
-app = Flask(__name__, static_folder="./general/static")
+app = Quart(__name__, static_folder="./general/static")
 limiter = Limiter(app, key_func=get_remote_address, default_limits=["1/10second", "120/hour"])
 
 

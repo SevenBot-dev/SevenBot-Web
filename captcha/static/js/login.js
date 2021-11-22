@@ -1,7 +1,7 @@
 target = document.getElementsByClassName('h-captcha')[0]
 
 async function checked(records) {
-  response = await fetch("https://captcha.sevenbot.jp/check", {
+  response = await fetch("/check", {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -9,14 +9,13 @@ async function checked(records) {
     redirect: 'follow',
     body: JSON.stringify({
       token: document.getElementsByClassName('h-captcha')[0].childNodes[0].attributes.getNamedItem("data-hcaptcha-response").value,
-      sessionid: (new URL(document.location)).searchParams.get("id")
+      id: (new URL(document.location)).searchParams.get("id")
     })
   })
   responseData = await response.json()
   if (response.status == 200 && responseData["success"]) {
-    location.href = "https://captcha.sevenbot.jp/success"
+    location.href = "/success"
   }
-
 }
 document.getElementById("not-working").addEventListener("click", checked)
 ptarget = document.getElementsByClassName('h-captcha')[0]

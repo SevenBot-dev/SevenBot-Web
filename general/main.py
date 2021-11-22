@@ -1,3 +1,4 @@
+import asyncio
 from glob import glob
 import json
 import os
@@ -6,10 +7,10 @@ import sys
 import time
 
 from dotenv import load_dotenv
-from flask import Flask, Blueprint, make_response, redirect, render_template, current_app, request
+from quart import Blueprint, make_response, redirect, render_template, current_app, request
 from jinja2.exceptions import TemplateNotFound
 import mimetypes
-from pymongo import MongoClient
+import motor.motor_asyncio as motor
 import werkzeug
 import yaml
 
@@ -19,7 +20,8 @@ mimetypes.add_type("image/webp", ".webp")
 if not os.getenv("heroku"):
     load_dotenv("../.env")
     print("[general]Not heroku, loaded .env", os.environ.get("connectstr"))
-mainclient = MongoClient(os.environ.get("connectstr"))
+mainclient = motor.AsyncIOMotorClient(os.environ.get("connectstr"))
+mainclient.get_io_loop = asyncio.get_event_loop
 commandscollection = mainclient.sevenbot.commands
 statuscollection = mainclient.sevenbot.status_log
 
@@ -130,7 +132,7 @@ MENTION_PATTERN = re.compile(r"\{([^\}]+)}")
 TYPE_PATTERN = re.compile(r".+（([^、]+)(?:、.+)?）")
 
 
-def parse_md(d):
+async def parse_md(d):
     if isinstance(d, str):
         return d
     for dk, dv in d.items():
@@ -194,15 +196,15 @@ def convert_commands(cmd):
 
 
 @app.route("/commands")
-def commands():
+async def commands():
     com = []
     if (time.time() - current_app.config.get("commands_cache_time", 0)) < 300:
         com = current_app.config.get("commands_cache")
-        print("[commands]Cache is available, loaded from cache.")
+        print("[commands] Cache is available, loaded from cache.")
     else:
-        print("[commands]Cache is expired or missing, reloading.")
-        for c in commandscollection.find({}, {"_id": False}):
-            com.append(c)
+        print("[commands] Cache is expired or missing, reloading.")
+        com = await commandscollection.find({}, {"_id": False}).to_list(None)
+            
         current_app.config["commands_cache"] = com
         current_app.config["commands_cache_time"] = time.time()
     categories = []
@@ -224,37 +226,37 @@ def commands():
                 "commands": sorted_cmds,
             }
         )
-    return render_template("general/commands.html", categories=categories)
+    return await render_template("general/commands.html", categories=categories)
 
 
 @app.route("/api")
-def api():
+async def api():
     with open("general/data/api.json", "r") as f:
         api_info = json.load(f)
-    return render_template("general/api.html", endpoints=api_info["categories"], auths=api_info["authorization"])
+    return await render_template("general/api.html", endpoints=api_info["categories"], auths=api_info["authorization"])
 
 
-@app.route("/status")
-def status():
+@app.route("/status/api")
+async def status():
     com = []
     if (time.time() - current_app.config.get("status_cache_time", 0)) < 300:
         com = current_app.config.get("status_cache")
-        print("[status]Cache is available, loaded from cache.")
+        print("[status] Cache is available, loaded from cache.")
     else:
-        print("[status]Cache is expired or missing, reloading.")
-        for c in statuscollection.find({}, {"_id": False}):
-            com.append(c)
+        print("[status] Cache is expired or missing, reloading.")
+        com = await statuscollection.find({}, {"_id": False}).to_list(None)
+            
         current_app.config["status_cache"] = com
         current_app.config["status_cache_time"] = time.time()
 
-    return render_template("general/status.html", data=json.dumps(com))
+    return json.dumps(com)
 
 
 @app.route("/", defaults={"pagename": "index"})
 @app.route("/<path:pagename>")
-def index(pagename):
+async def index(pagename):
     try:
-        resp = render_template(werkzeug.utils.safe_join("general/", pagename + ".html"))
+        resp = await render_template(werkzeug.utils.safe_join("general/", pagename + ".html"))
         return resp
     except (TemplateNotFound, werkzeug.exceptions.NotFound):
         path = werkzeug.utils.safe_join("general/templates/general", pagename + ".json")
@@ -265,7 +267,7 @@ def index(pagename):
                 if "compatible;" in request.headers.get("user-agent", "") or "Twitterbot" in request.headers.get(
                     "user-agent", ""
                 ):
-                    return render_template(
+                    return await render_template(
                         "general/embed.html",
                         title=raw_resp["embed"]["title"],
                         description=raw_resp["embed"]["description"],
@@ -273,11 +275,11 @@ def index(pagename):
                 else:
                     return redirect(raw_resp["url"])
         else:
-            return render_template("general/404.html"), 404
+            return await render_template("general/404.html"), 404
 
 
 @app.route("/tutorial")
-def tutorials_index():
+async def tutorials_index():
     mds = glob("general/tutorials/*.md")
     datas = []
     for md in mds:
@@ -285,26 +287,25 @@ def tutorials_index():
             raw_md = f.read()
         head_md, _ = MD_MASTER_PATTERN.match(raw_md).groups()
         datas.append((os.path.basename(md).removesuffix(".md"), yaml.safe_load(head_md)))
-    return render_template("general/tutorial-index.html", data=sorted(datas, key=lambda d: d[1]["index"]))
+    return await render_template("general/tutorial-index.html", data=sorted(datas, key=lambda d: d[1]["index"]))
 
 
 @app.route("/tutorial/<path:path>")
-def tutorials(path):
+async def tutorials(path):
     com = []
     if (time.time() - current_app.config.get("commands_cache_time", 0)) < 300:
         com = current_app.config.get("commands_cache")
-        print("[tutorial]Cache is available, loaded from cache.")
+        print("[tutorial] Cache is available, loaded from cache.")
     else:
-        print("[tutorial]Cache is expired or missing, reloading.")
-        for c in commandscollection.find({}, {"_id": False}):
-            com.append(c)
+        print("[tutorial] Cache is expired or missing, reloading.")
+        com = await commandscollection.find({}, {"_id": False}).to_list(None)
         current_app.config["commands_cache"] = com
         current_app.config["commands_cache_time"] = time.time()
     try:
         with open(werkzeug.utils.safe_join("general/tutorials/", path + ".md")) as f:
             raw_md = f.read()
     except (werkzeug.exceptions.NotFound, FileNotFoundError):
-        return render_template("general/404.html"), 404
+        return await render_template("general/404.html"), 404
     else:
         head_md, body_md = MD_MASTER_PATTERN.match(raw_md).groups()
         for pattern, sub in MD_PATTERNS:
@@ -317,17 +318,18 @@ def tutorials(path):
                     extra_datas[j] = parse_md(json.load(f))
             md_data["data"] = extra_datas
         for ih in re.finditer(r"\{import-html\|([^(\]]+?)\}", body_md):
-            body_md = body_md.replace(ih[0], render_template(f"tutorial-html/{ih[1]}.html", **md_data))
-        return render_template("general/tutorial.html", body=body_md, **md_data)
+            body_md = body_md.replace(ih[0], await render_template(f"tutorial-html/{ih[1]}.html", **md_data))
+        return await render_template("general/tutorial.html", body=body_md, **md_data)
 
 
 @app.errorhandler(404)
-def page_not_found(error):
-    return make_response(render_template("general/404.html"), 404)
+async def page_not_found(error):
+    return await make_response(await render_template("general/404.html"), 404)
 
 
 if __name__ == "__main__":
-    testapp = Flask(__name__)
+    from quart import Quart
+    testapp = Quart(__name__)
     testapp.register_blueprint(app)
     testapp.secret_key = "ABCdefGHI"
     testapp.run("0.0.0.0", debug=True)

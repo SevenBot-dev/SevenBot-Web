@@ -1,18 +1,19 @@
+import aioredis
+import asyncio
 import datetime
 from hashlib import sha256
 import itertools
 import json
 import os
-import redis
 import sys
 import time
 import urllib.parse
 
 from dotenv import load_dotenv
-from flask import Flask, Blueprint, make_response, render_template, redirect, request, g, current_app, jsonify
+import httpx
+from quart import Blueprint, make_response, render_template, redirect, request, g, current_app, jsonify
 import mimetypes
-from pymongo import MongoClient
-import requests
+from motor.motor_asyncio import AsyncIOMotorClient
 
 
 if sys.platform.lower() == "win32":
@@ -22,16 +23,17 @@ if os.getenv("heroku"):
     host = "https://dashboard.sevenbot.jp"
 else:
     load_dotenv("../.env")
-    print("[dashboard]Not heroku, loaded .env")
+    print("[dashboard] Not heroku, loaded .env")
     host = "http://local.host:5000"
-mainclient = MongoClient(os.environ.get("connectstr"))
-redis_client = redis.from_url(os.environ.get("REDIS_URL"))
+mainclient = AsyncIOMotorClient(os.environ.get("connectstr"))
+mainclient.get_io_loop = asyncio.get_event_loop
+redis_client = aioredis.from_url(os.environ.get("REDIS_URL"))
 settings_collection = mainclient.sevenbot.guild_settings
 DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET = os.environ.get("discord_client_id"), os.environ.get("discord_client_secret")
 SIDEBAR_STRUCTURE = [{"name": "自動返信", "url": "autoreply", "icon": "autoreply"}]
 
 
-def check_setting_update(guild_id: int):
+async def check_setting_update(guild_id: int):
     if f"{guild_id};{request.method}" in current_app.config["dash_ratelimit"]:
         if (remain := (current_app.config["dash_ratelimit"][f"{guild_id};{request.method}"]) - time.time()) > 0:
             return (
@@ -49,11 +51,11 @@ def check_setting_update(guild_id: int):
         current_app.config["dash_ratelimit"][f"{guild_id};{request.method}"] = time.time() + 1
     else:
         current_app.config["dash_ratelimit"][f"{guild_id};{request.method}"] = time.time() + 5
-    user_info = get_user_cache(request.headers["authorization"])
+    user_info = await get_user_cache(request.headers["authorization"])
     if user_info is None:
         return jsonify({"message": "認証に失敗しました。", "code": "auth", "success": False}), 401
     guild = [g for g in user_info["guild"] if g["id"] == str(guild_id)][0]
-    mutual_guilds = get_mutual_guilds(user_info["guild"])
+    mutual_guilds = await get_mutual_guilds(user_info["guild"])
     if str(guild_id) not in mutual_guilds:
         return (
             jsonify(
@@ -90,17 +92,18 @@ API_ENDPOINT = "https://discord.com/api/v9"
 SCOPE = "guilds+identify"
 
 
-def request_after(*args, **kwargs):
+async def request_after(*args, **kwargs) -> httpx.Response:
     print(f"[request_after] Sending {args[0]} to {args[1]}")
-    res = requests.request(*args, **kwargs)
-    while res.status_code == 429:
-        print(f"[request_after] {res.status_code} {res.headers['Retry-After']}")
-        time.sleep(int(res.headers["retry-after"]))
-        res = requests.request(*args, **kwargs)
+    async with httpx.AsyncClient() as client:
+        res = await client.request(*args, **kwargs)
+        while res.status_code == 429:
+            print(f"[request_after] {res.status_code} {res.headers['Retry-After']}")
+            await asyncio.sleep(int(res.headers["retry-after"]))
+            res = await client.request(*args, **kwargs)
     return res
 
 
-def exchange_code(code):
+async def exchange_code(code):
     data = {
         "client_id": DISCORD_CLIENT_ID,
         "client_secret": DISCORD_CLIENT_SECRET,
@@ -110,12 +113,12 @@ def exchange_code(code):
         "scope": SCOPE,
     }
     headers = {"Content-Type": "application/x-www-form-urlencoded"}
-    r = request_after("POST", "%s/oauth2/token" % API_ENDPOINT, data=data, headers=headers)
+    r = await request_after("POST", "%s/oauth2/token" % API_ENDPOINT, data=data, headers=headers)
     r.raise_for_status()
     return r.json()
 
 
-def request_refresh_token(refresh_token):
+async def request_refresh_token(refresh_token):
     data = {
         "client_id": DISCORD_CLIENT_ID,
         "client_secret": DISCORD_CLIENT_SECRET,
@@ -124,26 +127,26 @@ def request_refresh_token(refresh_token):
         "redirect_uri": ruri,
     }
     headers = {"Content-Type": "application/x-www-form-urlencoded"}
-    r = request_after("POST", "%s/oauth2/token" % API_ENDPOINT, data=data, headers=headers)
+    r = await request_after("POST", "%s/oauth2/token" % API_ENDPOINT, data=data, headers=headers)
     try:
         r.raise_for_status()
-    except requests.exceptions.HTTPError:
+    except httpx.HTTPError:
         return None
     else:
         return r.json()
 
 
-def get_user_cache(token):
+async def get_user_cache(token):
     if token is None:
         return None
-    val = redis_client.get("user_" + token)
+    val = await redis_client.get("user_" + token)
 
     if val is None:
         return None
     return json.loads(val)
 
 
-def set_user_cache(token_data):
+async def set_user_cache(token_data):
     if token_data is None:
         g.cookies["token"] = dict(value="", expires=0)
         g.cookies["refresh_token"] = dict(value="", expires=0)
@@ -157,9 +160,11 @@ def set_user_cache(token_data):
         expires=datetime.datetime.now() + datetime.timedelta(days=30),
     )
 
-    ud = request_after("get", "%s/users/@me" % API_ENDPOINT, headers={"Authorization": "Bearer " + access_token})
-    guilds = request_after(
-        "get", "%s/users/@me/guilds" % API_ENDPOINT, headers={"Authorization": "Bearer " + access_token}
+    ud = await request_after("get", "%s/users/@me" % API_ENDPOINT, headers={"Authorization": "Bearer " + access_token})
+    guilds = (
+        await request_after(
+            "get", "%s/users/@me/guilds" % API_ENDPOINT, headers={"Authorization": "Bearer " + access_token}
+        )
     ).json()
     for gu in guilds:
         if gu["icon"] is None:
@@ -172,11 +177,11 @@ def set_user_cache(token_data):
             gu["icon_url"] = f"https://cdn.discordapp.com/icons/{gu['id']}/{gu['icon']}{ext}"
 
     data = {"user": ud.json(), "guild": guilds, "time": time.time(), "token": access_token}
-    redis_client.set("user_" + token_hash, json.dumps(data))
+    await redis_client.set("user_" + token_hash, json.dumps(data))
     return data
 
 
-def get_bot_guilds():
+async def get_bot_guilds():
     if (
         current_app.config.get("bot_guild_cache") is not None
         and time.time() - current_app.config["bot_guild_cache_time"] < 300
@@ -185,7 +190,7 @@ def get_bot_guilds():
     li = 0
     ret = []
     while True:
-        g = request_after(
+        g = await request_after(
             "get",
             "%s/users/@me/guilds" % API_ENDPOINT,
             params={"after": li},
@@ -200,16 +205,14 @@ def get_bot_guilds():
     return ret
 
 
-def get_mutual_guilds(guilds):
-    guilds = list(
-        settings_collection.find(
-            {
-                "gid": {"$in": [int(guild["id"]) for guild in guilds if can_invite(guild["permissions"])]},
-            }
-        )
-    )
+async def get_mutual_guilds(guilds):
+    db_guilds = await settings_collection.find(
+        {
+            "gid": {"$in": [int(guild["id"]) for guild in guilds if can_invite(guild["permissions"])]},
+        }
+    ).to_list(None)
 
-    return [str(g["gid"]) for g in guilds]
+    return [str(g["gid"]) for g in db_guilds]
 
 
 def can_invite(permissions):
@@ -224,7 +227,7 @@ app = Blueprint("dashboard", __name__, template_folder="./templates", static_fol
 
 
 @app.before_request
-def load_logged_in_user():
+async def load_logged_in_user():
     if current_app.config.get("dash_user_caches") is None:
         current_app.config["dash_user_caches"] = {}
     if current_app.config.get("dash_ratelimit") is None:
@@ -236,21 +239,21 @@ def load_logged_in_user():
     if not (token := request.cookies.get("token")):
         refresh_token = request.cookies.get("refresh_token")
         if refresh_token is not None:
-            g.user = set_user_cache(request_refresh_token(refresh_token))
+            g.user = await set_user_cache(await request_refresh_token(refresh_token))
             if g.user is None:
                 return redirect("/?popup=ログインの更新に失敗しました。")
             return
         if request.path.startswith("/manage"):
             return redirect("/?popup=ログインしていません。")
         return
-    if not get_user_cache(token):
+    if not await get_user_cache(token):
         if request.cookies.get("refresh_token") is None:
             g.cookies["token"] = dict(value="", path="/", expires=0)
             return redirect("/?popup=Cookieが異常です。")
-        if not set_user_cache(request_refresh_token(request.cookies.get("refresh_token"))):
+        if not await set_user_cache(await request_refresh_token(request.cookies.get("refresh_token"))):
             return redirect("/?popup=ログインの更新に失敗しました。")
     if token is not None:
-        token_data = get_user_cache(token)
+        token_data = await get_user_cache(token)
         if token_data is None:
             return redirect("/?popup=ログインを確認出来ませんでした。")
         g.user = token_data.get("user")
@@ -258,7 +261,7 @@ def load_logged_in_user():
 
 
 @app.after_request
-def set_g_cookie(response):
+async def set_g_cookie(response):
     for ck, cv in g.cookies.items():
         response.set_cookie(ck, **cv)
     if request.path.startswith("/static"):
@@ -270,20 +273,20 @@ def set_g_cookie(response):
 
 
 @app.route("/")
-def index():
+async def index():
     if g.user is not None:
-        return render_template("dashboard/index.html", logged_in=True)
+        return await render_template("dashboard/index.html", logged_in=True)
     else:
-        return render_template("dashboard/index.html", logged_in=False)
+        return await render_template("dashboard/index.html", logged_in=False)
 
 
 @app.route("/manage/<int:guild_id>")
-def manage(guild_id):
-    if not (user_info := get_user_cache(request.cookies.get("token"))):
+async def manage(guild_id):
+    if not (user_info := await get_user_cache(request.cookies.get("token"))):
         return redirect("/?popup=ログインしていません。")
     guild_data = [gi for gi in user_info["guild"] if gi["id"] == str(guild_id)][0]
     data = {"guild": guild_data}
-    return render_template(
+    return await render_template(
         "dashboard/manage/root.html",
         data=json.dumps(data),
         raw_data=data,
@@ -294,12 +297,12 @@ def manage(guild_id):
 
 
 @app.route("/manage/<int:guild_id>/<string:feature>")
-def manage_feat(guild_id, feature):
-    if not (user_info := get_user_cache(request.cookies.get("token"))):
+async def manage_feat(guild_id, feature):
+    if not (user_info := await get_user_cache(request.cookies.get("token"))):
         return redirect("/?popup=ログインしていません。")
     guild_data = [gi for gi in user_info["guild"] if gi["id"] == str(guild_id)][0]
     data = {"guild": guild_data}
-    return render_template(
+    return await render_template(
         f"dashboard/manage/{feature}.html",
         data=json.dumps(data),
         raw_data=data,
@@ -310,7 +313,7 @@ def manage_feat(guild_id, feature):
 
 
 @app.route("/invite")
-def invite():
+async def invite():
     return redirect(
         "https://discord.com/oauth2/authorize?client_id=718760319207473152&scope=bot&"
         f"response_type=code&guild_id={request.args['guild_id']}&"
@@ -319,39 +322,39 @@ def invite():
 
 
 @app.route("/login")
-def login():
+async def login():
     state = {"from": request.args.get("from")}
     return redirect(login_url.format(urllib.parse.quote(json.dumps(state))))
 
 
 @app.route("/logout")
-def logout():
+async def logout():
     g.cookies["token"] = dict(value="", path="/", expires=0)
     g.cookies["refresh_token"] = dict(value="", path="/", expires=0)
     return redirect("/?popup=ログアウトしました。")
 
 
 @app.route("/callback")
-def callback():
+async def callback():
     if "state" not in request.args.keys():
         return redirect("/")
     code = request.args["code"]
-    code_json = exchange_code(code)
+    code_json = await exchange_code(code)
     state = json.loads(request.args["state"])
-    response = make_response(redirect(state["from"]))
-    set_user_cache(code_json)
+    response = await make_response(redirect(state["from"]))
+    await set_user_cache(code_json)
     return response
 
 
 @app.get("/api/servers")
-def api_servers():
-    user_info = get_user_cache(request.headers["authorization"])
+async def api_servers():
+    user_info = await get_user_cache(request.headers["authorization"])
     if not user_info:
         return json.dumps({"message": "ログインしていません。", "code": "not_logged_in", "success": False}), 401
     # mutual_guilds = {gu["id"] for gu in bot_guilds} & {
     #     gu["id"] for gu in user_info["guild"] if can_invite(gu["permissions"])
     # }
-    mutual_guilds = get_mutual_guilds(user_info["guild"])
+    mutual_guilds = await get_mutual_guilds(user_info["guild"])
     return {
         "manage": [gu for gu in user_info["guild"] if gu["id"] in mutual_guilds and can_invite(gu["permissions"])],
         "invite": [gu for gu in user_info["guild"] if can_invite(gu["permissions"]) and gu["id"] not in mutual_guilds],
@@ -359,24 +362,25 @@ def api_servers():
 
 
 @app.get("/api/guilds/<int:guild_id>/settings")
-def api_settings(guild_id):
-    if fail_response := check_setting_update(guild_id):
+async def api_settings(guild_id):
+    if fail_response := await check_setting_update(guild_id):
         return fail_response
-    return settings_collection.find_one({"gid": guild_id}, {"_id": False})
+    return await settings_collection.find_one({"gid": guild_id}, {"_id": False})
 
 
 @app.post("/api/guilds/<int:guild_id>/settings/autoreply")
-def api_settings_get(guild_id):
-    if fail_response := check_setting_update(guild_id):
+async def api_settings_get(guild_id):
+    if fail_response := await check_setting_update(guild_id):
         return fail_response
-    if len(request.json["data"]) > 500:
+    rdata = await request.json
+    if len(rdata["data"]) > 500:
         return {
             "message": "自動返信の数は500個以下である必要があります。",
             "success": False,
             "code": "too_many_replies",
         }, 400
     failures = []
-    for aid, (rtarget, rreply) in request.json["data"]:
+    for aid, (rtarget, rreply) in rdata["data"]:
         target, reply = rtarget.strip(), rreply.strip()
         if set(aid) - set("0123456789abcdef"):
             failures.append((aid, "id", "IDの文字列に設定出来ない文字が含まれています。"))
@@ -398,8 +402,8 @@ def api_settings_get(guild_id):
             "failures": dict([k, list(v)] for k, v in itertools.groupby(failures, key=lambda x: x[0])),
             "success": False,
         }, 422
-    data = dict(request.json["data"])
-    settings_collection.update_one({"gid": guild_id}, {"$set": {"autoreply": data}})
+    data = dict(rdata)
+    await settings_collection.update_one({"gid": guild_id}, {"$set": {"autoreply": data}})
     return {
         "message": "設定を更新しました。",
         "code": "success",
@@ -408,12 +412,12 @@ def api_settings_get(guild_id):
 
 
 @app.errorhandler(404)
-def page_not_found(error):
-    return make_response(render_template("dashboard/404.html"), 404)
+async def page_not_found(error):
+    return await make_response(await render_template("dashboard/404.html"), 404)
 
 
 @app.get("/api/hidden/sessions")
-def api_hidden_sessions():
+async def api_hidden_sessions():
     if request.args["pass"] != os.getenv("password"):
         return json.dumps({"success": False}), 401
     return jsonify(
@@ -425,7 +429,9 @@ def api_hidden_sessions():
 
 
 if __name__ == "__main__":
-    testapp = Flask(__name__)
+    from quart import Quart
+
+    testapp = Quart(__name__)
     testapp.register_blueprint(app)
     testapp.secret_key = "ABCdefGHI"
     testapp.run(debug=True, host="0.0.0.0")

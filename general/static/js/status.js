@@ -1,6 +1,6 @@
 console.debug("%cLoaded: status.js", "color:#5865f2")
 
-function main() {
+function main(rawChartData) {
   function roundAt(base, index) {
     return Math.round(base * (10 ** index)) / (10 ** index)
   }
@@ -13,7 +13,6 @@ function main() {
       thousandsSep: ''
     }
   });
-  rawChartData = JSON.parse(document.getElementById("flask-passer").getAttribute("data"))
   chartDataPing = []
   chartDataGuilds = []
   chartDataUsers = []
@@ -302,6 +301,7 @@ function main() {
     },
 
   });
+  console.log(chartDataCPU, chartDataMemory)
   chartVPS = Highcharts.chart('chart-guild-vps', {
     chart: {
       // styledMode: true
@@ -402,7 +402,8 @@ function main() {
       showInLegend: false,
       marker: {
         symbol: "circle"
-      }
+      },
+      turboThreshold: 5000
     }],
     tooltip: {
       xDateFormat: "%m/%d %H:%M",
@@ -516,12 +517,17 @@ function main() {
   chartUser.reflow()
   chartVPS.reflow()
   chartSave.reflow()
+  document.querySelector('.loading').style.display = 'none'
+  document.querySelector('#charts-container').classList.remove('hidden')
 }
 
-mainInterval = setInterval(() => {
-  if (typeof Highcharts != "undefined") {
-    clearInterval(mainInterval)
-    main()
-
-  }
-}, 10)
+(fetch("/status/api").then(
+  resp => resp.json()
+)).then(data => {
+  mainInterval = setInterval(async () => {
+    if (typeof Highcharts != "undefined") {
+      clearInterval(mainInterval)
+      main(data)
+    }
+  }, 10)
+})

@@ -1,2 +1,2 @@
-web: gunicorn main:app
+web: hypercorn main:app
 release: curl "https://api.cloudflare.com/client/v4/zones/"$CF_ZONE_ID"/purge_cache" -H "authorization: Bearer "$CF_TOKEN -H "content-type: application/json" -d '{"purge_everything":true}'
