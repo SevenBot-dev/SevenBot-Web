@@ -49,8 +49,8 @@ async def notfound(ex):
 
 
 @app.errorhandler(405)
-def methodnotallowed(_):
-    return make_response(
+async def methodnotallowed(_):
+    return await make_response(
         jsonify(
             {"message": "Invalid request type. Make sure your request type is correct.", "code": "wrong_request_type"}
         ),
@@ -59,8 +59,8 @@ def methodnotallowed(_):
 
 
 @app.errorhandler(429)
-def ratelimit_handler(e):
-    return make_response(jsonify({"error_description": "You are being rate limited.", "ratelimit": e.description}), 429)
+async def ratelimit_handler(e):
+    return await make_response(jsonify({"error_description": "You are being rate limited.", "ratelimit": e.description}), 429)
 
 
 if __name__ == "__main__":
