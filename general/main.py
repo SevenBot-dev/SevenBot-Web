@@ -18,7 +18,7 @@ if sys.platform.lower() == "win32":
     os.system("color")
 mimetypes.add_type("image/webp", ".webp")
 if not os.getenv("heroku"):
-    load_dotenv("../.env")
+    load_dotenv(os.path.join(os.path.dirname(__file__), "../.env"))
     print("[general]Not heroku, loaded .env", os.environ.get("connectstr"))
 mainclient = motor.AsyncIOMotorClient(os.environ.get("connectstr"))
 mainclient.get_io_loop = asyncio.get_event_loop
@@ -132,7 +132,7 @@ MENTION_PATTERN = re.compile(r"\{([^\}]+)}")
 TYPE_PATTERN = re.compile(r".+（([^、]+)(?:、.+)?）")
 
 
-async def parse_md(d):
+def parse_md(d):
     if isinstance(d, str):
         return d
     for dk, dv in d.items():

@@ -1,7 +1,9 @@
 {% set command_data = data["commands-howto"] %}
+
 <section class="syntax-section">
-  <div class="syntax-title">{{command_data.param_description.title}}</div>
-  <p class="syntax-description">{{command_data.param_description.description}}</p>
+  {% set param_description = command_data.param_description %}
+  <div class="syntax-title">{{param_description.title}}</div>
+  <p class="syntax-description">{{param_description.description}}</p>
   <table class="" id="syntax-param-table">
     <thead>
       <tr id="command-header">
@@ -12,7 +14,7 @@
       </tr>
     </thead>
     <tbody>
-      {%for table in command_data.param_description.table%}
+      {%for table in param_description.table%}
       {%for example in table.examples%}
       <tr class="command-tr">
         {%if loop.index == 1%}
