@@ -1,5 +1,4 @@
 import asyncio
-import datetime
 
 # import hashlib
 import os
@@ -8,6 +7,7 @@ import os
 import time
 
 from authlib.integrations.httpx_client.oauth1_client import AsyncOAuth1Client
+from quart_rate_limiter import rate_exempt
 from motor.motor_asyncio import AsyncIOMotorClient
 import httpx
 from dotenv import load_dotenv
@@ -76,7 +76,9 @@ async def can_access(password, gid):
     if password == os.environ.get("password"):
         return True
 
-    guilds = await request_after("get", "discord.com/api/users/@me/guilds", headers={"password": "Bearer " + password}).json()
+    guilds = await request_after(
+        "get", "discord.com/api/users/@me/guilds", headers={"password": "Bearer " + password}
+    ).json()
     g = list(filter(lambda item: item["id"] == str(gid), guilds))
     if not g:
         return False
@@ -110,6 +112,7 @@ async def can_access(password, gid):
 
 
 @app.route("/")
+@rate_exempt
 async def base():
     return jsonify({"message": "Welcome to SevenBot API! You can see docs in https://sevenbot.jp/api"})
 
@@ -172,7 +175,9 @@ async def afk_key():
             }
         )
     except ValueError:
-        return await make_response(jsonify({"error_description": "userid muse be numbers.", "code": "bad_argument"}), 400)
+        return await make_response(
+            jsonify({"error_description": "userid muse be numbers.", "code": "bad_argument"}), 400
+        )
     if res is None:
         return await make_response(jsonify({"message": False}), 200)
     else:
@@ -543,6 +548,7 @@ async def notfound(_):
 
 #     return res
 
+
 @app.errorhandler(405)
 async def methodnotallowed(_):
     return jsonify(
@@ -552,6 +558,7 @@ async def methodnotallowed(_):
 
 if __name__ == "__main__":
     from quart import Quart
+
     load_dotenv("../.env")
     testapp = Quart("api")
     testapp.register_blueprint(app)

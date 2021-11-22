@@ -1,17 +1,17 @@
+import datetime
+import mimetypes
 import os
 import random
 import string
 
 from dotenv import load_dotenv
-from quart import Quart, request, jsonify, make_response, render_template
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
-import mimetypes
+from quart import Quart, jsonify, make_response, render_template, request
+from quart_rate_limiter import RateLimiter, limit_blueprint
 
 from api.main import app as api_app
 from captcha.main import app as captcha_app
-from general.main import app as general_app
 from dashboard.main import app as dashboard_app
+from general.main import app as general_app
 
 mimetypes.add_type("image/webp", ".webp")
 load_dotenv()
@@ -22,12 +22,7 @@ def make_random_str(length):
 
 
 app = Quart(__name__, static_folder="./general/static")
-limiter = Limiter(app, key_func=get_remote_address, default_limits=["1/10second", "120/hour"])
-
-
-@limiter.request_filter
-def limiter_whitelist():
-    return not request.host.startswith("api.")
+limiter = RateLimiter(app)
 
 
 app.config["SERVER_NAME"] = "sevenbot.jp" if os.getenv("heroku") else "localhost:5000"
@@ -37,7 +32,7 @@ app.register_blueprint(general_app, subdomain="www", name="www_general")
 app.register_blueprint(api_app, subdomain="api")
 app.register_blueprint(captcha_app, subdomain="captcha")
 app.register_blueprint(dashboard_app, subdomain="dashboard")
-
+limit_blueprint(api_app, 1, datetime.timedelta(seconds=5))
 
 @app.errorhandler(404)
 def notfound(ex):
