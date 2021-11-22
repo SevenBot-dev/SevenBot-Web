@@ -35,17 +35,17 @@ app.register_blueprint(dashboard_app, subdomain="dashboard")
 limit_blueprint(api_app, 1, datetime.timedelta(seconds=5))
 
 @app.errorhandler(404)
-def notfound(ex):
+async def notfound(ex):
     if request.host.startswith("api."):
-        return make_response(
+        return await make_response(
             jsonify({"message": "Unknown endpoint. Make sure your url is correct.", "code": "not_found"}), 404
         )
     elif request.host.startswith("captcha."):
-        return make_response(render_template("captcha/404.html"), 404)
+        return await make_response(await render_template("captcha/404.html"), 404)
     elif request.host.startswith("dashboard."):
-        return make_response(render_template("dashboard/404.html"), 404)
+        return await make_response(await render_template("dashboard/404.html"), 404)
     else:
-        return make_response(render_template("general/404.html"), 404)
+        return await make_response(await render_template("general/404.html"), 404)
 
 
 @app.errorhandler(405)
