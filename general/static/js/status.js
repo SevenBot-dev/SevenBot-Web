@@ -14,6 +14,8 @@ function main(rawChartData) {
     }
   });
   chartDataPing = []
+  chartDataDBPing = []
+  chartDataWebPing = []
   chartDataGuilds = []
   chartDataUsers = []
   chartDataCPU = []
@@ -25,13 +27,20 @@ function main(rawChartData) {
     chartDataPing.push(
       [date, d["ping"]]
     )
+    if (d["db_ping"]) {
+      chartDataDBPing.push(
+        [date, d["db_ping"]]
+      )
+      chartDataWebPing.push(
+        [date, d["web_ping"]]
+      )
+    }
     chartDataGuilds.push(
       [date, d["guilds"]]
     )
     chartDataUsers.push(
       [date, d["users"]]
     )
-
     chartDataCPU.push(
       [date, d["cpu"]]
     )
@@ -51,6 +60,10 @@ function main(rawChartData) {
     }
 
   })
+  pingAvg = roundAt(chartDataPing.reduce((a, b) => a + b[1], 0) / chartDataPing.length, 2)
+  webPingAvg = roundAt(chartDataWebPing.reduce((a, b) => a + b[1], 0) / chartDataWebPing.length, 2)
+  dbPingAvg = roundAt(chartDataDBPing.reduce((a, b) => a + b[1], 0) / chartDataDBPing.length, 2)
+  console.log(webPingAvg, dbPingAvg)
   chartPing = Highcharts.chart('chart-ping', {
     chart: {
       // styledMode: true
@@ -59,30 +72,40 @@ function main(rawChartData) {
       // panning: true,
 
     },
-    colors: ["#1abc9c"],
+    colors: ["#1abc9c", "#607d8b", "#979c9f"],
     title: {
       style: {
         color: "var(--text-normal)"
       },
-      text: 'Ping（Botの応答速度）',
+      text: 'Ping（Botの通信速度）',
     },
     yAxis: [{
       gridLineColor: "var(--status-x-axis-color)",
       title: {
-        text: 'Ping',
+        text: 'Discord',
         style: {
-          color: "#1abc9c"
+          color: "var(--interactive-normal)"
         }
       },
       labels: {
         // format: '{value}ms',
         style: {
-          color: "#1abc9c"
+          color: "var(--interactive-normal)"
         }
       },
+      plotLines: [{
+          value: pingAvg,
+          color: '#11806a',
+          width: 2,
+        },
+        {
+          value: dbPingAvg,
+          color: '#546e7a',
+          width: 2,
+        }
+      ],
       allowDecimals: false,
       showInLegend: false,
-
       title: {
         text: "ms",
         offset: 0,
@@ -90,8 +113,8 @@ function main(rawChartData) {
         rotation: 0,
         y: -10,
         style: {
-          color: "#1abc9c"
-        }
+          color: "var(--interactive-normal)"
+        },
       },
 
     }],
@@ -132,24 +155,40 @@ function main(rawChartData) {
     },
 
     series: [{
-      name: 'Ping',
-      data: chartDataPing,
-      yAxis: 0,
-      tooltip: {
-        valuePrefix: '',
-        valueSuffix: 'ms',
+        name: 'Discord',
+        data: chartDataPing,
+        yAxis: 0,
+        zIndex: 1,
+        tooltip: {
+          valuePrefix: '',
+          valueSuffix: 'ms',
+        },
+        showInLegend: false,
+        marker: {
+          symbol: "circle"
+        }
       },
-      showInLegend: false,
-      marker: {
-        symbol: "circle"
+      {
+        name: 'MongoDB',
+        data: chartDataDBPing,
+        yAxis: 0,
+        tooltip: {
+          valuePrefix: '',
+          valueSuffix: 'ms',
+        },
+        showInLegend: false,
+        marker: {
+          symbol: "circle"
+        }
       }
-    }],
+    ],
 
     tooltip: {
       xDateFormat: "%m/%d %H:%M",
       backgroundColor: "var(--status-tooltip-color)",
       borderWidth: 0,
       shadow: false,
+      zIndex: 20,
       style: {
         color: "var(--text-normal)"
       }
@@ -301,7 +340,6 @@ function main(rawChartData) {
     },
 
   });
-  console.log(chartDataCPU, chartDataMemory)
   chartVPS = Highcharts.chart('chart-guild-vps', {
     chart: {
       // styledMode: true
