@@ -97,7 +97,7 @@ async def captcha():
         r = await make_response(
             await render_template(
                 "captcha/login.html",
-                url=login_url.format(sessionid),
+                url=login_url.format(sessionid.removeprefix("captcha_")),
             ),
             200,
         )
