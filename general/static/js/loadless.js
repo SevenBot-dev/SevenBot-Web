@@ -117,7 +117,7 @@ async function jumpURL(href) {
       /<!-- tmpblock -->([\s\S]*)<!-- endtmpblock -->/,
       ``
     )
-    if (isCached) {
+    if (!isCached) {
       mainBlocker.style.pointerEvents = "none"
       mainBlocker.animate({
         opacity: [0.4, 0]
