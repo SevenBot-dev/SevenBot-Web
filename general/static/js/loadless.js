@@ -53,8 +53,9 @@ function onAClick(event) {
 async function jumpURL(href) {
   console.debug("%cJumping to " + href, "color:#0067e0")
   // console.debug(pageCaches[href])
+  let isCached
   if (!pageCaches[href]) {
-
+    isCached = false
     mainBlocker = document.getElementById("main-blocker")
     mainBlocker.style.display = "block"
     mainBlocker.style.pointerEvents = "auto"
@@ -75,17 +76,8 @@ async function jumpURL(href) {
 
     singleheadBlock = txt.match(/<!-- block singlehead -->([\s\S]*)<!-- endblock singlehead -->/)[1]
     pageCaches[href] = makeCacheObject(dom)
-    mainBlocker.style.pointerEvents = "none"
-    mainBlocker.animate({
-      opacity: [0.4, 0]
-    }, {
-      duration: 200,
-      easing: "ease-in-out",
-      fill: "forwards"
-    }).finished.then(() => {
-      mainBlocker.style.display = "none"
-    })
   } else {
+    isCached = true
     console.debug("Loading cache")
     title = pageCaches[href].title
     headBlock = pageCaches[href].headBlock
@@ -125,6 +117,18 @@ async function jumpURL(href) {
       /<!-- tmpblock -->([\s\S]*)<!-- endtmpblock -->/,
       ``
     )
+    if (isCached) {
+      mainBlocker.style.pointerEvents = "none"
+      mainBlocker.animate({
+        opacity: [0.4, 0]
+      }, {
+        duration: 200,
+        easing: "ease-in-out",
+        fill: "forwards"
+      }).finished.then(() => {
+        mainBlocker.style.display = "none"
+      })
+    }
   }, 0)
 
   console.debug("%cDone", "color:#3ba55c")
