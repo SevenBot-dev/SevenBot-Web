@@ -72,7 +72,7 @@ function main(rawChartData) {
       // panning: true,
 
     },
-    colors: ["#1abc9c", "#607d8b", "#979c9f"],
+    colors: ["var(--discord-theme)","#1abc9c"],
     title: {
       style: {
         color: "var(--text-normal)"
@@ -95,12 +95,12 @@ function main(rawChartData) {
       },
       plotLines: [{
           value: pingAvg,
-          color: '#11806a',
+          color: 'var(--discord-theme-dark)',
           width: 2,
         },
         {
           value: dbPingAvg,
-          color: '#546e7a',
+          color: '#11806a',
           width: 2,
         }
       ],
