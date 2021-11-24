@@ -402,7 +402,7 @@ async def api_settings_get(guild_id):
             "failures": dict([k, list(v)] for k, v in itertools.groupby(failures, key=lambda x: x[0])),
             "success": False,
         }, 422
-    data = dict(rdata)
+    data = dict(rdata["data"])
     await settings_collection.update_one({"gid": guild_id}, {"$set": {"autoreply": data}})
     return {
         "message": "設定を更新しました。",
