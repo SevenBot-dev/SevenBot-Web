@@ -23,8 +23,8 @@ if not os.getenv("heroku"):
     print("[general]Not heroku, loaded .env", os.environ.get("connectstr"))
 mainclient = motor.AsyncIOMotorClient(os.environ.get("connectstr"))
 mainclient.get_io_loop = asyncio.get_event_loop
-commandscollection = mainclient.production.commands
-statuscollection = mainclient.production.status_log
+commandscollection: motor.AsyncIOMotorCollection = mainclient.production.commands
+statuscollection: motor.AsyncIOMotorCollection = mainclient.production.status_log
 
 app = Blueprint("general", __name__, template_folder="./templates", static_folder="./static")
 
@@ -259,7 +259,7 @@ async def status():
         print("[status] Cache is available, loaded from cache.")
     else:
         print("[status] Cache is expired or missing, reloading.")
-        com = await statuscollection.find({}, {"_id": False}).to_list(None)
+        com = await statuscollection.find({}, {"_id": False}).sort("time", 1).to_list(None)
             
         current_app.config["status_cache"] = com
         current_app.config["status_cache_time"] = time.time()
