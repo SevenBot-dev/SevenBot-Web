@@ -23,8 +23,8 @@ if not os.getenv("heroku"):
     print("[general]Not heroku, loaded .env", os.environ.get("connectstr"))
 mainclient = motor.AsyncIOMotorClient(os.environ.get("connectstr"))
 mainclient.get_io_loop = asyncio.get_event_loop
-commandscollection = mainclient.sevenbot.commands
-statuscollection = mainclient.sevenbot.status_log
+commandscollection = mainclient.production.commands
+statuscollection = mainclient.production.status_log
 
 app = Blueprint("general", __name__, template_folder="./templates", static_folder="./static")
 

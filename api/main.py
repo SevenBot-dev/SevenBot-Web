@@ -47,11 +47,11 @@ if not os.getenv("heroku"):
     print("[api] Not heroku, loaded .env")
 client = AsyncIOMotorClient(os.getenv("connectstr"))
 client.get_io_loop = asyncio.get_event_loop
-guild_collection = client.sevenbot.guild_settings
-afk_collection = client.sevenbot.afks
-afk_key_collection = client.sevenbot.afk_keys
-twitter_collection = client.sevenbot.twitter_keys
-twitter_text_collection = client.sevenbot.afk_twitter_text
+guild_collection = client.production.guild_settings
+afk_collection = client.production.afks
+afk_key_collection = client.production.afk_keys
+twitter_collection = client.production.twitter_keys
+twitter_text_collection = client.production.afk_twitter_text
 app = Blueprint("api", __name__, template_folder="./templates", static_folder="./static")
 
 

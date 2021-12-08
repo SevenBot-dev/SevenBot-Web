@@ -28,7 +28,7 @@ else:
 mainclient = AsyncIOMotorClient(os.environ.get("connectstr"))
 mainclient.get_io_loop = asyncio.get_event_loop
 redis_client = aioredis.from_url(os.environ.get("REDIS_URL"))
-settings_collection = mainclient.sevenbot.guild_settings
+settings_collection = mainclient.production.guild_settings
 DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET = os.environ.get("discord_client_id"), os.environ.get("discord_client_secret")
 SIDEBAR_STRUCTURE = [{"name": "自動返信", "url": "autoreply", "icon": "autoreply"}]
 
