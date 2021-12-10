@@ -177,7 +177,7 @@ async def set_user_cache(token_data):
             gu["icon_url"] = f"https://cdn.discordapp.com/icons/{gu['id']}/{gu['icon']}{ext}"
 
     data = {"user": ud.json(), "guild": guilds, "time": time.time(), "token": access_token}
-    await redis_client.set("user_" + token_hash, json.dumps(data))
+    await redis_client.set("user_" + token_hash, json.dumps(data), ex=60 * 60 * 24 * 7)
     return data
 
 
