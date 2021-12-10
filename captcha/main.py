@@ -89,7 +89,7 @@ async def index():
 
 @app.route("/verify")
 async def captcha():
-    sessionid = "captcha_" + request.args.get("id")
+    sessionid = "captcha:" + request.args.get("id")
     if not sessionid:
         return await render_template("captcha/session.html", timeout=False)
 
@@ -97,7 +97,7 @@ async def captcha():
         r = await make_response(
             await render_template(
                 "captcha/login.html",
-                url=login_url.format(sessionid.removeprefix("captcha_")),
+                url=login_url.format(sessionid.removeprefix("captcha:")),
             ),
             200,
         )
