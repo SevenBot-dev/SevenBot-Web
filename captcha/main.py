@@ -160,7 +160,7 @@ async def check_ok():
     }
     r = await g.httpx_session.post("https://hcaptcha.com/siteverify", data=data)
     if r.json()["success"]:
-        rc = json.loads(await redis_client.get("captcha_" + (await request.json)["id"]))
+        rc = json.loads(await redis_client.get("captcha:" + (await request.json)["id"]))
         uid, gid, rid = rc["uid"], rc["gid"], rc["rid"]
         await request_after(
             "PUT",
@@ -186,7 +186,7 @@ async def check_ok():
             headers={"authorization": "Bot " + os.environ.get("token")},
             json={"content": f"{gname} での認証が完了しました。"},
         )
-        await redis_client.delete("captcha_" + (await request.json)["id"])
+        await redis_client.delete("captcha:" + (await request.json)["id"])
         # /guilds/{guild.id}/members/{user.id}/roles/{role.id}
     return await make_response(r.text, r.status_code)
 
@@ -199,7 +199,8 @@ async def make_session():
 
     shash = secrets.token_urlsafe(32)
     await redis_client.set(
-        "captcha_" + shash, json.dumps({"uid": res["uid"], "gid": res["gid"], "rid": res["rid"], "time": time.time()})
+        "captcha:" + shash, json.dumps({"uid": res["uid"], "gid": res["gid"], "rid": res["rid"], "time": time.time()}),
+        ex=300,
     )
     return await make_response(jsonify({"message": shash}), 201)
 
