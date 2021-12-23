@@ -34,6 +34,7 @@ app.register_blueprint(captcha_app, subdomain="captcha")
 app.register_blueprint(dashboard_app, subdomain="dashboard")
 limit_blueprint(api_app, 1, datetime.timedelta(seconds=5))
 
+
 @app.errorhandler(404)
 async def notfound(ex):
     if request.host.startswith("api."):
@@ -60,7 +61,9 @@ async def methodnotallowed(_):
 
 @app.errorhandler(429)
 async def ratelimit_handler(e):
-    return await make_response(jsonify({"error_description": "You are being rate limited.", "ratelimit": e.description}), 429)
+    return await make_response(
+        jsonify({"error_description": "You are being rate limited.", "ratelimit": e.description}), 429
+    )
 
 
 if __name__ == "__main__":
