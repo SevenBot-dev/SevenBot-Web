@@ -83,6 +83,8 @@ WEBP_SWITCH_TAG = r"""<picture>
     <source srcset="/static/tutorial-imgs/{image}.webp" type="image/webp">
     <img src="/static/tutorial-imgs/{image}.png" class="tutorial-image" width="{width}" height="{height}">
 </picture>"""
+
+
 def get_img_size(image):
     if not current_app.config.get("image_size_cache"):
         current_app.config["image_size_cache"] = {}
@@ -219,7 +221,6 @@ async def commands():
     else:
         print("[commands] Cache is expired or missing, reloading.")
         com = await commandscollection.find({}, {"_id": False}).to_list(None)
-            
         current_app.config["commands_cache"] = com
         current_app.config["commands_cache_time"] = time.time()
     categories = []
@@ -260,7 +261,7 @@ async def status():
     else:
         print("[status] Cache is expired or missing, reloading.")
         com = await statuscollection.find({}, {"_id": False}).sort("time", 1).to_list(None)
-            
+
         current_app.config["status_cache"] = com
         current_app.config["status_cache_time"] = time.time()
 
@@ -290,7 +291,12 @@ async def index(pagename):
                 else:
                     return redirect(raw_resp["url"])
         else:
-            return await render_template("general/404.html"), 404
+            path = werkzeug.utils.safe_join("general/templates/general", pagename)
+            if os.path.exists(path):
+                with open(path) as f:
+                    return f.read()
+            else:
+                return await render_template("general/404.html"), 404
 
 
 @app.route("/tutorial")
@@ -344,6 +350,7 @@ async def page_not_found(error):
 
 if __name__ == "__main__":
     from quart import Quart
+
     testapp = Quart(__name__)
     testapp.register_blueprint(app)
     testapp.secret_key = "ABCdefGHI"
