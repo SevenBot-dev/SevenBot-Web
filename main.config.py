@@ -4,5 +4,5 @@ with open(".env", "r") as file:
 
 bind = "localhost:8080"
 worker_class = "uvicorn.workers.UvicornWorker"
-reload = True
+preload_app = True
 errorlog = "-"
